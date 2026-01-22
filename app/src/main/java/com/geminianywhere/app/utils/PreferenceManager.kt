@@ -11,15 +11,6 @@ class PreferenceManager(context: Context) {
     companion object {
         private const val KEY_API_KEY = "api_key"
         private const val KEY_CURRENT_CONTEXT = "current_context"
-        
-        // Context types
-        const val CONTEXT_WHATSAPP = "whatsapp"
-        const val CONTEXT_MESSAGING = "messaging"
-        const val CONTEXT_EMAIL = "email"
-        const val CONTEXT_LINKEDIN = "linkedin"
-        const val CONTEXT_SOCIAL = "social"
-        const val CONTEXT_PROFESSIONAL = "professional"
-        const val CONTEXT_GENERAL = "general"
         private const val KEY_FIRST_LAUNCH = "first_launch"
         private const val KEY_SELECTED_MODEL = "selected_model"
         private const val KEY_MAX_RETRIES = "max_retries"

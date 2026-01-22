@@ -124,7 +124,7 @@ class MainActivity : AppCompatActivity() {
                     view?.let { animateView(it) }
                     
                     // Show confirmation message
-                    showSuccessSnackbar("✓ Model selected: $selectedModelName")
+                    showSnackbar("✓ Model selected: $selectedModelName")
                 }
                 isFirstTime = false
             }
@@ -157,9 +157,9 @@ class MainActivity : AppCompatActivity() {
                     animateView(binding.cardApiKey)
                     
                     // Show success message
-                    showSuccessSnackbar("✓ API Key saved successfully!")
+                    showSnackbar("✓ API Key saved successfully!")
                 } else {
-                    showErrorSnackbar("Please enter a valid API key")
+                    showSnackbar("Please enter a valid API key", isSuccess = false)
                 }
             }
             .setNegativeButton("Cancel", null)
@@ -249,7 +249,7 @@ class MainActivity : AppCompatActivity() {
         // Show success message when accessibility is newly enabled
         if (accessibilityEnabled && !wasAccessibilityEnabled) {
             animateView(binding.cardAccessibility)
-            showSuccessSnackbar("✓ Accessibility Service enabled!")
+            showSnackbar("✓ Accessibility Service enabled!")
         }
 
         binding.tvOverlayStatus.text = if (overlayGranted) {
@@ -265,7 +265,7 @@ class MainActivity : AppCompatActivity() {
         // Show success message when overlay permission is newly granted
         if (overlayGranted && !wasOverlayGranted) {
             animateView(binding.cardOverlay)
-            showSuccessSnackbar("✓ Display Over Apps permission granted!")
+            showSnackbar("✓ Display Over Apps permission granted!")
         }
 
         // Show/hide status indicator with animation
@@ -277,7 +277,7 @@ class MainActivity : AppCompatActivity() {
                 binding.cardStatus.visibility = View.VISIBLE
                 val animation = AnimationUtils.loadAnimation(this, R.anim.slide_in_bottom)
                 binding.cardStatus.startAnimation(animation)
-                showSuccessSnackbar("🎉 All set! You're ready to use Gemini Anywhere")
+                showSnackbar("🎉 All set! You're ready to use Gemini Anywhere")
             } else {
                 binding.cardStatus.visibility = View.GONE
             }
@@ -301,38 +301,7 @@ class MainActivity : AppCompatActivity() {
             .show()
     }
 
-    private fun showHowToUseDialog() {
-        MaterialAlertDialogBuilder(this)
-            .setTitle("How to Use Gemini Anywhere")
-            .setMessage(
-                "1. Open any app with a text input (WhatsApp, Gmail, etc.)\n\n" +
-                "2. Type @gemini followed by your request\n" +
-                "   Example: @gemini write a professional thank you email\n\n" +
-                "3. A floating Gemini button will appear\n\n" +
-                "4. Tap the button to generate AI response\n\n" +
-                "5. The text will be automatically inserted!\n\n" +
-                "Context-aware:\n" +
-                "• Messaging apps: Casual tone\n" +
-                "• Email apps: Professional tone\n" +
-                "• Social media: Engaging tone"
-            )
-            .setPositiveButton("Got it!", null)
-            .show()
-    }
 
-    private fun showTestDialog() {
-        MaterialAlertDialogBuilder(this)
-            .setTitle("Test Gemini Anywhere")
-            .setMessage(
-                "To test:\n\n" +
-                "1. Open any messaging app (WhatsApp, Messages, etc.)\n" +
-                "2. Start typing: @gemini say hello\n" +
-                "3. Tap the floating Gemini button\n" +
-                "4. Watch the magic happen! ✨"
-            )
-            .setPositiveButton("Let's Try!", null)
-            .show()
-    }
 
     override fun onResume() {
         super.onResume()
@@ -383,25 +352,13 @@ class MainActivity : AppCompatActivity() {
             .start()
     }
     
-    private fun showSuccessSnackbar(message: String) {
-        val snackbar = Snackbar.make(binding.root, message, Snackbar.LENGTH_SHORT)
-            .setBackgroundTint(ContextCompat.getColor(this, R.color.success_green))
+    private fun showSnackbar(message: String, isSuccess: Boolean = true) {
+        val colorRes = if (isSuccess) R.color.success_green else R.color.error_red
+        Snackbar.make(binding.root, message, Snackbar.LENGTH_SHORT)
+            .setBackgroundTint(ContextCompat.getColor(this, colorRes))
             .setTextColor(ContextCompat.getColor(this, android.R.color.white))
             .setAnimationMode(Snackbar.ANIMATION_MODE_SLIDE)
-        
-        // Add elevation for depth
-        snackbar.view.elevation = 12f
-        snackbar.show()
-    }
-    
-    private fun showErrorSnackbar(message: String) {
-        val snackbar = Snackbar.make(binding.root, message, Snackbar.LENGTH_SHORT)
-            .setBackgroundTint(ContextCompat.getColor(this, R.color.error_red))
-            .setTextColor(ContextCompat.getColor(this, android.R.color.white))
-            .setAnimationMode(Snackbar.ANIMATION_MODE_SLIDE)
-        
-        // Add elevation for depth
-        snackbar.view.elevation = 12f
-        snackbar.show()
+            .apply { view.elevation = 12f }
+            .show()
     }
 }

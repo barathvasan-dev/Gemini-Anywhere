@@ -38,7 +38,7 @@ data class GenerationConfig(
     val temperature: Double = 0.7,
     val topK: Int = 40,
     val topP: Double = 0.95,
-    val maxOutputTokens: Int = 1024
+    val maxOutputTokens: Int = 8192
 )
 
 data class GeminiResponse(
@@ -53,6 +53,18 @@ data class Candidate(
 class GeminiApiClient {
     companion object {
         private const val TAG = "GeminiApiClient"
+        
+        // Pre-compiled regex patterns for better performance
+        private val REGEX_BOLD = Regex("\\*\\*(.+?)\\*\\*")
+        private val REGEX_BOLD_UNDERSCORE = Regex("__(.+?)__")
+        private val REGEX_ITALIC = Regex("(?<!\\*)\\*(?!\\*)(.+?)(?<!\\*)\\*(?!\\*)")
+        private val REGEX_ITALIC_UNDERSCORE = Regex("(?<!_)_(?!_)(.+?)(?<!_)_(?!_)")
+        private val REGEX_INLINE_CODE = Regex("`(.+?)`")
+        private val REGEX_HEADINGS = Regex("(?m)^#{1,6}\\s+")
+        private val REGEX_BULLETS = Regex("(?m)^[\\-\\*•]\\s+")
+        private val REGEX_NUMBERED_LIST = Regex("(?m)^\\d{1,3}\\.\\s+")
+        private val REGEX_BLOCKQUOTE = Regex("(?m)^>\\s+")
+        private val REGEX_CODE_BLOCK = Regex("```[a-z]*\\n")
     }
     
     private val okHttpClient = OkHttpClient.Builder()
@@ -89,7 +101,7 @@ class GeminiApiClient {
             ),
             generationConfig = GenerationConfig(
                 temperature = 0.7,
-                maxOutputTokens = 300
+                maxOutputTokens = 8192
             )
         )
 
@@ -195,38 +207,40 @@ class GeminiApiClient {
     }
     
     /**
-     * Sanitize AI response by removing markdown formatting symbols
-     * while preserving actual content (math, passwords, etc.)
+     * Convert markdown to readable plain text while preserving structure
+     * Keeps line breaks, paragraphs, and list structure
+     * Only removes markdown symbols
      */
     fun sanitizeMarkdown(text: String): String {
         var cleaned = text
         
-        // Remove bold (**text** or __text__)
-        cleaned = cleaned.replace(Regex("\\*\\*(.+?)\\*\\*"), "$1")
-        cleaned = cleaned.replace(Regex("__(.+?)__"), "$1")
+        // Remove bold markers but keep the text
+        cleaned = REGEX_BOLD.replace(cleaned, "$1")
+        cleaned = REGEX_BOLD_UNDERSCORE.replace(cleaned, "$1")
         
-        // Remove italic (*text* or _text_) - careful not to remove standalone asterisks
-        cleaned = cleaned.replace(Regex("(?<!\\*)\\*(?!\\*)(.+?)(?<!\\*)\\*(?!\\*)"), "$1")
-        cleaned = cleaned.replace(Regex("(?<!_)_(?!_)(.+?)(?<!_)_(?!_)"), "$1")
+        // Remove italic markers but keep the text
+        cleaned = REGEX_ITALIC.replace(cleaned, "$1")
+        cleaned = REGEX_ITALIC_UNDERSCORE.replace(cleaned, "$1")
         
-        // Remove inline code (`text`)
-        cleaned = cleaned.replace(Regex("`(.+?)`"), "$1")
+        // Remove inline code markers
+        cleaned = REGEX_INLINE_CODE.replace(cleaned, "$1")
         
-        // Remove heading markers at start of lines (# ## ### etc.)
-        cleaned = cleaned.replace(Regex("(?m)^#{1,6}\\s+"), "")
+        // Remove heading markers but keep the text on new line
+        cleaned = REGEX_HEADINGS.replace(cleaned, "")
         
-        // Remove bullet points at start of lines (-, *, •)
-        cleaned = cleaned.replace(Regex("(?m)^[\\-\\*•]\\s+"), "")
-        
-        // Remove numbered lists (1. 2. etc.)
-        cleaned = cleaned.replace(Regex("(?m)^\\d+\\.\\s+"), "")
+        // Remove bullet/numbered list markers but keep line structure
+        cleaned = REGEX_BULLETS.replace(cleaned, "")
+        cleaned = REGEX_NUMBERED_LIST.replace(cleaned, "")
         
         // Remove blockquote markers
-        cleaned = cleaned.replace(Regex("(?m)^>\\s+"), "")
+        cleaned = REGEX_BLOCKQUOTE.replace(cleaned, "")
         
-        // Remove code block markers (```)
-        cleaned = cleaned.replace(Regex("```[a-z]*\\n"), "")
+        // Remove code block markers
+        cleaned = REGEX_CODE_BLOCK.replace(cleaned, "")
         cleaned = cleaned.replace("```", "")
+        
+        // Clean up excessive blank lines (more than 2 consecutive) but preserve paragraph breaks
+        cleaned = cleaned.replace(Regex("\n{3,}"), "\n\n")
         
         return cleaned.trim()
     }

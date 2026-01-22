@@ -2,7 +2,6 @@ package com.geminianywhere.app.ui
 
 import android.os.Bundle
 import android.view.LayoutInflater
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -14,6 +13,10 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
 
 class CommandsActivity : AppCompatActivity() {
+
+    private companion object {
+        const val COMMAND_PREFIX = "/"
+    }
 
     private lateinit var binding: ActivityCommandsBinding
     private lateinit var prefManager: PreferenceManager
@@ -60,59 +63,45 @@ class CommandsActivity : AppCompatActivity() {
     }
 
     private fun showAddDialog() {
-        val dialogBinding = DialogAddCommandBinding.inflate(layoutInflater)
-        dialogBinding.tvDialogTitle.text = "Add Command"
-
-        MaterialAlertDialogBuilder(this)
-            .setView(dialogBinding.root)
-            .setPositiveButton("Add") { _, _ ->
-                val command = dialogBinding.etCommandName.text.toString().trim()
-                val prompt = dialogBinding.etPromptTemplate.text.toString().trim()
-
-                if (command.isNotEmpty() && prompt.isNotEmpty()) {
-                    if (!command.startsWith("/")) {
-                        Snackbar.make(binding.root, "Command must start with /", Snackbar.LENGTH_SHORT).show()
-                        return@setPositiveButton
-                    }
-                    commands[command] = prompt
-                    prefManager.saveCommands(commands)
-                    adapter.updateCommands(commands)
-                    Snackbar.make(binding.root, "✓ Command added: $command", Snackbar.LENGTH_SHORT).show()
-                } else {
-                    Snackbar.make(binding.root, "Please fill all fields", Snackbar.LENGTH_SHORT).show()
-                }
-            }
-            .setNegativeButton("Cancel", null)
-            .show()
+        showCommandDialog(isEdit = false)
     }
 
     private fun showEditDialog(command: String) {
+        showCommandDialog(isEdit = true, existingCommand = command)
+    }
+
+    private fun showCommandDialog(isEdit: Boolean, existingCommand: String? = null) {
         val dialogBinding = DialogAddCommandBinding.inflate(layoutInflater)
-        dialogBinding.tvDialogTitle.text = "Edit Command"
-        dialogBinding.etCommandName.setText(command)
-        dialogBinding.etPromptTemplate.setText(commands[command])
+        dialogBinding.tvDialogTitle.text = if (isEdit) "Edit Command" else "Add Command"
+        
+        if (isEdit && existingCommand != null) {
+            dialogBinding.etCommandName.setText(existingCommand)
+            dialogBinding.etPromptTemplate.setText(commands[existingCommand])
+        }
 
         MaterialAlertDialogBuilder(this)
             .setView(dialogBinding.root)
-            .setPositiveButton("Save") { _, _ ->
-                val newCommand = dialogBinding.etCommandName.text.toString().trim()
-                val newPrompt = dialogBinding.etPromptTemplate.text.toString().trim()
+            .setPositiveButton(if (isEdit) "Save" else "Add") { _, _ ->
+                val command = dialogBinding.etCommandName.text.toString().trim()
+                val prompt = dialogBinding.etPromptTemplate.text.toString().trim()
 
-                if (newCommand.isNotEmpty() && newPrompt.isNotEmpty()) {
-                    if (!newCommand.startsWith("/")) {
-                        Snackbar.make(binding.root, "Command must start with /", Snackbar.LENGTH_SHORT).show()
-                        return@setPositiveButton
+                when {
+                    command.isEmpty() || prompt.isEmpty() -> {
+                        showSnackbar("Please fill all fields", false)
                     }
-                    // Remove old command if name changed
-                    if (command != newCommand) {
-                        commands.remove(command)
+                    !command.startsWith(COMMAND_PREFIX) -> {
+                        showSnackbar("Command must start with $COMMAND_PREFIX", false)
                     }
-                    commands[newCommand] = newPrompt
-                    prefManager.saveCommands(commands)
-                    adapter.updateCommands(commands)
-                    Snackbar.make(binding.root, "✓ Command updated", Snackbar.LENGTH_SHORT).show()
-                } else {
-                    Snackbar.make(binding.root, "Please fill all fields", Snackbar.LENGTH_SHORT).show()
+                    else -> {
+                        if (isEdit && existingCommand != command) {
+                            commands.remove(existingCommand)
+                        }
+                        commands[command] = prompt
+                        prefManager.saveCommands(commands)
+                        adapter.updateCommands(commands)
+                        val message = if (isEdit) "✓ Command updated" else "✓ Command added: $command"
+                        showSnackbar(message)
+                    }
                 }
             }
             .setNegativeButton("Cancel", null)
@@ -127,10 +116,14 @@ class CommandsActivity : AppCompatActivity() {
                 commands.remove(command)
                 prefManager.saveCommands(commands)
                 adapter.updateCommands(commands)
-                Snackbar.make(binding.root, "✓ Command deleted", Snackbar.LENGTH_SHORT).show()
+                showSnackbar("✓ Command deleted")
             }
             .setNegativeButton("Cancel", null)
             .show()
+    }
+
+    private fun showSnackbar(message: String, isSuccess: Boolean = true) {
+        Snackbar.make(binding.root, message, Snackbar.LENGTH_SHORT).show()
     }
 }
 

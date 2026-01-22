@@ -295,7 +295,7 @@ class FloatingOverlayService : Service() {
         var freshPrompt = serviceInstance?.getCurrentPrompt() ?: currentPrompt
         Log.d(TAG, "Fresh prompt from service: '$freshPrompt', Original prompt: '$currentPrompt', isCommand: $isCommand")
         
-        if (freshPrompt == "EMPTY_CONTENT" || (isCommand && freshPrompt.isEmpty())) {
+        if (freshPrompt == GeminiAccessibilityService.MARKER_EMPTY_CONTENT || (isCommand && freshPrompt.isEmpty())) {
             Log.w(TAG, "No content for command!")
             Toast.makeText(this, "Paste or type text after $commandName", Toast.LENGTH_LONG).show()
             hideFloatingButton()
@@ -426,11 +426,12 @@ class FloatingOverlayService : Service() {
                     @Suppress("DEPRECATION")
                     WindowManager.LayoutParams.TYPE_PHONE
                 },
-                WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE or
                 WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN,
                 PixelFormat.TRANSLUCENT
             )
             voiceParams.gravity = Gravity.CENTER
+            voiceParams.softInputMode = WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE or
+                                       WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE
             
             // Get UI elements
             micButton = voiceView?.findViewById(R.id.micButton)
@@ -478,8 +479,12 @@ class FloatingOverlayService : Service() {
             // Send button - process with Gemini
             btnSend?.setOnClickListener {
                 val editedText = transcriptionText?.text?.toString() ?: ""
+                Log.d(TAG, "Send button clicked, text length: ${editedText.length}")
+                Log.d(TAG, "Text to process: ${editedText.take(100)}")
                 if (editedText.isNotEmpty()) {
                     sendToGemini(editedText)
+                } else {
+                    Log.w(TAG, "Send clicked but text is empty!")
                 }
             }
             
@@ -498,8 +503,10 @@ class FloatingOverlayService : Service() {
         micIcon?.setImageResource(android.R.drawable.ic_btn_speak_now)
         micButton?.findViewById<com.google.android.material.card.MaterialCardView>(R.id.micButton)
             ?.setCardBackgroundColor(getColor(R.color.primary))
+        micButton?.visibility = View.VISIBLE
         transcriptionScroll?.visibility = View.GONE
         actionButtons?.visibility = View.GONE
+        btnClose?.visibility = View.VISIBLE
         isRecording = false
     }
     
@@ -508,6 +515,7 @@ class FloatingOverlayService : Service() {
         micIcon?.setImageResource(android.R.drawable.ic_btn_speak_now)
         micButton?.findViewById<com.google.android.material.card.MaterialCardView>(R.id.micButton)
             ?.setCardBackgroundColor(getColor(R.color.error_red))
+        micButton?.visibility = View.VISIBLE
         transcriptionScroll?.visibility = View.GONE
         actionButtons?.visibility = View.GONE
         btnClose?.visibility = View.VISIBLE
@@ -515,7 +523,7 @@ class FloatingOverlayService : Service() {
     }
     
     private fun showPreviewState(transcription: String) {
-        statusText?.text = "Edit Your Message"
+        statusText?.text = "Edit your message"
         transcriptionText?.setText(transcription)
         transcriptionScroll?.visibility = View.VISIBLE
         actionButtons?.visibility = View.VISIBLE
@@ -523,9 +531,14 @@ class FloatingOverlayService : Service() {
         btnClose?.visibility = View.VISIBLE
         isRecording = false
         
-        // Focus and show keyboard for editing
-        transcriptionText?.requestFocus()
-        transcriptionText?.setSelection(transcriptionText?.text?.length ?: 0)
+        // Request focus and show keyboard for editing
+        transcriptionText?.postDelayed({
+            transcriptionText?.requestFocus()
+            transcriptionText?.setSelection(transcriptionText?.text?.length ?: 0)
+            // Force keyboard to show
+            val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as? android.view.inputmethod.InputMethodManager
+            imm?.showSoftInput(transcriptionText, android.view.inputmethod.InputMethodManager.SHOW_FORCED)
+        }, 100)
     }
     
     private fun startRecording() {
@@ -566,26 +579,44 @@ class FloatingOverlayService : Service() {
     }
     
     private fun sendToGemini(transcription: String) {
+        Log.d(TAG, "=== sendToGemini called ===")
+        Log.d(TAG, "Transcription: ${transcription.take(100)}")
         statusText?.text = "Processing with AI..."
         actionButtons?.visibility = View.GONE
         
+        Log.d(TAG, "Calling voiceHandler.processVoiceInput()...")
         voiceHandler?.processVoiceInput(transcription) { result ->
+            Log.d(TAG, "=== Callback received from processVoiceInput ===")
+            Log.d(TAG, "Result: ${result.take(100)}")
             serviceScope.launch(Dispatchers.Main) {
                 if (result.startsWith("Error:")) {
+                    Log.e(TAG, "Error result: $result")
                     Toast.makeText(this@FloatingOverlayService, result, Toast.LENGTH_LONG).show()
                     showPreviewState(transcription) // Back to preview on error
                 } else {
-                    // Success - replace @gemini /voice with result
-                    GeminiAccessibilityService.instance?.replaceVoiceTrigger(result)
+                    Log.d(TAG, "Success! Hiding overlay and replacing text")
+                    // Success - hide overlay first, then replace text
                     hideVoiceOverlay()
+                    
+                    // Replace @gemini /voice with result and focus
+                    Log.d(TAG, "Calling replaceVoiceTrigger...")
+                    GeminiAccessibilityService.instance?.replaceVoiceTrigger(result)
+                    
                     Toast.makeText(this@FloatingOverlayService, "✓ Voice input completed", Toast.LENGTH_SHORT).show()
                 }
             }
         }
+        Log.d(TAG, "processVoiceInput() call initiated")
     }
     
     private fun hideVoiceOverlay() {
         try {
+            // Hide keyboard before removing view
+            val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as? android.view.inputmethod.InputMethodManager
+            transcriptionText?.let { editText ->
+                imm?.hideSoftInputFromWindow(editText.windowToken, 0)
+            }
+            
             voiceView?.let {
                 windowManager?.removeView(it)
                 voiceView = null

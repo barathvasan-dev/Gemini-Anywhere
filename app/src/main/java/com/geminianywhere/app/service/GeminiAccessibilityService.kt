@@ -1,12 +1,8 @@
 package com.geminianywhere.app.service
 
 import android.accessibilityservice.AccessibilityService
-import android.content.Context
 import android.content.Intent
-import android.graphics.Rect
 import android.os.Build
-import android.os.Handler
-import android.os.Looper
 import android.provider.Settings
 import android.util.Log
 import android.view.accessibility.AccessibilityEvent
@@ -18,6 +14,10 @@ class GeminiAccessibilityService : AccessibilityService() {
     companion object {
         private const val TAG = "GeminiAccessibility"
         var instance: GeminiAccessibilityService? = null
+        
+        // Special markers for command handling
+        const val MARKER_VOICE_INPUT = "VOICE_INPUT"
+        const val MARKER_EMPTY_CONTENT = "EMPTY_CONTENT"
     }
 
     fun getCurrentPrompt(): String {
@@ -44,7 +44,7 @@ class GeminiAccessibilityService : AccessibilityService() {
                     // Special handling for /voice command
                     if (command == "/voice") {
                         Log.d(TAG, "Voice command detected - triggering voice input")
-                        return "VOICE_INPUT"  // Special marker for voice input
+                        return MARKER_VOICE_INPUT
                     }
                     
                     // Get command prompt template
@@ -59,7 +59,7 @@ class GeminiAccessibilityService : AccessibilityService() {
                         
                         if (userText.isEmpty()) {
                             Log.w(TAG, "No text provided after command $command")
-                            return "EMPTY_CONTENT"  // Special marker
+                            return MARKER_EMPTY_CONTENT
                         }
                         
                         Log.d(TAG, "Using text after command: '${userText.take(50)}...'")
@@ -89,8 +89,6 @@ class GeminiAccessibilityService : AccessibilityService() {
     private var lastText: String = ""
     private var currentPackageName: String = ""
     private lateinit var prefManager: PreferenceManager
-    private val handler = Handler(Looper.getMainLooper())
-    private var checkRunnable: Runnable? = null
 
     override fun onCreate() {
         super.onCreate()
@@ -282,45 +280,16 @@ class GeminiAccessibilityService : AccessibilityService() {
         }
     }
 
-    private fun detectContext(packageName: String, className: String) {
-        val context = when {
-            // WhatsApp - Short, casual messaging
-            packageName.contains("whatsapp", ignoreCase = true) -> "whatsapp"
-            
-            // Other messaging apps
-            packageName.contains("telegram", ignoreCase = true) ||
-            packageName.contains("messenger", ignoreCase = true) ||
-            packageName.contains("messages", ignoreCase = true) -> "messaging"
-            
-            // Email apps - Structured format
-            packageName.contains("gmail", ignoreCase = true) ||
-            packageName.contains("outlook", ignoreCase = true) ||
-            packageName.contains("mail", ignoreCase = true) -> "email"
-            
-            // LinkedIn - Hook + Body + CTA format
-            packageName.contains("linkedin", ignoreCase = true) -> "linkedin"
-            
-            // Other social media
-            packageName.contains("twitter", ignoreCase = true) ||
-            packageName.contains("facebook", ignoreCase = true) ||
-            packageName.contains("instagram", ignoreCase = true) -> "social"
-            
-            // Professional communication
-            packageName.contains("slack", ignoreCase = true) ||
-            packageName.contains("teams", ignoreCase = true) -> "professional"
-            
-            else -> "general"
-        }
-        
-        prefManager.setCurrentContext(context)
-    }
-
     private fun isGmailCompose(): Boolean {
         return currentPackageName.contains("gmail", ignoreCase = true)
     }
 
     fun replaceTextInCurrentField(newText: String) {
         try {
+            Log.d(TAG, "replaceTextInCurrentField called with text length: ${newText.length}")
+            Log.d(TAG, "First 100 chars: ${newText.take(100)}")
+            Log.d(TAG, "Last 50 chars: ${newText.takeLast(50)}")
+            
             // Check if this is Gmail compose window
             if (isGmailCompose()) {
                 replaceTextInGmail(newText)
@@ -340,33 +309,46 @@ class GeminiAccessibilityService : AccessibilityService() {
      */
     fun replaceVoiceTrigger(aiOutput: String) {
         try {
-            val editText = currentEditText ?: return
+            val editText = currentEditText ?: run {
+                Log.e(TAG, "replaceVoiceTrigger - No current edit text!")
+                return
+            }
+            
+            if (!editText.isEditable) {
+                Log.e(TAG, "replaceVoiceTrigger - Field not editable!")
+                return
+            }
+            
             val currentText = editText.text?.toString() ?: ""
             val triggerPattern = prefManager.getCustomTrigger()
             
             Log.d(TAG, "replaceVoiceTrigger() - Current text: '$currentText'")
+            Log.d(TAG, "replaceVoiceTrigger() - Text bytes: ${currentText.toByteArray().joinToString(",") { it.toString() }}")
             
             if (currentText.contains(triggerPattern)) {
                 val triggerIndex = currentText.indexOf(triggerPattern)
-                val afterTrigger = currentText.substring(triggerIndex + triggerPattern.length).trim()
                 
-                // Find end of /voice command
-                var commandEnd = triggerIndex + triggerPattern.length
-                if (afterTrigger.startsWith("/voice")) {
-                    commandEnd += "/voice".length
-                }
+                // Find where trigger ends
+                val triggerEnd = triggerIndex + triggerPattern.length
                 
-                // Build: [text before trigger] + [AI output] + [text after command]
-                val beforeTrigger = currentText.substring(0, triggerIndex)
-                val afterCommand = if (commandEnd < currentText.length) {
-                    currentText.substring(commandEnd).trimStart()
+                // Look for /voice starting from after the trigger
+                val remainingText = currentText.substring(triggerEnd)
+                val voiceIndex = remainingText.indexOf("/voice")
+                
+                val commandEnd = if (voiceIndex >= 0) {
+                    // Found /voice, skip past it and any trailing whitespace
+                    triggerEnd + voiceIndex + "/voice".length
                 } else {
-                    ""
+                    triggerEnd
                 }
                 
-                val newText = beforeTrigger + aiOutput + (if (afterCommand.isNotEmpty()) " $afterCommand" else "")
+                // Build final text: everything before trigger + AI output only
+                val beforeTrigger = currentText.substring(0, triggerIndex)
+                val newText = beforeTrigger + aiOutput
                 
-                Log.d(TAG, "Replacing @gemini /voice with AI output")
+                Log.d(TAG, "Before: '$beforeTrigger'")
+                Log.d(TAG, "Output: '$aiOutput'")
+                Log.d(TAG, "Final: '$newText'")
                 setTextInNode(editText, newText)
             }
         } catch (e: Exception) {
@@ -376,24 +358,38 @@ class GeminiAccessibilityService : AccessibilityService() {
 
     private fun setTextInNode(node: AccessibilityNodeInfo, text: String) {
         try {
-            // Select all text
-            val arguments = android.os.Bundle()
-            arguments.putInt(AccessibilityNodeInfo.ACTION_ARGUMENT_SELECTION_START_INT, 0)
-            arguments.putInt(
-                AccessibilityNodeInfo.ACTION_ARGUMENT_SELECTION_END_INT,
-                node.text?.length ?: 0
-            )
-            node.performAction(AccessibilityNodeInfo.ACTION_SET_SELECTION, arguments)
+            Log.d(TAG, "setTextInNode: Setting ${text.length} characters")
+            Log.d(TAG, "First 100 chars: ${text.take(100)}")
             
-            // Set new text
+            // Try ACTION_SET_TEXT first
             val pasteArgs = android.os.Bundle()
             pasteArgs.putCharSequence(
                 AccessibilityNodeInfo.ACTION_ARGUMENT_SET_TEXT_CHARSEQUENCE,
                 text
             )
-            node.performAction(AccessibilityNodeInfo.ACTION_SET_TEXT, pasteArgs)
+            val success = node.performAction(AccessibilityNodeInfo.ACTION_SET_TEXT, pasteArgs)
+            Log.d(TAG, "ACTION_SET_TEXT result: $success")
             
-            Log.d(TAG, "✓ Text replaced successfully")
+            if (!success) {
+                // Fallback: Try focus first, then set text
+                Log.w(TAG, "ACTION_SET_TEXT failed, trying with focus first...")
+                node.performAction(AccessibilityNodeInfo.ACTION_FOCUS)
+                android.os.Handler(android.os.Looper.getMainLooper()).postDelayed({
+                    node.performAction(AccessibilityNodeInfo.ACTION_SET_TEXT, pasteArgs)
+                }, 50)
+            }
+            
+            // Set cursor to end of text
+            val textLength = text.length
+            val cursorArgs = android.os.Bundle()
+            cursorArgs.putInt(AccessibilityNodeInfo.ACTION_ARGUMENT_SELECTION_START_INT, textLength)
+            cursorArgs.putInt(AccessibilityNodeInfo.ACTION_ARGUMENT_SELECTION_END_INT, textLength)
+            node.performAction(AccessibilityNodeInfo.ACTION_SET_SELECTION, cursorArgs)
+            
+            // Focus the field to show keyboard
+            node.performAction(AccessibilityNodeInfo.ACTION_FOCUS)
+            
+            Log.d(TAG, "✓ Text replacement attempted, cursor at position $textLength")
         } catch (e: Exception) {
             Log.e(TAG, "Error setting text in node", e)
         }
@@ -611,7 +607,6 @@ class GeminiAccessibilityService : AccessibilityService() {
     override fun onDestroy() {
         super.onDestroy()
         instance = null
-        checkRunnable?.let { handler.removeCallbacks(it) }
         hideFloatingButton()
         Log.d(TAG, "Service destroyed")
     }
