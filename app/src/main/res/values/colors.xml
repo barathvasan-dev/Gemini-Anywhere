@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Primary Colors -->
+    <color name="primary">#6366F1</color>
+    <color name="primary_dark">#4F46E5</color>
+    <color name="primary_light">#A5B4FC</color>
+    <color name="accent">#8B5CF6</color>
+    
+    <!-- Gemini Spark -->
+    <color name="gemini_spark">#6366F1</color>
+    <color name="gemini_spark_light">#A5B4FC</color>
+    
+    <!-- Background Colors -->
+    <color name="background">#F5F5F5</color>
+    <color name="surface">#FFFFFF</color>
+    
+    <!-- Text Colors -->
+    <color name="text_primary">#212121</color>
+    <color name="text_secondary">#757575</color>
+    <color name="text_hint">#BDBDBD</color>
+    
+    <!-- Status Colors -->
+    <color name="success_green">#4CAF50</color>
+    <color name="success_light">#E8F5E9</color>
+    <color name="error_red">#F44336</color>
+    <color name="error_light">#FFEBEE</color>
+    <color name="warning_orange">#FF9800</color>
+    <color name="info_blue">#2196F3</color>
+    
+    <!-- Material 3 Colors -->
+    <color name="md_theme_light_primary">#6200EE</color>
+    <color name="md_theme_light_onPrimary">#FFFFFF</color>
+    <color name="md_theme_light_secondary">#03DAC6</color>
+    <color name="md_theme_light_onSecondary">#000000</color>
+    <color name="md_theme_light_background">#F5F5F5</color>
+    <color name="md_theme_light_onBackground">#212121</color>
+    <color name="md_theme_light_surface">#FFFFFF</color>
+    <color name="md_theme_light_onSurface">#212121</color>
+    
+    <!-- Launcher Icon Background -->
+    <color name="ic_launcher_background">#6366F1</color>
+</resources>

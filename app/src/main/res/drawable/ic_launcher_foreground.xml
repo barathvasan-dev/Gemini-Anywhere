@@ -1,0 +1,20 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    <group
+        android:scaleX="0.8"
+        android:scaleY="0.8"
+        android:translateX="10.8"
+        android:translateY="10.8">
+        <!-- Gemini star burst -->
+        <path
+            android:fillColor="#FFFFFF"
+            android:pathData="M54,10 L58,42 L70,26 L60,46 L90,38 L66,52 L98,54 L66,56 L90,70 L60,62 L70,82 L58,66 L54,98 L50,66 L38,82 L48,62 L18,70 L42,56 L10,54 L42,52 L18,38 L48,46 L38,26 L50,42 Z"/>
+        <!-- Inner spark -->
+        <path
+            android:fillColor="#6366F1"
+            android:pathData="M54,30 L56,48 L62,40 L58,52 L72,48 L60,54 L72,60 L58,56 L62,68 L56,60 L54,78 L52,60 L46,68 L50,56 L36,60 L48,54 L36,48 L50,52 L46,40 L52,48 Z"/>
+    </group>
+</vector>

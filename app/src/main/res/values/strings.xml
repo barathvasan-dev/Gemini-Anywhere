@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">GEMINI ANYWHERE</string>
+    
+    <!-- Accessibility Service -->
+    <string name="accessibility_service_label">Gemini Anywhere</string>
+    <string name="accessibility_service_description">Enables Gemini AI assistance in any text field. When you type @gemini followed by your request, a floating button will appear to generate AI-powered responses. Your privacy is protected - we only access text when the trigger is detected.</string>
+    
+    <!-- Permissions -->
+    <string name="permission_overlay_title">Overlay Permission Required</string>
+    <string name="permission_overlay_message">Gemini Anywhere needs permission to display over other apps to show the floating assistant button.</string>
+    
+    <string name="permission_accessibility_title">Accessibility Service Required</string>
+    <string name="permission_accessibility_message">Gemini Anywhere uses accessibility services to detect when you type @gemini in any text field.</string>
+    
+    <!-- API -->
+    <string name="api_key_required">API key is required</string>
+    <string name="api_key_saved">API key saved successfully</string>
+    <string name="api_error">Failed to generate response. Please check your API key and internet connection.</string>
+    
+    <!-- Model Selection -->
+    <string name="model_gemini_3_pro">Gemini 3 Pro Preview - SOTA reasoning and multimodal</string>
+    <string name="model_gemini_3_flash">Gemini 3 Flash Preview - Speed with frontier intelligence</string>
+    <string name="model_gemini_3_pro_image">Gemini 3 Pro Image - State-of-the-art image generation</string>
+    <string name="model_gemini_2_5_pro">Gemini 2.5 Pro - Advanced reasoning and coding</string>
+    <string name="model_gemini_2_5_flash">Gemini 2.5 Flash - 1M context with thinking budgets</string>
+    <string name="model_gemini_2_5_flash_lite">Gemini 2.5 Flash-Lite - Cost effective at scale</string>
+    <string name="model_gemini_2_5_flash_image">Gemini 2.5 Flash Image - Image generation and editing</string>
+    <string name="model_gemini_flash_latest">Gemini Flash Latest - Auto-updates to newest Flash</string>
+    <string name="model_gemini_flash_lite_latest">Gemini Flash-Lite Latest - Auto-updates to newest Lite</string>
+    <string name="model_gemini_2_0_flash">Gemini 2.0 Flash - Great multimodal performance</string>
+    <string name="model_gemini_2_0_flash_lite">Gemini 2.0 Flash-Lite - Cost effective v2</string>
+    <string name="model_gemini_robotics">Gemini Robotics-ER 1.5 - Embodied reasoning for robots</string>
+    <string name="model_gemini_2_5_pro_tts">Gemini 2.5 Pro TTS - Natural text-to-speech</string>
+    <string name="model_gemini_2_5_flash_tts">Gemini 2.5 Flash TTS - Fast controllable speech</string>
+    <string name="model_description_flash">Optimized for speed and efficiency</string>
+    <string name="model_description_pro">Best for complex reasoning tasks</string>
+    <string name="retry_attempts">Retrying (Attempt %1$d/%2$d)...</string>
+    <string name="model_busy">Model is busy, retrying...</string>
+    
+    <!-- Status Messages -->
+    <string name="status_ready">Ready to use! Type @gemini in any text field</string>
+    <string name="status_generating">Generating response…</string>
+    <string name="status_success">Response generated!</string>
+    <string name="status_error">Error occurred</string>
+    
+    <!-- Context Types -->
+    <string name="context_messaging">Casual messaging</string>
+    <string name="context_email">Professional email</string>
+    <string name="context_social">Social media post</string>
+    <string name="context_professional">Professional communication</string>
+    <string name="context_general">General text</string>
+</resources>

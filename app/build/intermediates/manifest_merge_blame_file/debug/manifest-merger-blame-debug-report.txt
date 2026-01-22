@@ -1,0 +1,220 @@
+1<?xml version="1.0" encoding="utf-8"?>
+2<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+3    package="com.geminianywhere.app"
+4    android:versionCode="1"
+5    android:versionName="1.0" >
+6
+7    <uses-sdk
+8        android:minSdkVersion="24"
+9        android:targetSdkVersion="34" />
+10
+11    <!-- Required permissions -->
+12    <uses-permission android:name="android.permission.INTERNET" />
+12-->C:\Users\barat\OneDrive\Desktop\Gemini Anywhere\app\src\main\AndroidManifest.xml:6:5-67
+12-->C:\Users\barat\OneDrive\Desktop\Gemini Anywhere\app\src\main\AndroidManifest.xml:6:22-64
+13    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+13-->C:\Users\barat\OneDrive\Desktop\Gemini Anywhere\app\src\main\AndroidManifest.xml:7:5-78
+13-->C:\Users\barat\OneDrive\Desktop\Gemini Anywhere\app\src\main\AndroidManifest.xml:7:22-75
+14    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+14-->C:\Users\barat\OneDrive\Desktop\Gemini Anywhere\app\src\main\AndroidManifest.xml:8:5-77
+14-->C:\Users\barat\OneDrive\Desktop\Gemini Anywhere\app\src\main\AndroidManifest.xml:8:22-74
+15    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_SPECIAL_USE" />
+15-->C:\Users\barat\OneDrive\Desktop\Gemini Anywhere\app\src\main\AndroidManifest.xml:9:5-89
+15-->C:\Users\barat\OneDrive\Desktop\Gemini Anywhere\app\src\main\AndroidManifest.xml:9:22-86
+16    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+16-->C:\Users\barat\OneDrive\Desktop\Gemini Anywhere\app\src\main\AndroidManifest.xml:10:5-77
+16-->C:\Users\barat\OneDrive\Desktop\Gemini Anywhere\app\src\main\AndroidManifest.xml:10:22-74
+17    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+17-->C:\Users\barat\OneDrive\Desktop\Gemini Anywhere\app\src\main\AndroidManifest.xml:11:5-71
+17-->C:\Users\barat\OneDrive\Desktop\Gemini Anywhere\app\src\main\AndroidManifest.xml:11:22-68
+18
+19    <permission
+19-->[androidx.core:core:1.12.0] C:\Users\barat\.gradle\caches\transforms-3\88b02e5e32d386c009c0cf84573a232a\transformed\core-1.12.0\AndroidManifest.xml:22:5-24:47
+20        android:name="com.geminianywhere.app.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION"
+20-->[androidx.core:core:1.12.0] C:\Users\barat\.gradle\caches\transforms-3\88b02e5e32d386c009c0cf84573a232a\transformed\core-1.12.0\AndroidManifest.xml:23:9-81
+21        android:protectionLevel="signature" />
+21-->[androidx.core:core:1.12.0] C:\Users\barat\.gradle\caches\transforms-3\88b02e5e32d386c009c0cf84573a232a\transformed\core-1.12.0\AndroidManifest.xml:24:9-44
+22
+23    <uses-permission android:name="com.geminianywhere.app.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION" />
+23-->[androidx.core:core:1.12.0] C:\Users\barat\.gradle\caches\transforms-3\88b02e5e32d386c009c0cf84573a232a\transformed\core-1.12.0\AndroidManifest.xml:26:5-97
+23-->[androidx.core:core:1.12.0] C:\Users\barat\.gradle\caches\transforms-3\88b02e5e32d386c009c0cf84573a232a\transformed\core-1.12.0\AndroidManifest.xml:26:22-94
+24
+25    <application
+25-->C:\Users\barat\OneDrive\Desktop\Gemini Anywhere\app\src\main\AndroidManifest.xml:13:5-73:19
+26        android:allowBackup="true"
+26-->C:\Users\barat\OneDrive\Desktop\Gemini Anywhere\app\src\main\AndroidManifest.xml:14:9-35
+27        android:appComponentFactory="androidx.core.app.CoreComponentFactory"
+27-->[androidx.core:core:1.12.0] C:\Users\barat\.gradle\caches\transforms-3\88b02e5e32d386c009c0cf84573a232a\transformed\core-1.12.0\AndroidManifest.xml:28:18-86
+28        android:debuggable="true"
+29        android:extractNativeLibs="false"
+30        android:icon="@mipmap/ic_launcher"
+30-->C:\Users\barat\OneDrive\Desktop\Gemini Anywhere\app\src\main\AndroidManifest.xml:15:9-43
+31        android:label="@string/app_name"
+31-->C:\Users\barat\OneDrive\Desktop\Gemini Anywhere\app\src\main\AndroidManifest.xml:16:9-41
+32        android:roundIcon="@mipmap/ic_launcher"
+32-->C:\Users\barat\OneDrive\Desktop\Gemini Anywhere\app\src\main\AndroidManifest.xml:17:9-48
+33        android:supportsRtl="true"
+33-->C:\Users\barat\OneDrive\Desktop\Gemini Anywhere\app\src\main\AndroidManifest.xml:18:9-35
+34        android:theme="@style/Theme.GeminiAnywhere"
+34-->C:\Users\barat\OneDrive\Desktop\Gemini Anywhere\app\src\main\AndroidManifest.xml:19:9-52
+35        android:usesCleartextTraffic="true" >
+35-->C:\Users\barat\OneDrive\Desktop\Gemini Anywhere\app\src\main\AndroidManifest.xml:20:9-44
+36
+37        <!-- Main Activity -->
+38        <activity
+38-->C:\Users\barat\OneDrive\Desktop\Gemini Anywhere\app\src\main\AndroidManifest.xml:24:9-32:20
+39            android:name="com.geminianywhere.app.ui.MainActivity"
+39-->C:\Users\barat\OneDrive\Desktop\Gemini Anywhere\app\src\main\AndroidManifest.xml:25:13-44
+40            android:exported="true"
+40-->C:\Users\barat\OneDrive\Desktop\Gemini Anywhere\app\src\main\AndroidManifest.xml:26:13-36
+41            android:screenOrientation="portrait" >
+41-->C:\Users\barat\OneDrive\Desktop\Gemini Anywhere\app\src\main\AndroidManifest.xml:27:13-49
+42            <intent-filter>
+42-->C:\Users\barat\OneDrive\Desktop\Gemini Anywhere\app\src\main\AndroidManifest.xml:28:13-31:29
+43                <action android:name="android.intent.action.MAIN" />
+43-->C:\Users\barat\OneDrive\Desktop\Gemini Anywhere\app\src\main\AndroidManifest.xml:29:17-69
+43-->C:\Users\barat\OneDrive\Desktop\Gemini Anywhere\app\src\main\AndroidManifest.xml:29:25-66
+44
+45                <category android:name="android.intent.category.LAUNCHER" />
+45-->C:\Users\barat\OneDrive\Desktop\Gemini Anywhere\app\src\main\AndroidManifest.xml:30:17-77
+45-->C:\Users\barat\OneDrive\Desktop\Gemini Anywhere\app\src\main\AndroidManifest.xml:30:27-74
+46            </intent-filter>
+47        </activity>
+48
+49        <!-- Settings Activity -->
+50        <activity
+50-->C:\Users\barat\OneDrive\Desktop\Gemini Anywhere\app\src\main\AndroidManifest.xml:35:9-39:61
+51            android:name="com.geminianywhere.app.ui.SettingsActivity"
+51-->C:\Users\barat\OneDrive\Desktop\Gemini Anywhere\app\src\main\AndroidManifest.xml:36:13-48
+52            android:exported="false"
+52-->C:\Users\barat\OneDrive\Desktop\Gemini Anywhere\app\src\main\AndroidManifest.xml:37:13-37
+53            android:parentActivityName="com.geminianywhere.app.ui.MainActivity"
+53-->C:\Users\barat\OneDrive\Desktop\Gemini Anywhere\app\src\main\AndroidManifest.xml:39:13-58
+54            android:screenOrientation="portrait" />
+54-->C:\Users\barat\OneDrive\Desktop\Gemini Anywhere\app\src\main\AndroidManifest.xml:38:13-49
+55
+56        <!-- Commands Activity -->
+57        <activity
+57-->C:\Users\barat\OneDrive\Desktop\Gemini Anywhere\app\src\main\AndroidManifest.xml:42:9-46:65
+58            android:name="com.geminianywhere.app.ui.CommandsActivity"
+58-->C:\Users\barat\OneDrive\Desktop\Gemini Anywhere\app\src\main\AndroidManifest.xml:43:13-48
+59            android:exported="false"
+59-->C:\Users\barat\OneDrive\Desktop\Gemini Anywhere\app\src\main\AndroidManifest.xml:44:13-37
+60            android:parentActivityName="com.geminianywhere.app.ui.SettingsActivity"
+60-->C:\Users\barat\OneDrive\Desktop\Gemini Anywhere\app\src\main\AndroidManifest.xml:46:13-62
+61            android:screenOrientation="portrait" />
+61-->C:\Users\barat\OneDrive\Desktop\Gemini Anywhere\app\src\main\AndroidManifest.xml:45:13-49
+62
+63        <!-- Accessibility Service -->
+64        <service
+64-->C:\Users\barat\OneDrive\Desktop\Gemini Anywhere\app\src\main\AndroidManifest.xml:49:9-60:19
+65            android:name="com.geminianywhere.app.service.GeminiAccessibilityService"
+65-->C:\Users\barat\OneDrive\Desktop\Gemini Anywhere\app\src\main\AndroidManifest.xml:50:13-63
+66            android:exported="true"
+66-->C:\Users\barat\OneDrive\Desktop\Gemini Anywhere\app\src\main\AndroidManifest.xml:53:13-36
+67            android:label="@string/accessibility_service_label"
+67-->C:\Users\barat\OneDrive\Desktop\Gemini Anywhere\app\src\main\AndroidManifest.xml:51:13-64
+68            android:permission="android.permission.BIND_ACCESSIBILITY_SERVICE" >
+68-->C:\Users\barat\OneDrive\Desktop\Gemini Anywhere\app\src\main\AndroidManifest.xml:52:13-79
+69            <intent-filter>
+69-->C:\Users\barat\OneDrive\Desktop\Gemini Anywhere\app\src\main\AndroidManifest.xml:54:13-56:29
+70                <action android:name="android.accessibilityservice.AccessibilityService" />
+70-->C:\Users\barat\OneDrive\Desktop\Gemini Anywhere\app\src\main\AndroidManifest.xml:55:17-92
+70-->C:\Users\barat\OneDrive\Desktop\Gemini Anywhere\app\src\main\AndroidManifest.xml:55:25-89
+71            </intent-filter>
+72
+73            <meta-data
+73-->C:\Users\barat\OneDrive\Desktop\Gemini Anywhere\app\src\main\AndroidManifest.xml:57:13-59:72
+74                android:name="android.accessibilityservice"
+74-->C:\Users\barat\OneDrive\Desktop\Gemini Anywhere\app\src\main\AndroidManifest.xml:58:17-60
+75                android:resource="@xml/accessibility_service_config" />
+75-->C:\Users\barat\OneDrive\Desktop\Gemini Anywhere\app\src\main\AndroidManifest.xml:59:17-69
+76        </service>
+77
+78        <!-- Floating Overlay Service -->
+79        <service
+79-->C:\Users\barat\OneDrive\Desktop\Gemini Anywhere\app\src\main\AndroidManifest.xml:63:9-71:19
+80            android:name="com.geminianywhere.app.service.FloatingOverlayService"
+80-->C:\Users\barat\OneDrive\Desktop\Gemini Anywhere\app\src\main\AndroidManifest.xml:64:13-59
+81            android:enabled="true"
+81-->C:\Users\barat\OneDrive\Desktop\Gemini Anywhere\app\src\main\AndroidManifest.xml:65:13-35
+82            android:exported="false"
+82-->C:\Users\barat\OneDrive\Desktop\Gemini Anywhere\app\src\main\AndroidManifest.xml:66:13-37
+83            android:foregroundServiceType="specialUse" >
+83-->C:\Users\barat\OneDrive\Desktop\Gemini Anywhere\app\src\main\AndroidManifest.xml:67:13-55
+84            <property
+84-->C:\Users\barat\OneDrive\Desktop\Gemini Anywhere\app\src\main\AndroidManifest.xml:68:13-70:56
+85                android:name="android.app.PROPERTY_SPECIAL_USE_FGS_SUBTYPE"
+85-->C:\Users\barat\OneDrive\Desktop\Gemini Anywhere\app\src\main\AndroidManifest.xml:69:17-76
+86                android:value="AI assistant overlay" />
+86-->C:\Users\barat\OneDrive\Desktop\Gemini Anywhere\app\src\main\AndroidManifest.xml:70:17-53
+87        </service>
+88
+89        <provider
+89-->[androidx.emoji2:emoji2:1.2.0] C:\Users\barat\.gradle\caches\transforms-3\dfb921db73924012bf2aca3dfafc201e\transformed\emoji2-1.2.0\AndroidManifest.xml:24:9-32:20
+90            android:name="androidx.startup.InitializationProvider"
+90-->[androidx.emoji2:emoji2:1.2.0] C:\Users\barat\.gradle\caches\transforms-3\dfb921db73924012bf2aca3dfafc201e\transformed\emoji2-1.2.0\AndroidManifest.xml:25:13-67
+91            android:authorities="com.geminianywhere.app.androidx-startup"
+91-->[androidx.emoji2:emoji2:1.2.0] C:\Users\barat\.gradle\caches\transforms-3\dfb921db73924012bf2aca3dfafc201e\transformed\emoji2-1.2.0\AndroidManifest.xml:26:13-68
+92            android:exported="false" >
+92-->[androidx.emoji2:emoji2:1.2.0] C:\Users\barat\.gradle\caches\transforms-3\dfb921db73924012bf2aca3dfafc201e\transformed\emoji2-1.2.0\AndroidManifest.xml:27:13-37
+93            <meta-data
+93-->[androidx.emoji2:emoji2:1.2.0] C:\Users\barat\.gradle\caches\transforms-3\dfb921db73924012bf2aca3dfafc201e\transformed\emoji2-1.2.0\AndroidManifest.xml:29:13-31:52
+94                android:name="androidx.emoji2.text.EmojiCompatInitializer"
+94-->[androidx.emoji2:emoji2:1.2.0] C:\Users\barat\.gradle\caches\transforms-3\dfb921db73924012bf2aca3dfafc201e\transformed\emoji2-1.2.0\AndroidManifest.xml:30:17-75
+95                android:value="androidx.startup" />
+95-->[androidx.emoji2:emoji2:1.2.0] C:\Users\barat\.gradle\caches\transforms-3\dfb921db73924012bf2aca3dfafc201e\transformed\emoji2-1.2.0\AndroidManifest.xml:31:17-49
+96            <meta-data
+96-->[androidx.lifecycle:lifecycle-process:2.7.0] C:\Users\barat\.gradle\caches\transforms-3\e66b437c8a3874e8c65a09db711c9742\transformed\lifecycle-process-2.7.0\AndroidManifest.xml:29:13-31:52
+97                android:name="androidx.lifecycle.ProcessLifecycleInitializer"
+97-->[androidx.lifecycle:lifecycle-process:2.7.0] C:\Users\barat\.gradle\caches\transforms-3\e66b437c8a3874e8c65a09db711c9742\transformed\lifecycle-process-2.7.0\AndroidManifest.xml:30:17-78
+98                android:value="androidx.startup" />
+98-->[androidx.lifecycle:lifecycle-process:2.7.0] C:\Users\barat\.gradle\caches\transforms-3\e66b437c8a3874e8c65a09db711c9742\transformed\lifecycle-process-2.7.0\AndroidManifest.xml:31:17-49
+99            <meta-data
+99-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\barat\.gradle\caches\transforms-3\5ae43085de11ea834c9c025f8aac7ec5\transformed\profileinstaller-1.3.0\AndroidManifest.xml:29:13-31:52
+100                android:name="androidx.profileinstaller.ProfileInstallerInitializer"
+100-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\barat\.gradle\caches\transforms-3\5ae43085de11ea834c9c025f8aac7ec5\transformed\profileinstaller-1.3.0\AndroidManifest.xml:30:17-85
+101                android:value="androidx.startup" />
+101-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\barat\.gradle\caches\transforms-3\5ae43085de11ea834c9c025f8aac7ec5\transformed\profileinstaller-1.3.0\AndroidManifest.xml:31:17-49
+102        </provider>
+103
+104        <receiver
+104-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\barat\.gradle\caches\transforms-3\5ae43085de11ea834c9c025f8aac7ec5\transformed\profileinstaller-1.3.0\AndroidManifest.xml:34:9-52:20
+105            android:name="androidx.profileinstaller.ProfileInstallReceiver"
+105-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\barat\.gradle\caches\transforms-3\5ae43085de11ea834c9c025f8aac7ec5\transformed\profileinstaller-1.3.0\AndroidManifest.xml:35:13-76
+106            android:directBootAware="false"
+106-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\barat\.gradle\caches\transforms-3\5ae43085de11ea834c9c025f8aac7ec5\transformed\profileinstaller-1.3.0\AndroidManifest.xml:36:13-44
+107            android:enabled="true"
+107-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\barat\.gradle\caches\transforms-3\5ae43085de11ea834c9c025f8aac7ec5\transformed\profileinstaller-1.3.0\AndroidManifest.xml:37:13-35
+108            android:exported="true"
+108-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\barat\.gradle\caches\transforms-3\5ae43085de11ea834c9c025f8aac7ec5\transformed\profileinstaller-1.3.0\AndroidManifest.xml:38:13-36
+109            android:permission="android.permission.DUMP" >
+109-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\barat\.gradle\caches\transforms-3\5ae43085de11ea834c9c025f8aac7ec5\transformed\profileinstaller-1.3.0\AndroidManifest.xml:39:13-57
+110            <intent-filter>
+110-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\barat\.gradle\caches\transforms-3\5ae43085de11ea834c9c025f8aac7ec5\transformed\profileinstaller-1.3.0\AndroidManifest.xml:40:13-42:29
+111                <action android:name="androidx.profileinstaller.action.INSTALL_PROFILE" />
+111-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\barat\.gradle\caches\transforms-3\5ae43085de11ea834c9c025f8aac7ec5\transformed\profileinstaller-1.3.0\AndroidManifest.xml:41:17-91
+111-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\barat\.gradle\caches\transforms-3\5ae43085de11ea834c9c025f8aac7ec5\transformed\profileinstaller-1.3.0\AndroidManifest.xml:41:25-88
+112            </intent-filter>
+113            <intent-filter>
+113-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\barat\.gradle\caches\transforms-3\5ae43085de11ea834c9c025f8aac7ec5\transformed\profileinstaller-1.3.0\AndroidManifest.xml:43:13-45:29
+114                <action android:name="androidx.profileinstaller.action.SKIP_FILE" />
+114-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\barat\.gradle\caches\transforms-3\5ae43085de11ea834c9c025f8aac7ec5\transformed\profileinstaller-1.3.0\AndroidManifest.xml:44:17-85
+114-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\barat\.gradle\caches\transforms-3\5ae43085de11ea834c9c025f8aac7ec5\transformed\profileinstaller-1.3.0\AndroidManifest.xml:44:25-82
+115            </intent-filter>
+116            <intent-filter>
+116-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\barat\.gradle\caches\transforms-3\5ae43085de11ea834c9c025f8aac7ec5\transformed\profileinstaller-1.3.0\AndroidManifest.xml:46:13-48:29
+117                <action android:name="androidx.profileinstaller.action.SAVE_PROFILE" />
+117-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\barat\.gradle\caches\transforms-3\5ae43085de11ea834c9c025f8aac7ec5\transformed\profileinstaller-1.3.0\AndroidManifest.xml:47:17-88
+117-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\barat\.gradle\caches\transforms-3\5ae43085de11ea834c9c025f8aac7ec5\transformed\profileinstaller-1.3.0\AndroidManifest.xml:47:25-85
+118            </intent-filter>
+119            <intent-filter>
+119-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\barat\.gradle\caches\transforms-3\5ae43085de11ea834c9c025f8aac7ec5\transformed\profileinstaller-1.3.0\AndroidManifest.xml:49:13-51:29
+120                <action android:name="androidx.profileinstaller.action.BENCHMARK_OPERATION" />
+120-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\barat\.gradle\caches\transforms-3\5ae43085de11ea834c9c025f8aac7ec5\transformed\profileinstaller-1.3.0\AndroidManifest.xml:50:17-95
+120-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\barat\.gradle\caches\transforms-3\5ae43085de11ea834c9c025f8aac7ec5\transformed\profileinstaller-1.3.0\AndroidManifest.xml:50:25-92
+121            </intent-filter>
+122        </receiver>
+123    </application>
+124
+125</manifest>

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+    <!-- Card Background for Button -->
+    <androidx.cardview.widget.CardView
+        android:layout_width="56dp"
+        android:layout_height="56dp"
+        android:layout_gravity="center"
+        app:cardElevation="0dp"
+        app:cardCornerRadius="28dp"
+        app:cardBackgroundColor="@android:color/white">
+
+        <FrameLayout
+            android:id="@+id/fabGemini"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clickable="true"
+            android:focusable="true">
+
+            <!-- Gemini Sparkle Icon -->
+            <ImageView
+                android:id="@+id/ivSend"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_gravity="center"
+                android:src="@drawable/ic_gemini_sparkle"
+                android:visibility="visible"
+                android:scaleType="fitCenter"
+                android:contentDescription="Gemini AI" />
+
+            <!-- Loading Spinner -->
+            <ProgressBar
+                android:id="@+id/loadingIndicator"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:layout_gravity="center"
+                android:visibility="gone"
+                android:indeterminateTint="@color/primary" />
+
+        </FrameLayout>
+    </androidx.cardview.widget.CardView>
+
+</FrameLayout>

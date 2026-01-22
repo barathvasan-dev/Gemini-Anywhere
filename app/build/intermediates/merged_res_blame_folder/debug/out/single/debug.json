@@ -1,0 +1,158 @@
+[
+    {
+        "merged": "C:\\Users\\barat\\.gradle\\daemon\\8.2\\com.geminianywhere.app-merged_res-34:\\drawable_ic_send_new.png.flat",
+        "source": "C:\\Users\\barat\\.gradle\\daemon\\8.2\\com.geminianywhere.app-main-36:\\drawable\\ic_send_new.png"
+    },
+    {
+        "merged": "C:\\Users\\barat\\.gradle\\daemon\\8.2\\com.geminianywhere.app-merged_res-34:\\layout_activity_settings.xml.flat",
+        "source": "C:\\Users\\barat\\.gradle\\daemon\\8.2\\com.geminianywhere.app-main-36:\\layout\\activity_settings.xml"
+    },
+    {
+        "merged": "C:\\Users\\barat\\.gradle\\daemon\\8.2\\com.geminianywhere.app-merged_res-34:\\drawable_ic_accessibility.xml.flat",
+        "source": "C:\\Users\\barat\\.gradle\\daemon\\8.2\\com.geminianywhere.app-main-36:\\drawable\\ic_accessibility.xml"
+    },
+    {
+        "merged": "C:\\Users\\barat\\.gradle\\daemon\\8.2\\com.geminianywhere.app-merged_res-34:\\layout_dialog_api_key.xml.flat",
+        "source": "C:\\Users\\barat\\.gradle\\daemon\\8.2\\com.geminianywhere.app-main-36:\\layout\\dialog_api_key.xml"
+    },
+    {
+        "merged": "C:\\Users\\barat\\.gradle\\daemon\\8.2\\com.geminianywhere.app-merged_res-34:\\layout_spinner_item.xml.flat",
+        "source": "C:\\Users\\barat\\.gradle\\daemon\\8.2\\com.geminianywhere.app-main-36:\\layout\\spinner_item.xml"
+    },
+    {
+        "merged": "C:\\Users\\barat\\.gradle\\daemon\\8.2\\com.geminianywhere.app-merged_res-34:\\mipmap-xhdpi_ic_launcher.png.flat",
+        "source": "C:\\Users\\barat\\.gradle\\daemon\\8.2\\com.geminianywhere.app-main-36:\\mipmap-xhdpi\\ic_launcher.png"
+    },
+    {
+        "merged": "C:\\Users\\barat\\.gradle\\daemon\\8.2\\com.geminianywhere.app-merged_res-34:\\anim_fade_in.xml.flat",
+        "source": "C:\\Users\\barat\\.gradle\\daemon\\8.2\\com.geminianywhere.app-main-36:\\anim\\fade_in.xml"
+    },
+    {
+        "merged": "C:\\Users\\barat\\.gradle\\daemon\\8.2\\com.geminianywhere.app-merged_res-34:\\anim_fab_show.xml.flat",
+        "source": "C:\\Users\\barat\\.gradle\\daemon\\8.2\\com.geminianywhere.app-main-36:\\anim\\fab_show.xml"
+    },
+    {
+        "merged": "C:\\Users\\barat\\.gradle\\daemon\\8.2\\com.geminianywhere.app-merged_res-34:\\layout_activity_main.xml.flat",
+        "source": "C:\\Users\\barat\\.gradle\\daemon\\8.2\\com.geminianywhere.app-main-36:\\layout\\activity_main.xml"
+    },
+    {
+        "merged": "C:\\Users\\barat\\.gradle\\daemon\\8.2\\com.geminianywhere.app-merged_res-34:\\mipmap-xxxhdpi_ic_launcher.png.flat",
+        "source": "C:\\Users\\barat\\.gradle\\daemon\\8.2\\com.geminianywhere.app-main-36:\\mipmap-xxxhdpi\\ic_launcher.png"
+    },
+    {
+        "merged": "C:\\Users\\barat\\.gradle\\daemon\\8.2\\com.geminianywhere.app-merged_res-34:\\drawable_ic_overlay.xml.flat",
+        "source": "C:\\Users\\barat\\.gradle\\daemon\\8.2\\com.geminianywhere.app-main-36:\\drawable\\ic_overlay.xml"
+    },
+    {
+        "merged": "C:\\Users\\barat\\.gradle\\daemon\\8.2\\com.geminianywhere.app-merged_res-34:\\layout_dialog_add_command.xml.flat",
+        "source": "C:\\Users\\barat\\.gradle\\daemon\\8.2\\com.geminianywhere.app-main-36:\\layout\\dialog_add_command.xml"
+    },
+    {
+        "merged": "C:\\Users\\barat\\.gradle\\daemon\\8.2\\com.geminianywhere.app-merged_res-34:\\layout_floating_button_layout.xml.flat",
+        "source": "C:\\Users\\barat\\.gradle\\daemon\\8.2\\com.geminianywhere.app-main-36:\\layout\\floating_button_layout.xml"
+    },
+    {
+        "merged": "C:\\Users\\barat\\.gradle\\daemon\\8.2\\com.geminianywhere.app-merged_res-34:\\drawable_ic_float_button.xml.flat",
+        "source": "C:\\Users\\barat\\.gradle\\daemon\\8.2\\com.geminianywhere.app-main-36:\\drawable\\ic_float_button.xml"
+    },
+    {
+        "merged": "C:\\Users\\barat\\.gradle\\daemon\\8.2\\com.geminianywhere.app-merged_res-34:\\drawable_ic_trigger.xml.flat",
+        "source": "C:\\Users\\barat\\.gradle\\daemon\\8.2\\com.geminianywhere.app-main-36:\\drawable\\ic_trigger.xml"
+    },
+    {
+        "merged": "C:\\Users\\barat\\.gradle\\daemon\\8.2\\com.geminianywhere.app-merged_res-34:\\mipmap-xxhdpi_ic_launcher.png.flat",
+        "source": "C:\\Users\\barat\\.gradle\\daemon\\8.2\\com.geminianywhere.app-main-36:\\mipmap-xxhdpi\\ic_launcher.png"
+    },
+    {
+        "merged": "com.geminianywhere.app-merged_res-34:/layout_voice_input_overlay.xml.flat",
+        "source": "com.geminianywhere.app-main-36:/layout/voice_input_overlay.xml"
+    },
+    {
+        "merged": "C:\\Users\\barat\\.gradle\\daemon\\8.2\\com.geminianywhere.app-merged_res-34:\\drawable_gradient_header.xml.flat",
+        "source": "C:\\Users\\barat\\.gradle\\daemon\\8.2\\com.geminianywhere.app-main-36:\\drawable\\gradient_header.xml"
+    },
+    {
+        "merged": "C:\\Users\\barat\\.gradle\\daemon\\8.2\\com.geminianywhere.app-merged_res-34:\\drawable_ic_key.xml.flat",
+        "source": "C:\\Users\\barat\\.gradle\\daemon\\8.2\\com.geminianywhere.app-main-36:\\drawable\\ic_key.xml"
+    },
+    {
+        "merged": "C:\\Users\\barat\\.gradle\\daemon\\8.2\\com.geminianywhere.app-merged_res-34:\\mipmap-mdpi_ic_launcher.png.flat",
+        "source": "C:\\Users\\barat\\.gradle\\daemon\\8.2\\com.geminianywhere.app-main-36:\\mipmap-mdpi\\ic_launcher.png"
+    },
+    {
+        "merged": "C:\\Users\\barat\\.gradle\\daemon\\8.2\\com.geminianywhere.app-merged_res-34:\\drawable_ic_settings.xml.flat",
+        "source": "C:\\Users\\barat\\.gradle\\daemon\\8.2\\com.geminianywhere.app-main-36:\\drawable\\ic_settings.xml"
+    },
+    {
+        "merged": "C:\\Users\\barat\\.gradle\\daemon\\8.2\\com.geminianywhere.app-merged_res-34:\\drawable_ic_launcher_foreground.xml.flat",
+        "source": "C:\\Users\\barat\\.gradle\\daemon\\8.2\\com.geminianywhere.app-main-36:\\drawable\\ic_launcher_foreground.xml"
+    },
+    {
+        "merged": "C:\\Users\\barat\\.gradle\\daemon\\8.2\\com.geminianywhere.app-merged_res-34:\\layout_voice_input_overlay.xml.flat",
+        "source": "C:\\Users\\barat\\.gradle\\daemon\\8.2\\com.geminianywhere.app-main-36:\\layout\\voice_input_overlay.xml"
+    },
+    {
+        "merged": "C:\\Users\\barat\\.gradle\\daemon\\8.2\\com.geminianywhere.app-merged_res-34:\\drawable_card_ripple.xml.flat",
+        "source": "C:\\Users\\barat\\.gradle\\daemon\\8.2\\com.geminianywhere.app-main-36:\\drawable\\card_ripple.xml"
+    },
+    {
+        "merged": "C:\\Users\\barat\\.gradle\\daemon\\8.2\\com.geminianywhere.app-merged_res-34:\\drawable_ic_model.xml.flat",
+        "source": "C:\\Users\\barat\\.gradle\\daemon\\8.2\\com.geminianywhere.app-main-36:\\drawable\\ic_model.xml"
+    },
+    {
+        "merged": "C:\\Users\\barat\\.gradle\\daemon\\8.2\\com.geminianywhere.app-merged_res-34:\\layout_activity_commands.xml.flat",
+        "source": "C:\\Users\\barat\\.gradle\\daemon\\8.2\\com.geminianywhere.app-main-36:\\layout\\activity_commands.xml"
+    },
+    {
+        "merged": "C:\\Users\\barat\\.gradle\\daemon\\8.2\\com.geminianywhere.app-merged_res-34:\\drawable_spinner_background.xml.flat",
+        "source": "C:\\Users\\barat\\.gradle\\daemon\\8.2\\com.geminianywhere.app-main-36:\\drawable\\spinner_background.xml"
+    },
+    {
+        "merged": "C:\\Users\\barat\\.gradle\\daemon\\8.2\\com.geminianywhere.app-merged_res-34:\\anim_slide_up.xml.flat",
+        "source": "C:\\Users\\barat\\.gradle\\daemon\\8.2\\com.geminianywhere.app-main-36:\\anim\\slide_up.xml"
+    },
+    {
+        "merged": "C:\\Users\\barat\\.gradle\\daemon\\8.2\\com.geminianywhere.app-merged_res-34:\\drawable_card_elevated.xml.flat",
+        "source": "C:\\Users\\barat\\.gradle\\daemon\\8.2\\com.geminianywhere.app-main-36:\\drawable\\card_elevated.xml"
+    },
+    {
+        "merged": "C:\\Users\\barat\\.gradle\\daemon\\8.2\\com.geminianywhere.app-merged_res-34:\\drawable_ic_gemini_sparkle.xml.flat",
+        "source": "C:\\Users\\barat\\.gradle\\daemon\\8.2\\com.geminianywhere.app-main-36:\\drawable\\ic_gemini_sparkle.xml"
+    },
+    {
+        "merged": "C:\\Users\\barat\\.gradle\\daemon\\8.2\\com.geminianywhere.app-merged_res-34:\\anim_fab_hide.xml.flat",
+        "source": "C:\\Users\\barat\\.gradle\\daemon\\8.2\\com.geminianywhere.app-main-36:\\anim\\fab_hide.xml"
+    },
+    {
+        "merged": "C:\\Users\\barat\\.gradle\\daemon\\8.2\\com.geminianywhere.app-merged_res-34:\\drawable_spinner_dropdown_item.xml.flat",
+        "source": "C:\\Users\\barat\\.gradle\\daemon\\8.2\\com.geminianywhere.app-main-36:\\drawable\\spinner_dropdown_item.xml"
+    },
+    {
+        "merged": "C:\\Users\\barat\\.gradle\\daemon\\8.2\\com.geminianywhere.app-merged_res-34:\\drawable_fab_press_animation.xml.flat",
+        "source": "C:\\Users\\barat\\.gradle\\daemon\\8.2\\com.geminianywhere.app-main-36:\\drawable\\fab_press_animation.xml"
+    },
+    {
+        "merged": "C:\\Users\\barat\\.gradle\\daemon\\8.2\\com.geminianywhere.app-merged_res-34:\\drawable_ic_back.xml.flat",
+        "source": "C:\\Users\\barat\\.gradle\\daemon\\8.2\\com.geminianywhere.app-main-36:\\drawable\\ic_back.xml"
+    },
+    {
+        "merged": "C:\\Users\\barat\\.gradle\\daemon\\8.2\\com.geminianywhere.app-merged_res-34:\\layout_item_command.xml.flat",
+        "source": "C:\\Users\\barat\\.gradle\\daemon\\8.2\\com.geminianywhere.app-main-36:\\layout\\item_command.xml"
+    },
+    {
+        "merged": "C:\\Users\\barat\\.gradle\\daemon\\8.2\\com.geminianywhere.app-merged_res-34:\\anim_slide_in_bottom.xml.flat",
+        "source": "C:\\Users\\barat\\.gradle\\daemon\\8.2\\com.geminianywhere.app-main-36:\\anim\\slide_in_bottom.xml"
+    },
+    {
+        "merged": "C:\\Users\\barat\\.gradle\\daemon\\8.2\\com.geminianywhere.app-merged_res-34:\\drawable_success_gradient.xml.flat",
+        "source": "C:\\Users\\barat\\.gradle\\daemon\\8.2\\com.geminianywhere.app-main-36:\\drawable\\success_gradient.xml"
+    },
+    {
+        "merged": "C:\\Users\\barat\\.gradle\\daemon\\8.2\\com.geminianywhere.app-merged_res-34:\\xml_accessibility_service_config.xml.flat",
+        "source": "C:\\Users\\barat\\.gradle\\daemon\\8.2\\com.geminianywhere.app-main-36:\\xml\\accessibility_service_config.xml"
+    },
+    {
+        "merged": "C:\\Users\\barat\\.gradle\\daemon\\8.2\\com.geminianywhere.app-merged_res-34:\\mipmap-hdpi_ic_launcher.png.flat",
+        "source": "C:\\Users\\barat\\.gradle\\daemon\\8.2\\com.geminianywhere.app-main-36:\\mipmap-hdpi\\ic_launcher.png"
+    }
+]
