@@ -7,6 +7,7 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
+import android.util.Log
 import android.view.View
 import android.view.animation.AnimationUtils
 import android.view.animation.OvershootInterpolator
@@ -30,6 +31,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var prefManager: PreferenceManager
     
     companion object {
+        private const val TAG = "MainActivity"
         private const val PERMISSION_REQUEST_RECORD_AUDIO = 200
     }
     
@@ -43,8 +45,6 @@ class MainActivity : AppCompatActivity() {
         "gemini-flash-lite-latest" to "Gemini Flash Lite Latest",
         "gemini-2.0-flash" to "Gemini 2.0 Flash",
         "gemini-2.0-flash-lite" to "Gemini 2.0 Flash Lite",
-        "gemini-3-pro-image-preview" to "Gemini 3 Pro Image",
-        "gemini-2.5-flash-image" to "Gemini 2.5 Flash Image",
         "gemini-robotics-er-1.5-preview" to "Gemini Robotics-ER 1.5",
         "gemini-2.5-pro-preview-tts" to "Gemini 2.5 Pro TTS",
         "gemini-2.5-flash-preview-tts" to "Gemini 2.5 Flash TTS"
@@ -61,9 +61,7 @@ class MainActivity : AppCompatActivity() {
         checkPermissions()
         animateCardEntrance()
         
-        if (prefManager.isFirstLaunch()) {
-            showWelcomeDialog()
-        }
+        // First launch dialog removed - instructions visible on main screen
     }
 
     private fun setupUI() {
@@ -83,14 +81,150 @@ class MainActivity : AppCompatActivity() {
         // Model Selection Spinner
         setupModelSpinner()
 
-        // Accessibility Service
+        // Accessibility Service - Always allow opening settings
         binding.cardAccessibility.setOnClickListener {
             openAccessibilitySettings()
         }
+        
+        // Accessibility Info Icon
+        binding.iconAccessibilityInfo.setOnClickListener {
+            showInfoDialog(
+                "Accessibility Service",
+                "Required to detect when you type @gemini in any text field across all apps. This allows the AI assistant to be activated contextually.\n\nYour privacy is protected - text is only analyzed when the trigger word is detected."
+            )
+        }
 
-        // Overlay Permission
+        // Overlay Permission - Always allow opening settings
         binding.cardOverlay.setOnClickListener {
-            requestOverlayPermission()
+            val intent = Intent(
+                Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
+                Uri.parse("package:$packageName")
+            )
+            startActivity(intent)
+        }
+        
+        // Overlay Info Icon
+        binding.iconOverlayInfo.setOnClickListener {
+            showInfoDialog(
+                "Display Over Apps",
+                "Required to show the floating AI assistant button on top of other apps. This allows quick access to Gemini from anywhere on your device."
+            )
+        }
+        
+        // Microphone Permission Card
+        binding.cardMicrophone.setOnClickListener {
+            if (!hasMicrophonePermission()) {
+                ActivityCompat.requestPermissions(
+                    this,
+                    arrayOf(android.Manifest.permission.RECORD_AUDIO),
+                    PERMISSION_REQUEST_RECORD_AUDIO
+                )
+            } else {
+                // Open app settings directly
+                val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
+                intent.data = Uri.parse("package:$packageName")
+                startActivity(intent)
+            }
+        }
+        
+        // Microphone Info Icon
+        binding.iconMicrophoneInfo.setOnClickListener {
+            showInfoDialog(
+                "Microphone Access",
+                "Required for voice input feature. Your voice is processed on-device for speech recognition.\n\nYou can enable or disable this permission at any time from your device settings."
+            )
+        }
+        
+        // History Button
+        binding.btnHistory.setOnClickListener {
+            Log.d(TAG, "History button clicked!")
+            try {
+                val intent = Intent(this, HistoryActivity::class.java)
+                Log.d(TAG, "Starting HistoryActivity...")
+                startActivity(intent)
+                Log.d(TAG, "HistoryActivity started successfully")
+            } catch (e: Exception) {
+                Log.e(TAG, "Error starting HistoryActivity", e)
+                showSnackbar("Error opening History: ${e.message}", isSuccess = false)
+            }
+        }
+        
+        // Long press to add test data
+        binding.btnHistory.setOnLongClickListener {
+            addTestData()
+            true
+        }
+        
+        // Favorites Button
+        binding.btnFavorites.setOnClickListener {
+            Log.d(TAG, "Favorites button clicked!")
+            try {
+                val intent = Intent(this, FavoritesActivity::class.java)
+                Log.d(TAG, "Starting FavoritesActivity...")
+                startActivity(intent)
+                Log.d(TAG, "FavoritesActivity started successfully")
+            } catch (e: Exception) {
+                Log.e(TAG, "Error starting FavoritesActivity", e)
+                showSnackbar("Error opening Favorites: ${e.message}", isSuccess = false)
+            }
+        }
+    }
+    
+    private fun addTestData() {
+        try {
+            // Import data classes
+            val history = com.geminianywhere.app.data.CommandHistory(this)
+            val favorites = com.geminianywhere.app.data.FavoritePrompts(this)
+            
+            // Add test history
+            history.add(
+                prompt = "What is the capital of France?",
+                response = "The capital of France is Paris. It is located in the north-central part of the country on the river Seine.",
+                context = "general",
+                model = "gemini-2.0-flash"
+            )
+            
+            history.add(
+                prompt = "Write a Python function to calculate fibonacci numbers",
+                response = "```python\ndef fibonacci(n):\n    if n <= 1:\n        return n\n    return fibonacci(n-1) + fibonacci(n-2)\n```",
+                context = "coding",
+                model = "gemini-2.5-pro"
+            )
+            
+            history.add(
+                prompt = "Explain quantum computing in simple terms",
+                response = "Quantum computing uses quantum bits (qubits) that can exist in multiple states simultaneously, allowing for parallel processing of information. This makes them potentially much faster than classical computers for certain types of problems.",
+                context = "education",
+                model = "gemini-2.0-flash"
+            )
+            
+            // Add test favorites
+            favorites.add(
+                title = "Code Review Template",
+                prompt = "Review the following code and provide feedback on: 1) Code quality 2) Best practices 3) Potential bugs 4) Performance optimizations",
+                category = "Work",
+                tags = listOf("code", "review", "development")
+            )
+            
+            favorites.add(
+                title = "Email Formatter",
+                prompt = "Format this as a professional email with proper greeting, body paragraphs, and closing",
+                category = "Work",
+                tags = listOf("email", "professional", "communication")
+            )
+            
+            favorites.add(
+                title = "Story Generator",
+                prompt = "Write a short creative story about:",
+                category = "Personal",
+                tags = listOf("creative", "writing", "fun")
+            )
+            
+            showSnackbar("✓ Test data added! Open History/Favorites to see", isSuccess = true)
+            Log.d(TAG, "Test data added successfully")
+        } catch (e: Exception) {
+            Log.e(TAG, "Error adding test data", e)
+            showSnackbar("Error adding test data: ${e.message}", isSuccess = false)
         }
     }
 
@@ -191,6 +325,21 @@ class MainActivity : AppCompatActivity() {
         val intent = Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS)
         startActivity(intent)
     }
+    
+    private fun showInfoDialog(title: String, message: String) {
+        MaterialAlertDialogBuilder(this)
+            .setTitle(title)
+            .setMessage(message)
+            .setPositiveButton("Got it", null)
+            .show()
+    }
+    
+    private fun hasMicrophonePermission(): Boolean {
+        return ContextCompat.checkSelfPermission(
+            this,
+            android.Manifest.permission.RECORD_AUDIO
+        ) == PackageManager.PERMISSION_GRANTED
+    }
 
     private fun requestOverlayPermission() {
         if (!isOverlayPermissionGranted()) {
@@ -220,26 +369,23 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun checkPermissions() {
+        // This method is called on initial load - don't auto-request microphone
+        updatePermissionStatuses()
+    }
+    
+    private fun updatePermissionStatuses() {
         val wasAccessibilityEnabled = binding.tvAccessibilityStatus.text == "✓ Enabled"
-        val wasOverlayGranted = binding.tvOverlayStatus.text == "✓ Granted"
+        val wasOverlayGranted = binding.tvOverlayStatus.text == "✓ Enabled"
         
         val accessibilityEnabled = isAccessibilityEnabled()
         val overlayGranted = isOverlayPermissionGranted()
-        
-        // Check and request microphone permission for voice input
-        if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.RECORD_AUDIO) 
-            != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(
-                this,
-                arrayOf(android.Manifest.permission.RECORD_AUDIO),
-                PERMISSION_REQUEST_RECORD_AUDIO
-            )
-        }
+        val microphoneGranted = hasMicrophonePermission()
 
+        // Update Accessibility Status
         binding.tvAccessibilityStatus.text = if (accessibilityEnabled) {
             "✓ Enabled"
         } else {
-            "Disabled"
+            "Not Enabled"
         }
         binding.tvAccessibilityStatus.setTextColor(
             if (accessibilityEnabled) getColor(R.color.success_green)
@@ -252,10 +398,11 @@ class MainActivity : AppCompatActivity() {
             showSnackbar("✓ Accessibility Service enabled!")
         }
 
+        // Update Overlay Status
         binding.tvOverlayStatus.text = if (overlayGranted) {
-            "✓ Granted"
+            "✓ Enabled"
         } else {
-            "Not Granted"
+            "Not Enabled"
         }
         binding.tvOverlayStatus.setTextColor(
             if (overlayGranted) getColor(R.color.success_green)
@@ -267,6 +414,17 @@ class MainActivity : AppCompatActivity() {
             animateView(binding.cardOverlay)
             showSnackbar("✓ Display Over Apps permission granted!")
         }
+        
+        // Update Microphone Status
+        binding.tvMicrophoneStatus.text = if (microphoneGranted) {
+            "✓ Enabled"
+        } else {
+            "Not Enabled"
+        }
+        binding.tvMicrophoneStatus.setTextColor(
+            if (microphoneGranted) getColor(R.color.success_green)
+            else getColor(R.color.error_red)
+        )
 
         // Show/hide status indicator with animation
         val allGranted = accessibilityEnabled && overlayGranted && prefManager.getApiKey().isNotEmpty()
@@ -284,29 +442,30 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun showWelcomeDialog() {
-        MaterialAlertDialogBuilder(this)
-            .setTitle("One AI. Every textbox.")
-            .setMessage(
-                "Type @gemini in any app to activate AI assistance.\n\n" +
-                "Setup:\n" +
-                "1. Set API key\n" +
-                "2. Enable Accessibility\n" +
-                "3. Allow Overlay"
-            )
-            .setPositiveButton("Get Started") { _, _ ->
-                prefManager.setFirstLaunchComplete()
-            }
-            .setCancelable(false)
-            .show()
-    }
+    // Welcome dialog removed - instructions visible on main screen
 
 
 
     override fun onResume() {
         super.onResume()
-        checkPermissions()
+        updatePermissionStatuses()
         updateApiKeyStatus()
+    }
+    
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (requestCode == PERMISSION_REQUEST_RECORD_AUDIO) {
+            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                showSnackbar("✓ Microphone permission granted!")
+                updatePermissionStatuses()
+            } else {
+                showSnackbar("Microphone permission denied", isSuccess = false)
+            }
+        }
     }
     
     // Animation and UI helper methods

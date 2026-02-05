@@ -144,6 +144,114 @@
                 android:paddingStart="2dp"
                 android:paddingEnd="2dp" />
 
+            <!-- Quick Actions Card - Prominent placement -->
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="24dp"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="4dp"
+                app:strokeWidth="0dp"
+                app:cardBackgroundColor="@color/primary">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="20dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:layout_marginBottom="16dp">
+
+                        <ImageView
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:src="@android:drawable/btn_star_big_on"
+                            app:tint="@android:color/white"
+                            android:contentDescription="Quick Actions" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="12dp"
+                            android:text="Quick Actions"
+                            android:textSize="18sp"
+                            android:textStyle="bold"
+                            android:textColor="@android:color/white"
+                            android:fontFamily="sans-serif-medium" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center">
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btnHistory"
+                            android:layout_width="0dp"
+                            android:layout_height="56dp"
+                            android:layout_weight="1"
+                            android:layout_marginEnd="8dp"
+                            android:text="📜 History"
+                            android:textSize="15sp"
+                            android:textAllCaps="false"
+                            android:fontFamily="sans-serif-medium"
+                            app:cornerRadius="12dp"
+                            style="@style/Widget.Material3.Button.ElevatedButton"
+                            android:backgroundTint="@android:color/white"
+                            android:textColor="@color/primary" />
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btnFavorites"
+                            android:layout_width="0dp"
+                            android:layout_height="56dp"
+                            android:layout_weight="1"
+                            android:layout_marginStart="8dp"
+                            android:text="⭐ Favorites"
+                            android:textSize="15sp"
+                            android:textAllCaps="false"
+                            android:fontFamily="sans-serif-medium"
+                            app:cornerRadius="12dp"
+                            style="@style/Widget.Material3.Button.ElevatedButton"
+                            android:backgroundTint="@android:color/white"
+                            android:textColor="@color/primary" />
+
+                    </LinearLayout>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="View past commands and manage your favorite prompts"
+                        android:textSize="13sp"
+                        android:textColor="@android:color/white"
+                        android:alpha="0.9"
+                        android:gravity="center"
+                        android:layout_marginTop="12dp" />
+
+                </LinearLayout>
+
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- Setup Section Label -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Setup"
+                android:textSize="13sp"
+                android:textColor="@color/text_secondary"
+                android:textAllCaps="true"
+                android:letterSpacing="0.15"
+                android:fontFamily="sans-serif-medium"
+                android:layout_marginBottom="14dp"
+                android:paddingStart="2dp"
+                android:paddingEnd="2dp" />
+
             <!-- API Key Card -->
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/cardApiKey"
@@ -348,6 +456,18 @@
                             android:textColor="@color/text_primary"
                             android:fontFamily="sans-serif-medium" />
 
+                        <ImageView
+                            android:id="@+id/iconAccessibilityInfo"
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:src="@android:drawable/ic_menu_info_details"
+                            android:tint="#999999"
+                            android:padding="4dp"
+                            android:layout_marginEnd="8dp"
+                            android:clickable="true"
+                            android:focusable="true"
+                            android:background="?attr/selectableItemBackgroundBorderless" />
+
                         <TextView
                             android:id="@+id/tvAccessibilityStatus"
                             android:layout_width="wrap_content"
@@ -376,7 +496,7 @@
                 android:id="@+id/cardOverlay"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="24dp"
+                android:layout_marginBottom="12dp"
                 app:cardCornerRadius="16dp"
                 app:cardElevation="4dp"
                 app:strokeWidth="0dp"
@@ -415,6 +535,18 @@
                             android:textColor="@color/text_primary"
                             android:fontFamily="sans-serif-medium" />
 
+                        <ImageView
+                            android:id="@+id/iconOverlayInfo"
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:src="@android:drawable/ic_menu_info_details"
+                            android:tint="#999999"
+                            android:padding="4dp"
+                            android:layout_marginEnd="8dp"
+                            android:clickable="true"
+                            android:focusable="true"
+                            android:background="?attr/selectableItemBackgroundBorderless" />
+
                         <TextView
                             android:id="@+id/tvOverlayStatus"
                             android:layout_width="wrap_content"
@@ -438,12 +570,105 @@
 
             </com.google.android.material.card.MaterialCardView>
 
+            <!-- Microphone Permission Card -->
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cardMicrophone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="24dp"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="4dp"
+                app:strokeWidth="0dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="@drawable/card_ripple"
+                android:stateListAnimator="@null">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="20dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical">
+
+                        <ImageView
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:src="@android:drawable/ic_btn_speak_now"
+                            app:tint="@color/primary"
+                            android:contentDescription="Microphone" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:layout_marginStart="12dp"
+                            android:text="Microphone Access"
+                            android:textSize="16sp"
+                            android:textStyle="bold"
+                            android:textColor="@color/text_primary"
+                            android:fontFamily="sans-serif-medium" />
+
+                        <ImageView
+                            android:id="@+id/iconMicrophoneInfo"
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:src="@android:drawable/ic_menu_info_details"
+                            android:tint="#999999"
+                            android:padding="4dp"
+                            android:layout_marginEnd="8dp"
+                            android:clickable="true"
+                            android:focusable="true"
+                            android:background="?attr/selectableItemBackgroundBorderless" />
+
+                        <TextView
+                            android:id="@+id/tvMicrophoneStatus"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Not Granted"
+                            android:textSize="12sp"
+                            android:textColor="@color/error_red"
+                            android:fontFamily="sans-serif-medium" />
+
+                    </LinearLayout>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:text="Required for voice input feature"
+                        android:textSize="13sp"
+                        android:textColor="@color/text_secondary" />
+
+                </LinearLayout>
+
+            </com.google.android.material.card.MaterialCardView>
+
             <!-- How to Use Section -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="How to Use"
+                android:textSize="13sp"
+                android:textColor="@color/text_secondary"
+                android:textAllCaps="true"
+                android:letterSpacing="0.15"
+                android:fontFamily="sans-serif-medium"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="14dp"
+                android:paddingStart="2dp"
+                android:paddingEnd="2dp" />
+
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:cardCornerRadius="16dp"
-                app:cardElevation="0dp"
+                app:cardElevation="2dp"
                 app:cardBackgroundColor="#F3F4F6"
                 app:strokeWidth="0dp">
 
@@ -452,16 +677,6 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
                     android:padding="20dp">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="How to Use"
-                        android:textSize="14sp"
-                        android:textStyle="bold"
-                        android:textColor="@color/text_primary"
-                        android:fontFamily="sans-serif-medium"
-                        android:layout_marginBottom="8dp" />
 
                     <LinearLayout
                         android:layout_width="match_parent"

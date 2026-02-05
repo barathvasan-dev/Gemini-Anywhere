@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="24dp">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/add_favorite"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:textColor="?attr/colorOnSurface"
+        android:layout_marginBottom="16dp" />
+
+    <!-- Title Input -->
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/tilTitle"
+        style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="12dp"
+        android:hint="@string/title"
+        app:counterEnabled="true"
+        app:counterMaxLength="50">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/etTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textCapSentences"
+            android:maxLines="1"
+            android:maxLength="50" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <!-- Prompt Input -->
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/tilPrompt"
+        style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="12dp"
+        android:hint="@string/prompt"
+        app:counterEnabled="true"
+        app:counterMaxLength="500">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/etPrompt"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textMultiLine|textCapSentences"
+            android:minLines="3"
+            android:maxLines="5"
+            android:maxLength="500"
+            android:gravity="top" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <!-- Category Input -->
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/tilCategory"
+        style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="12dp"
+        android:hint="@string/category">
+
+        <AutoCompleteTextView
+            android:id="@+id/actvCategory"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="none" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <!-- Tags Input -->
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/tilTags"
+        style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:hint="@string/tags_hint"
+        app:helperText="@string/tags_helper"
+        app:helperTextEnabled="true">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/etTags"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="text"
+            android:maxLines="2" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <!-- Buttons -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="end">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnCancel"
+            style="@style/Widget.Material3.Button.TextButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@android:string/cancel" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnSave"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:text="@string/save" />
+
+    </LinearLayout>
+
+</LinearLayout>

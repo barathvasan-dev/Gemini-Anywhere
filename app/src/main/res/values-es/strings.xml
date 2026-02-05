@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- App Name -->
+    <string name="app_name">Gemini en Cualquier Lugar</string>
+    
+    <!-- Main Activity -->
+    <string name="welcome_title">Una IA. Cada cuadro de texto.</string>
+    <string name="welcome_message">Escribe @gemini en cualquier aplicación para activar la asistencia de IA.\n\nConfiguración:\n1. Establecer clave API\n2. Habilitar Accesibilidad\n3. Permitir Superposición</string>
+    <string name="get_started">Comenzar</string>
+    
+    <!-- Setup -->
+    <string name="api_key_title">Clave API</string>
+    <string name="api_key_set">✓ Configurada</string>
+    <string name="api_key_not_set">No Configurada</string>
+    <string name="api_key_saved">✓ Clave API guardada con éxito!</string>
+    <string name="api_key_invalid">Por favor ingrese una clave API válida</string>
+    <string name="get_api_key">Obtener Clave API</string>
+    
+    <!-- Model Selection -->
+    <string name="model_selection">Modelo de IA</string>
+    <string name="model_selected">✓ Modelo seleccionado: %1$s</string>
+    
+    <!-- Permissions -->
+    <string name="accessibility_title">Servicio de Accesibilidad</string>
+    <string name="accessibility_enabled">✓ Habilitado</string>
+    <string name="accessibility_disabled">Deshabilitado</string>
+    <string name="accessibility_success">✓ Servicio de Accesibilidad habilitado!</string>
+    
+    <string name="overlay_title">Mostrar Sobre Otras Apps</string>
+    <string name="overlay_granted">✓ Concedido</string>
+    <string name="overlay_not_granted">No Concedido</string>
+    <string name="overlay_success">✓ Permiso de superposición concedido!</string>
+    
+    <string name="all_set">🎉 ¡Todo listo! Ya puedes usar Gemini en Cualquier Lugar</string>
+    
+    <!-- Settings -->
+    <string name="settings_title">Configuración</string>
+    <string name="trigger_settings">Configuración de Activación</string>
+    <string name="enable_trigger">Habilitar Activación</string>
+    <string name="custom_trigger">Palabra de Activación</string>
+    <string name="show_floating_button">Mostrar Botón Flotante</string>
+    
+    <!-- History -->
+    <string name="history_title">Historial de Comandos</string>
+    <string name="history_empty">No hay historial de comandos aún</string>
+    <string name="history_search">Buscar en historial...</string>
+    <string name="history_clear">Borrar Historial</string>
+    <string name="history_cleared">✓ Historial borrado</string>
+    
+    <!-- Favorites -->
+    <string name="favorites_title">Prompts Favoritos</string>
+    <string name="favorites_empty">No hay prompts favoritos aún</string>
+    <string name="add_favorite">Agregar Favorito</string>
+    <string name="favorite_added">✓ Favorito agregado</string>
+    
+    <!-- Context -->
+    <string name="conversation_context">Contexto de Conversación</string>
+    <string name="context_active">Activo (%1$s)</string>
+    <string name="context_inactive">Sin conversación activa</string>
+    <string name="context_clear">Borrar Contexto</string>
+    <string name="context_cleared">✓ Contexto borrado</string>
+    
+    <!-- Language -->
+    <string name="language_title">Idioma</string>
+    <string name="language_english">English</string>
+    <string name="language_spanish">Español</string>
+    
+    <!-- Common -->
+    <string name="save">Guardar</string>
+    <string name="cancel">Cancelar</string>
+    <string name="delete">Eliminar</string>
+    <string name="edit">Editar</string>
+    <string name="close">Cerrar</string>
+    <string name="search">Buscar</string>
+    <string name="clear">Limpiar</string>
+</resources>

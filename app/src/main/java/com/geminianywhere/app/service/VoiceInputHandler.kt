@@ -14,8 +14,22 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import com.geminianywhere.app.api.GeminiApiClient
+import com.geminianywhere.app.data.CommandHistory
 import com.geminianywhere.app.utils.PreferenceManager
 
+/**
+ * Handles voice input recording and processing.
+ * 
+ * Manages speech recognition lifecycle including:
+ * - Recording audio input via Android SpeechRecognizer
+ * - Real-time transcription with partial results
+ * - Timeout handling for incomplete recordings
+ * - AI processing of transcribed text via Gemini API
+ * - History tracking of voice commands
+ * 
+ * Uses a callback interface to communicate state changes
+ * and results back to the UI.
+ */
 class VoiceInputHandler(private val context: Context) {
     
     companion object {
@@ -32,9 +46,22 @@ class VoiceInputHandler(private val context: Context) {
     private val timeoutHandler = Handler(Looper.getMainLooper())
     private var timeoutRunnable: Runnable? = null
     
+    /**
+     * Callback interface for voice input events.
+     * 
+     * Implementations receive notifications about:
+     * - Recording state changes (ready, listening)
+     * - Transcription results (partial and final)
+     * - Error conditions
+     */
     interface VoiceCallback {
+        /** Called when speech recognition is ready and listening for input */
         fun onListening()
+        
+        /** Called with transcription results (partial or final) */
         fun onTranscription(text: String)
+        
+        /** Called when an error occurs with a user-friendly message */
         fun onError(message: String)
     }
     
@@ -57,8 +84,13 @@ class VoiceInputHandler(private val context: Context) {
                 putExtra(RecognizerIntent.EXTRA_MAX_RESULTS, 1)
                 putExtra(RecognizerIntent.EXTRA_CALLING_PACKAGE, context.packageName)
                 putExtra(RecognizerIntent.EXTRA_PARTIAL_RESULTS, true)
-                putExtra(RecognizerIntent.EXTRA_SPEECH_INPUT_COMPLETE_SILENCE_LENGTH_MILLIS, 1500L)
-                putExtra(RecognizerIntent.EXTRA_SPEECH_INPUT_POSSIBLY_COMPLETE_SILENCE_LENGTH_MILLIS, 1500L)
+                // Reduced silence timeout for faster processing
+                putExtra(RecognizerIntent.EXTRA_SPEECH_INPUT_COMPLETE_SILENCE_LENGTH_MILLIS, 1000L)
+                putExtra(RecognizerIntent.EXTRA_SPEECH_INPUT_POSSIBLY_COMPLETE_SILENCE_LENGTH_MILLIS, 1000L)
+                // Prefer high quality audio for better noise handling
+                putExtra(RecognizerIntent.EXTRA_PREFER_OFFLINE, false)
+                // Enable auto punctuation
+                putExtra("android.speech.extra.DICTATION_MODE", true)
             }
             
             speechRecognizer?.setRecognitionListener(object : RecognitionListener {
@@ -158,8 +190,16 @@ class VoiceInputHandler(private val context: Context) {
     }
     
     /**
-     * Process voice transcription with Gemini API
-     * Public method for external calls
+     * Processes voice transcription with Gemini API.
+     * 
+     * Takes the transcribed text, wraps it in a voice-specific prompt,
+     * calls the Gemini API, sanitizes the output, and saves to history.
+     * 
+     * The AI is instructed to return plain text without markdown formatting
+     * for seamless insertion into text fields.
+     * 
+     * @param transcription The speech-to-text result
+     * @param callback Called with the AI-generated response or error message
      */
     fun processVoiceInput(transcription: String, callback: (String) -> Unit) {
         Log.d(TAG, "=== processVoiceInput called ===")
@@ -198,6 +238,19 @@ class VoiceInputHandler(private val context: Context) {
                 // Sanitize output
                 val cleanedResponse = apiClient.sanitizeMarkdown(response)
                 Log.d(TAG, "Cleaned response: ${cleanedResponse.take(100)}")
+                
+                // Save to history
+                try {
+                    val history = CommandHistory(context)
+                    history.add(
+                        prompt = transcription,
+                        response = cleanedResponse,
+                        context = "voice"
+                    )
+                    Log.d(TAG, "✓ Saved voice input to history")
+                } catch (e: Exception) {
+                    Log.e(TAG, "Error saving voice input to history", e)
+                }
                 
                 withContext(Dispatchers.Main) {
                     Log.d(TAG, "Calling callback with cleaned response")

@@ -3,137 +3,267 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#B0000000">
+    android:background="#CC000000"
+    android:animateLayoutChanges="true">
 
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/voiceCard"
-        android:layout_width="340dp"
+        android:layout_width="360dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_margin="20dp"
-        app:cardCornerRadius="20dp"
-        app:cardElevation="24dp"
+        android:layout_margin="24dp"
+        app:cardCornerRadius="28dp"
+        app:cardElevation="32dp"
         app:cardBackgroundColor="@android:color/white">
 
-        <FrameLayout
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="32dp">
 
-            <!-- Close Button (Top Right) -->
-            <com.google.android.material.card.MaterialCardView
-                android:id="@+id/btnCloseCard"
-                android:layout_width="36dp"
-                android:layout_height="36dp"
-                android:layout_gravity="top|end"
-                android:layout_margin="12dp"
-                app:cardCornerRadius="18dp"
-                app:cardElevation="4dp"
-                app:cardBackgroundColor="#F5F5F5">
-                
-                <ImageButton
-                    android:id="@+id/btnClose"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="?attr/selectableItemBackgroundBorderless"
-                    android:src="@android:drawable/ic_menu_close_clear_cancel"
-                    android:tint="#666666"
-                    android:padding="6dp"
-                    android:contentDescription="Close" />
-            </com.google.android.material.card.MaterialCardView>
-
-            <LinearLayout
+            <!-- Header with Close Button -->
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="24dp">
+                android:layout_marginBottom="16dp">
 
-            <!-- Mic Button -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:text="Voice Input"
+                    android:textColor="#1A1A1A"
+                    android:textSize="22sp"
+                    android:textStyle="bold"
+                    android:fontFamily="sans-serif-medium" />
+
+                <ImageButton
+                    android:id="@+id/btnClose"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:layout_alignParentEnd="true"
+                    android:padding="4dp"
+                    android:src="@drawable/ic_close_button"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:contentDescription="Close" />
+
+            </RelativeLayout>
+
+            <!-- Animated Mic Button with Pulsing Effect -->
             <FrameLayout
                 android:id="@+id/micContainer"
-                android:layout_width="110dp"
-                android:layout_height="110dp"
+                android:layout_width="130dp"
+                android:layout_height="130dp"
                 android:layout_gravity="center_horizontal"
-                android:layout_marginTop="8dp">
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="8dp">
 
+                <!-- Outer Pulse Ring (animated during recording) -->
+                <View
+                    android:id="@+id/pulseRing"
+                    android:layout_width="130dp"
+                    android:layout_height="130dp"
+                    android:layout_gravity="center"
+                    android:background="@drawable/circle_pulse"
+                    android:alpha="0"
+                    android:visibility="gone" />
+
+                <!-- Main Mic Button -->
                 <com.google.android.material.card.MaterialCardView
                     android:id="@+id/micButton"
-                    android:layout_width="110dp"
-                    android:layout_height="110dp"
-                    app:cardCornerRadius="55dp"
-                    app:cardElevation="12dp"
+                    android:layout_width="120dp"
+                    android:layout_height="120dp"
+                    android:layout_gravity="center"
+                    app:cardCornerRadius="60dp"
+                    app:cardElevation="0dp"
                     app:cardBackgroundColor="@color/primary">
 
-                    <ImageView
-                        android:id="@+id/micIcon"
-                        android:layout_width="56dp"
-                        android:layout_height="56dp"
-                        android:layout_gravity="center"
-                        android:src="@android:drawable/ic_btn_speak_now"
-                        android:tint="@android:color/white" />
+                    <FrameLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <ImageView
+                            android:id="@+id/micIcon"
+                            android:layout_width="60dp"
+                            android:layout_height="60dp"
+                            android:layout_gravity="center"
+                            android:src="@android:drawable/ic_btn_speak_now"
+                            android:tint="@android:color/white" />
+
+                    </FrameLayout>
 
                 </com.google.android.material.card.MaterialCardView>
 
             </FrameLayout>
 
-            <!-- Status Text -->
+            <!-- Status Text with Smooth Animation -->
             <TextView
                 android:id="@+id/statusText"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:layout_gravity="center_horizontal"
-                android:text="Tap to Start Recording"
-                android:textColor="#1A1A1A"
-                android:textSize="16sp"
-                android:textStyle="bold"
-                android:gravity="center" />
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                android:text="Tap to start speaking"
+                android:textColor="#424242"
+                android:textSize="17sp"
+                android:textStyle="normal"
+                android:gravity="center"
+                android:fontFamily="sans-serif"
+                android:alpha="0.9" />
 
-            <!-- Transcription Editor (hidden initially) -->
+            <!-- Hint Text -->
+            <TextView
+                android:id="@+id/hintText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Speak clearly for best results"
+                android:textColor="#757575"
+                android:textSize="13sp"
+                android:gravity="center"
+                android:layout_marginBottom="20dp" />
+
+            <!-- Waveform Visualization (shown during recording) -->
+            <LinearLayout
+                android:id="@+id/waveformContainer"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                android:orientation="horizontal"
+                android:gravity="center"
+                android:visibility="gone">
+
+                <!-- Simple waveform bars - will be animated in code -->
+                <View
+                    android:id="@+id/wave1"
+                    android:layout_width="6dp"
+                    android:layout_height="20dp"
+                    android:layout_marginHorizontal="3dp"
+                    android:background="@color/primary"
+                    android:alpha="0.6" />
+
+                <View
+                    android:id="@+id/wave2"
+                    android:layout_width="6dp"
+                    android:layout_height="35dp"
+                    android:layout_marginHorizontal="3dp"
+                    android:background="@color/primary"
+                    android:alpha="0.7" />
+
+                <View
+                    android:id="@+id/wave3"
+                    android:layout_width="6dp"
+                    android:layout_height="50dp"
+                    android:layout_marginHorizontal="3dp"
+                    android:background="@color/primary"
+                    android:alpha="0.9" />
+
+                <View
+                    android:id="@+id/wave4"
+                    android:layout_width="6dp"
+                    android:layout_height="40dp"
+                    android:layout_marginHorizontal="3dp"
+                    android:background="@color/primary"
+                    android:alpha="0.8" />
+
+                <View
+                    android:id="@+id/wave5"
+                    android:layout_width="6dp"
+                    android:layout_height="55dp"
+                    android:layout_marginHorizontal="3dp"
+                    android:background="@color/primary"
+                    android:alpha="0.9" />
+
+                <View
+                    android:id="@+id/wave6"
+                    android:layout_width="6dp"
+                    android:layout_height="30dp"
+                    android:layout_marginHorizontal="3dp"
+                    android:background="@color/primary"
+                    android:alpha="0.7" />
+
+                <View
+                    android:id="@+id/wave7"
+                    android:layout_width="6dp"
+                    android:layout_height="25dp"
+                    android:layout_marginHorizontal="3dp"
+                    android:background="@color/primary"
+                    android:alpha="0.6" />
+
+            </LinearLayout>
+
+            <!-- Voice Recording Button (shown when transcription is visible) -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnAddMore"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="8dp"
+                android:text="🎤 Tap to Record More"
+                android:textSize="15sp"
+                android:textAllCaps="false"
+                android:fontFamily="sans-serif-medium"
+                android:visibility="gone"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                app:strokeColor="@color/primary"
+                app:strokeWidth="2dp"
+                android:textColor="@color/primary"
+                app:cornerRadius="14dp"
+                app:rippleColor="#E8EAF6"
+                app:icon="@android:drawable/ic_btn_speak_now"
+                app:iconTint="@color/primary"
+                app:iconGravity="textStart"
+                app:iconPadding="8dp" />
+
+            <!-- Transcription Editor (Elevated Design) -->
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/transcriptionScroll"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="12dp"
                 android:visibility="gone"
-                app:cardCornerRadius="12dp"
-                app:cardElevation="0dp"
-                app:cardBackgroundColor="#F8F9FA"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="2dp"
+                app:cardBackgroundColor="#FAFAFA"
                 app:strokeWidth="1dp"
                 app:strokeColor="#E0E0E0">
 
                 <ScrollView
                     android:layout_width="match_parent"
-                    android:layout_height="160dp"
-                    android:padding="12dp">
+                    android:layout_height="170dp"
+                    android:padding="16dp">
 
                     <EditText
                         android:id="@+id/transcriptionText"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:textColor="#1A1A1A"
-                        android:textSize="15sp"
-                        android:lineSpacingExtra="6dp"
+                        android:textSize="16sp"
+                        android:lineSpacingExtra="8dp"
                         android:background="@android:color/transparent"
-                        android:hint="Edit your voice input..."
+                        android:hint="Edit your transcription..."
                         android:textColorHint="#9E9E9E"
                         android:inputType="textMultiLine|textCapSentences"
                         android:gravity="top|start"
-                        android:minLines="4"
-                        android:padding="8dp"
+                        android:minLines="5"
+                        android:padding="4dp"
                         android:focusable="true"
                         android:focusableInTouchMode="true"
-                        android:clickable="true" />
+                        android:clickable="true"
+                        android:fontFamily="sans-serif" />
 
                 </ScrollView>
 
             </com.google.android.material.card.MaterialCardView>
 
-            <!-- Action Buttons Container (hidden initially) -->
+            <!-- Modern Action Buttons -->
             <LinearLayout
                 android:id="@+id/actionButtons"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="4dp"
                 android:orientation="horizontal"
                 android:gravity="center"
                 android:visibility="gone">
@@ -142,52 +272,38 @@
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btnCancel"
                     android:layout_width="0dp"
-                    android:layout_height="48dp"
+                    android:layout_height="52dp"
                     android:layout_weight="1"
-                    android:layout_marginEnd="4dp"
+                    android:layout_marginEnd="8dp"
                     android:text="Cancel"
-                    android:textSize="13sp"
+                    android:textSize="14sp"
                     android:textAllCaps="false"
+                    android:fontFamily="sans-serif-medium"
                     style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-                    app:strokeColor="#E57373"
+                    app:strokeColor="#EF5350"
+                    app:strokeWidth="2dp"
                     android:textColor="#D32F2F"
-                    app:cornerRadius="10dp" />
-
-                <!-- Record Again Button -->
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/btnReplay"
-                    android:layout_width="0dp"
-                    android:layout_height="48dp"
-                    android:layout_weight="1"
-                    android:layout_marginStart="2dp"
-                    android:layout_marginEnd="2dp"
-                    android:text="Record Again"
-                    android:textSize="12sp"
-                    android:textAllCaps="false"
-                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-                    app:strokeColor="@color/primary"
-                    android:textColor="@color/primary"
-                    app:cornerRadius="10dp" />
+                    app:cornerRadius="12dp"
+                    app:rippleColor="#FFCDD2" />
 
                 <!-- Send Button -->
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btnSend"
                     android:layout_width="0dp"
-                    android:layout_height="48dp"
+                    android:layout_height="52dp"
                     android:layout_weight="1"
-                    android:layout_marginStart="4dp"
-                    android:text="Send"
-                    android:textSize="13sp"
+                    android:text="Send →"
+                    android:textSize="14sp"
                     android:textAllCaps="false"
+                    android:fontFamily="sans-serif-medium"
                     app:backgroundTint="#4CAF50"
                     android:textColor="@android:color/white"
-                    app:cornerRadius="10dp" />
+                    app:cornerRadius="12dp"
+                    app:rippleColor="#81C784" />
 
             </LinearLayout>
 
         </LinearLayout>
-
-        </FrameLayout>
 
     </com.google.android.material.card.MaterialCardView>
 

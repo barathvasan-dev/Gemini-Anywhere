@@ -3,6 +3,8 @@ package com.geminianywhere.app.ui
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.widget.ArrayAdapter
+import android.widget.AutoCompleteTextView
 import androidx.appcompat.app.AppCompatActivity
 import com.geminianywhere.app.databinding.ActivitySettingsBinding
 import com.geminianywhere.app.utils.PreferenceManager
@@ -55,6 +57,18 @@ class SettingsActivity : AppCompatActivity() {
         binding.tvOpacityValue.text = "${opacity}%"
 
         binding.switchAutoHide.isChecked = prefManager.isAutoHideEnabled()
+        
+        // Load language settings
+        val languages = arrayOf(
+            "English", "Spanish", "French", "German", "Italian", "Portuguese",
+            "Chinese", "Japanese", "Korean", "Arabic", "Russian", "Hindi",
+            "Dutch", "Swedish", "Turkish", "Polish", "Indonesian", "Thai"
+        )
+        val languageAdapter = ArrayAdapter(this, android.R.layout.simple_dropdown_item_1line, languages)
+        binding.actvLanguage.setAdapter(languageAdapter)
+        binding.actvLanguage.setText(prefManager.getPreferredLanguage(), false)
+        
+        binding.switchAutoTranslate.isChecked = prefManager.isAutoTranslateEnabled()
     }
 
     private fun setupListeners() {
@@ -69,15 +83,26 @@ class SettingsActivity : AppCompatActivity() {
             showSuccess("Trigger ${if (isChecked) "enabled" else "disabled"}")
         }
 
+        // Debounce handler for custom trigger
+        val triggerHandler = android.os.Handler(android.os.Looper.getMainLooper())
+        var triggerRunnable: Runnable? = null
+        
         binding.etCustomTrigger.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
             override fun afterTextChanged(s: Editable?) {
-                val trigger = s.toString().trim()
-                if (trigger.isNotEmpty()) {
-                    prefManager.setCustomTrigger(trigger)
-                    showSuccess("Trigger word updated: $trigger")
+                // Cancel previous update
+                triggerRunnable?.let { triggerHandler.removeCallbacks(it) }
+                
+                // Schedule new update after 500ms delay
+                triggerRunnable = Runnable {
+                    val trigger = s.toString().trim()
+                    if (trigger.isNotEmpty()) {
+                        prefManager.setCustomTrigger(trigger)
+                        showSuccess("Trigger word updated: $trigger")
+                    }
                 }
+                triggerHandler.postDelayed(triggerRunnable!!, 500)
             }
         })
 
@@ -119,10 +144,28 @@ class SettingsActivity : AppCompatActivity() {
             }
         }
 
-        // Auto-hide
+        // Auto-hide: Automatically hides floating button when user starts typing after trigger
+        // Note: Currently stored as preference but implementation pending in FloatingOverlayService
         binding.switchAutoHide.setOnCheckedChangeListener { _, isChecked ->
             prefManager.setAutoHideEnabled(isChecked)
-            showSuccess("Auto-hide ${if (isChecked) "enabled" else "disabled"}")
+            showSuccess("Auto-hide ${if (isChecked) "enabled" else "disabled"} (Feature in development)")
+        }
+        
+        // Language settings
+        binding.actvLanguage.setOnItemClickListener { _, _, position, _ ->
+            val languages = arrayOf(
+                "English", "Spanish", "French", "German", "Italian", "Portuguese",
+                "Chinese", "Japanese", "Korean", "Arabic", "Russian", "Hindi",
+                "Dutch", "Swedish", "Turkish", "Polish", "Indonesian", "Thai"
+            )
+            val selectedLanguage = languages[position]
+            prefManager.setPreferredLanguage(selectedLanguage)
+            showSuccess("Language set to $selectedLanguage")
+        }
+        
+        binding.switchAutoTranslate.setOnCheckedChangeListener { _, isChecked ->
+            prefManager.setAutoTranslateEnabled(isChecked)
+            showSuccess("Auto-translate ${if (isChecked) "enabled" else "disabled"}")
         }
     }
 

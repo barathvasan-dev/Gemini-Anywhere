@@ -45,6 +45,29 @@
             android:screenOrientation="portrait"
             android:parentActivityName=".ui.SettingsActivity" />
 
+        <!-- History Activity -->
+        <activity
+            android:name=".ui.HistoryActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"
+            android:parentActivityName=".ui.MainActivity"
+            android:label="@string/history_title" />
+
+        <!-- Favorites Activity -->
+        <activity
+            android:name=".ui.FavoritesActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"
+            android:parentActivityName=".ui.MainActivity"
+            android:label="@string/favorites_title" />
+
+        <!-- Permissions Activity -->
+        <activity
+            android:name=".ui.PermissionsActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"
+            android:parentActivityName=".ui.MainActivity" />
+
         <!-- Accessibility Service -->
         <service
             android:name=".service.GeminiAccessibilityService"

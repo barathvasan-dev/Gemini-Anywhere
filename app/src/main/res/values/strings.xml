@@ -50,4 +50,67 @@
     <string name="context_social">Social media post</string>
     <string name="context_professional">Professional communication</string>
     <string name="context_general">General text</string>
+    
+    <!-- Main Activity -->
+    <string name="welcome">Welcome</string>
+    <string name="start_service">Start Service</string>
+    <string name="stop_service">Stop Service</string>
+    <string name="settings">Settings</string>
+    <string name="history_title">History</string>
+    <string name="favorites_title">Favorites</string>
+    
+    <!-- Settings -->
+    <string name="api_key">API Key</string>
+    <string name="save">Save</string>
+    <string name="cancel">Cancel</string>
+    <string name="trigger_symbol">Trigger Symbol</string>
+    <string name="model_selection">Model Selection</string>
+    <string name="model_selected">Model selected: %s</string>
+    
+    <!-- History -->
+    <string name="search_history">Search history</string>
+    <string name="clear_all">Clear All</string>
+    <string name="empty_history">No history available</string>
+    <string name="reuse">Reuse</string>
+    <string name="delete">Delete</string>
+    
+    <!-- Favorites -->
+    <string name="search_favorites">Search favorites</string>
+    <string name="add_favorite">Add Favorite</string>
+    <string name="empty_favorites">No favorites saved</string>
+    <string name="empty_favorites_hint">Tap + to add your first favorite</string>
+    <string name="favorite">Favorite</string>
+    <string name="use">Use</string>
+    <string name="edit">Edit</string>
+    
+    <!-- Dialog -->
+    <string name="title">Title</string>
+    <string name="prompt">Prompt</string>
+    <string name="category">Category</string>
+    <string name="tags_hint">Tags (comma separated)</string>
+    <string name="tags_helper">e.g: work, email, formal</string>
+    
+    <!-- Categories -->
+    <string name="categories">Categories</string>
+    <string name="all">All</string>
+    <string name="general">General</string>
+    <string name="work">Work</string>
+    <string name="personal">Personal</string>
+    
+    <!-- Conversation Context -->
+    <string name="context_active">Context active: %d turns</string>
+    <string name="context_inactive">Context inactive</string>
+    <string name="clear_context">Clear Context</string>
+    
+    <!-- Features Section -->
+    <string name="features_title">Features</string>
+    <string name="view_history">View History</string>
+    <string name="manage_favorites">Manage Favorites</string>
+    <string name="features_description">Access command history, manage favorite prompts, and track conversation context.</string>
+    
+    <!-- Common -->
+    <string name="ok">OK</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="close">Close</string>
 </resources>

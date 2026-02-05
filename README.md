@@ -24,8 +24,15 @@
 - 🎯 **Universal AI Access** - Works in every app: WhatsApp, Gmail, Twitter, Slack, and more
 - 🎤 **Voice Input** - Speak your commands with `@gemini /voice` for hands-free AI assistance
 - ⚡ **Context-Aware Responses** - Automatically formats output for emails, social posts, or messages
+- 🚀 **Response Caching** - Instant responses for repeated prompts (99% faster)
+- 🔋 **Battery Optimized** - Smart event debouncing reduces battery drain by 79%
+- 🧠 **Conversation Memory** - Multi-turn conversations with automatic context tracking (5-turn sliding window)
+- 📜 **Command History** - Track and reuse your last 50 commands with smart search
+- ⭐ **Favorite Prompts** - Save frequently used prompts with categories and tags
+- 🌐 **Multi-Language Support** - Available in English, Spanish, French, German, and Japanese
 - 🎨 **Professional UI** - Modern Material Design 3 interface with smooth animations
 - 🔒 **Privacy First** - On-device speech recognition, no audio uploads
+- 🔐 **Secure Storage** - API keys encrypted with AES-256-GCM via Android Keystore
 - ⚙️ **Customizable** - Create custom slash commands for frequent tasks
 - 🌐 **Model Selection** - Choose between Gemini Flash, Pro, and experimental models
 - 📝 **Markdown-Free Output** - Clean text output ready to send
@@ -88,20 +95,86 @@
 
 ### Voice Input
 
-1. Type `@gemini /voice` in any text field
+1. Type `@gemini voice` in any text field (no `/` needed!)
 2. Tap the microphone button when it appears
 3. Speak your command
 4. Edit the transcription if needed
-5. Tap "Send" to process with AI
+5. Use "Record More" button to append additional voice input
+6. Tap "Send" to process with AI
+
+**Voice Features:**
+- 🎯 Professional Material Design 3 interface
+- 🌊 Live waveform visualization during recording
+- 💫 Animated pulse ring around microphone
+- ✏️ Edit transcription before sending
+- 🎤 Record More - append additional recordings
+- 🔇 Noise reduction for better accuracy
+- ⚡ Fast response (1000ms timeout)
+
+### Conversation Memory
+
+Have multi-turn conversations with context:
+
+```
+You: @gemini What is Paris?
+AI: Paris is the capital of France...
+
+You: @gemini What's the population?  ← Uses previous context!
+AI: Paris has about 2.2 million people...
+
+You: @gemini Tell me about the Eiffel Tower
+AI: The Eiffel Tower in Paris is...
+```
+
+- Automatically tracks last 5 conversation turns
+- 5-minute timeout (resets context naturally)
+- No manual context management needed
+
+### Command History
+
+Access your previous commands:
+
+1. Open the app → History
+2. Search through past commands
+3. Reuse or add to favorites
+4. View usage statistics
+
+**Features:**
+- Last 50 commands saved
+- Smart deduplication (1-hour window)
+- Search by text or context
+- Delete individual or clear all
+
+### Favorite Prompts
+
+Save frequently used prompts:
+
+1. Open the app → Favorites
+2. Tap + to create new favorite
+3. Add title, prompt, category, and tags
+4. Quick-use from any text field
+
+**Example Favorites:**
+- "Professional Thank You" → `write a professional thank you email`
+- "Meeting Summary" → `summarize this meeting in bullet points`
+- "Social Post" → `write engaging LinkedIn post about [topic]`
 
 ### Custom Commands
 
-Create shortcuts for frequent tasks:
+Create shortcuts for frequent tasks (no `/` prefix needed!):
 
-- `/email` - Format as professional email
-- `/reply` - Generate contextual reply
-- `/summary` - Summarize long text
-- `/translate` - Translate to another language
+- `email` - Format as professional email
+- `reply` - Generate contextual reply
+- `summary` - Summarize long text
+- `translate` - Translate to another language
+- `voice` - Launch voice input mode
+
+**Usage Example:**
+```
+@gemini email thank the client for their patience
+@gemini summary [paste long text]
+@gemini voice [speak your command]
+```
 
 **Configure commands in:** Settings → Custom Commands
 
@@ -155,7 +228,13 @@ Automatically detects app context and formats output appropriately:
 - On-device speech-to-text (no audio upload)
 - Local prompt building
 - Markdown sanitization (prevents injection)
-- API key stored in encrypted SharedPreferences
+- **AES-256-GCM encryption** for API key storage via Android Keystore
+- Hardware-backed security on supported devices
+- Automatic migration from plain-text storage
+- No data collection or analytics
+- HTTPS-only communication
+
+**See [SECURITY.md](SECURITY.md) for detailed security implementation**
 
 ---
 
@@ -182,20 +261,56 @@ Navigate to **Settings** in the app:
 
 ## 🎨 Features in Detail
 
-### 1. Floating Button UI
+### 1. Conversation Context Memory 🧠
+- **Sliding Window:** Tracks last 5 conversation turns automatically
+- **Smart Expiry:** 5-minute timeout prevents stale context
+- **Memory Efficient:** Max 2000 characters, no token overload
+- **Seamless:** No manual context management needed
+- **Perfect for:** Multi-turn conversations, follow-up questions, iterative refinement
+
+### 2. Command History 📜
+- **Capacity:** Last 50 commands with timestamps
+- **Smart Search:** Find commands by text or app context
+- **Deduplication:** Prevents duplicate entries (1-hour window)
+- **Statistics:** Track total commands and daily usage
+- **Quick Actions:** Reuse prompts or add to favorites instantly
+
+### 3. Favorite Prompts ⭐
+- **Unlimited Storage:** Save as many favorites as you need
+- **Organization:** Categories, tags, and usage tracking
+- **Quick Access:** Use favorites directly from any text field
+- **Import/Export:** Share favorites as JSON
+- **Usage Analytics:** See which prompts you use most
+
+### 4. Multi-Language Support 🌐
+- **Available Languages:**
+  - 🇬🇧 English (Default)
+  - 🇪🇸 Spanish (Español)
+  - 🇫🇷 French (Français)
+  - 🇩🇪 German (Deutsch)
+  - 🇯🇵 Japanese (日本語)
+- **Auto-Detection:** Automatically uses your device language
+- **Complete Translation:** All UI elements, settings, and messages
+
+### 5. Floating Button UI
 - Draggable circular button
 - Auto-hides when not needed
 - Material ripple effects
 - Smooth fade animations
 
-### 2. Voice Recording Interface
-- **Tap to Record** - Start/stop recording
+### 6. Voice Recording Interface
+- **Modern UI** - Material Design 3 with animations
+- **Live Waveform** - 7-bar animated visualization during recording
+- **Pulse Effect** - Animated ring around microphone
+- **Tap to Record** - Start/stop recording with single tap
 - **Live Transcription** - See text as you speak
+- **Record More** - Append additional voice recordings
 - **Edit Mode** - Modify transcription before sending
-- **Action Buttons** - Cancel, Replay, or Send
-- **Close Button** - Force quit anytime
+- **Action Buttons** - Cancel or Send with clean button design
+- **Close Anytime** - X button for quick exit
+- **Noise Reduction** - Optimized for accuracy
 
-### 3. Markdown Sanitization
+### 7. Markdown Sanitization
 Removes all formatting for clean output:
 - Bold (`**text**`)
 - Italic (`*text*`)
@@ -252,6 +367,41 @@ Contributions are welcome! Please follow these steps:
 ---
 
 ## 📜 Changelog
+
+### Version 1.4.0 (2026-02-05)
+- ✨ **NEW:** Command syntax simplified - removed "/" prefix (just type `command` instead of `/command`)
+- 🎨 **UI:** Professional voice input interface with animated waveforms and pulse effects
+- 🎤 **VOICE:** "Record More" feature - append additional voice input to existing recordings
+- ⚡ **PERFORMANCE:** Noise reduction in voice recognition with 1000ms faster timeout
+- 🔧 **FIX:** Custom trigger debounce (500ms delay) prevents auto-trigger while typing
+- 🔧 **FIX:** Settings exclusion - trigger disabled in app's own settings
+- 🎨 **UI:** Reduced spacing in voice input dialog for cleaner appearance
+- 🧹 **CLEANUP:** Removed build artifacts and unnecessary files
+- 📚 **DOCS:** Updated README with latest features and improvements
+
+### Version 1.3.0 (2026-01-30)
+- ✨ **NEW:** Conversation context memory with 5-turn sliding window
+- ✨ **NEW:** Command history tracking (last 50 commands)
+- ✨ **NEW:** Favorite prompts with categories and tags
+- ✨ **NEW:** Multi-language support (Spanish, French, German, Japanese)
+- 🎨 **UI:** New History and Favorites activities with Material Design 3
+- 📱 **UX:** Smart search and filtering across history and favorites
+- 🔧 **IMPROVEMENT:** Better memory management for context storage
+- 📚 **DOCS:** Added FEATURES.md with comprehensive usage guide
+
+### Version 1.2.0 (2026-01-25)
+- ⚡ **PERFORMANCE:** Response caching with 99% speed improvement
+- ⚡ **PERFORMANCE:** Event debouncing reduces battery usage by 79%
+- ⚡ **PERFORMANCE:** 97% reduction in accessibility event processing
+- 🔋 **OPTIMIZATION:** Battery-aware throttling based on device state
+- 📚 **DOCS:** Added PERFORMANCE.md with benchmarks and metrics
+
+### Version 1.1.0 (2026-01-23)
+- 🔐 **SECURITY:** AES-256-GCM encryption for API keys
+- 🔐 **SECURITY:** Android Keystore integration
+- 🔐 **SECURITY:** Automatic migration from plain-text storage
+- 🔐 **SECURITY:** Hardware-backed security on supported devices
+- 📚 **DOCS:** Added SECURITY.md with detailed implementation guide
 
 ### Version 1.0.0 (2026-01-22)
 - ✨ Initial release

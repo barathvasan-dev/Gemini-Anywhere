@@ -18,6 +18,7 @@ import android.widget.Toast
 import androidx.core.app.NotificationCompat
 import com.geminianywhere.app.R
 import com.geminianywhere.app.api.GeminiApiClient
+import com.geminianywhere.app.data.CommandHistory
 import com.geminianywhere.app.databinding.FloatingButtonLayoutBinding
 import com.geminianywhere.app.utils.PreferenceManager
 import kotlinx.coroutines.CoroutineScope
@@ -58,15 +59,20 @@ class FloatingOverlayService : Service() {
     private var currentTranscription: String = ""
     
     // Voice UI elements
+    private var micContainer: View? = null
     private var micButton: View? = null
     private var micIcon: android.widget.ImageView? = null
     private var statusText: android.widget.TextView? = null
+    private var hintText: android.widget.TextView? = null
+    private var waveformContainer: android.view.ViewGroup? = null
+    private var pulseRing: View? = null
+    private val waveViews = mutableListOf<View>()
     private var transcriptionScroll: View? = null
     private var transcriptionText: android.widget.EditText? = null
     private var actionButtons: View? = null
     private var btnClose: android.widget.ImageButton? = null
     private var btnCancel: com.google.android.material.button.MaterialButton? = null
-    private var btnReplay: com.google.android.material.button.MaterialButton? = null
+    private var btnAddMore: com.google.android.material.button.MaterialButton? = null
     private var btnSend: com.google.android.material.button.MaterialButton? = null
 
     override fun onCreate() {
@@ -285,6 +291,15 @@ class FloatingOverlayService : Service() {
         }
     }
     
+    /**
+     * Handles the floating button click event.
+     * 
+     * Retrieves the latest prompt from the accessibility service,
+     * validates the content, calls the Gemini API, and replaces
+     * the text in the active field with the AI-generated response.
+     * 
+     * Includes error handling for missing API keys and empty prompts.
+     */
     private fun handleSendClick() {
         Log.d(TAG, "handleSendClick() - START")
         
@@ -338,10 +353,24 @@ class FloatingOverlayService : Service() {
                 val selectedModel = prefManager.getSelectedModel()
                 val maxRetries = prefManager.getMaxRetries()
                 
-                Log.d(TAG, "Calling Gemini API with model: $selectedModel")
+                // Add language instruction if preferred language is set
+                val preferredLanguage = prefManager.getPreferredLanguage()
+                val autoTranslate = prefManager.isAutoTranslateEnabled()
+                
+                // Build final prompt
+                val languagePrompt = buildString {
+                    append(currentPrompt)
+                    
+                    // Add language instruction if needed
+                    if (autoTranslate && preferredLanguage != "English") {
+                        append("\n\n[Important: Please respond in $preferredLanguage language]")
+                    }
+                }
+                
+                Log.d(TAG, "Calling Gemini API with model: $selectedModel, Language: $preferredLanguage")
                 val response = apiClient.generateResponse(
                     apiKey = apiKey,
-                    prompt = currentPrompt,
+                    prompt = languagePrompt,
                     context = currentContext,
                     model = selectedModel,
                     maxRetries = maxRetries
@@ -351,6 +380,19 @@ class FloatingOverlayService : Service() {
                 val cleanedResponse = apiClient.sanitizeMarkdown(response)
                 
                 Log.d(TAG, "Got response: ${cleanedResponse.take(50)}...")
+                
+                // Save to history
+                try {
+                    val history = CommandHistory(this@FloatingOverlayService)
+                    history.add(
+                        prompt = currentPrompt,
+                        response = cleanedResponse,
+                        context = currentContext
+                    )
+                    Log.d(TAG, "✓ Saved to history")
+                } catch (e: Exception) {
+                    Log.e(TAG, "Error saving to history", e)
+                }
                 
                 withContext(Dispatchers.Main) {
                     // Replace text in the field
@@ -383,26 +425,51 @@ class FloatingOverlayService : Service() {
     }
 
     private fun resetButtonState() {
-        binding.ivSend.visibility = View.VISIBLE
-        binding.fabGemini.visibility = View.VISIBLE
-        binding.loadingIndicator.visibility = View.GONE
+        try {
+            binding.ivSend.visibility = View.VISIBLE
+            binding.fabGemini.visibility = View.VISIBLE
+            binding.loadingIndicator.visibility = View.GONE
+        } catch (e: Exception) {
+            Log.e(TAG, "Error resetting button state", e)
+        }
     }
 
     private fun hideFloatingButton() {
-        floatingView?.let {
-            it.animate()?.alpha(0f)?.setDuration(150)?.withEndAction {
-                windowManager?.removeView(it)
+        val view = floatingView ?: return
+        view.animate()?.alpha(0f)?.setDuration(150)?.withEndAction {
+            try {
+                windowManager?.removeView(view)
+            } catch (e: Exception) {
+                Log.e(TAG, "Error removing floating view", e)
+            } finally {
                 floatingView = null
-            }?.start()
-        }
+            }
+        }?.start()
     }
     
+    /**
+     * Initializes and displays the voice recording overlay UI.
+     * 
+     * Creates a fullscreen overlay with:
+     * - Microphone button for recording control
+     * - Waveform animation during recording
+     * - Transcription preview with editing capability
+     * - Action buttons for replay, cancel, and send
+     * 
+     * The overlay uses Material Design theming and handles
+     * keyboard input for transcription editing.
+     */
     private fun startVoiceRecording() {
         try {
             Log.d(TAG, "Showing voice recording UI...")
             
-            if (voiceView != null) {
-                windowManager?.removeView(voiceView)
+            // Safely remove existing voice view if attached
+            if (voiceView != null && voiceView?.parent != null) {
+                try {
+                    windowManager?.removeView(voiceView)
+                } catch (e: Exception) {
+                    Log.w(TAG, "Voice view was not attached to window: ${e.message}")
+                }
                 voiceView = null
             }
             
@@ -431,19 +498,33 @@ class FloatingOverlayService : Service() {
             )
             voiceParams.gravity = Gravity.CENTER
             voiceParams.softInputMode = WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE or
-                                       WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE
+                                       WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN
             
             // Get UI elements
+            micContainer = voiceView?.findViewById(R.id.micContainer)
             micButton = voiceView?.findViewById(R.id.micButton)
             micIcon = voiceView?.findViewById(R.id.micIcon)
             statusText = voiceView?.findViewById(R.id.statusText)
+            hintText = voiceView?.findViewById(R.id.hintText)
+            waveformContainer = voiceView?.findViewById(R.id.waveformContainer)
+            pulseRing = voiceView?.findViewById(R.id.pulseRing)
             transcriptionScroll = voiceView?.findViewById(R.id.transcriptionScroll)
             transcriptionText = voiceView?.findViewById(R.id.transcriptionText)
             actionButtons = voiceView?.findViewById(R.id.actionButtons)
             btnClose = voiceView?.findViewById(R.id.btnClose)
             btnCancel = voiceView?.findViewById(R.id.btnCancel)
-            btnReplay = voiceView?.findViewById(R.id.btnReplay)
+            btnAddMore = voiceView?.findViewById(R.id.btnAddMore)
             btnSend = voiceView?.findViewById(R.id.btnSend)
+            
+            // Collect waveform bars
+            waveViews.clear()
+            voiceView?.findViewById<View>(R.id.wave1)?.let { waveViews.add(it) }
+            voiceView?.findViewById<View>(R.id.wave2)?.let { waveViews.add(it) }
+            voiceView?.findViewById<View>(R.id.wave3)?.let { waveViews.add(it) }
+            voiceView?.findViewById<View>(R.id.wave4)?.let { waveViews.add(it) }
+            voiceView?.findViewById<View>(R.id.wave5)?.let { waveViews.add(it) }
+            voiceView?.findViewById<View>(R.id.wave6)?.let { waveViews.add(it) }
+            voiceView?.findViewById<View>(R.id.wave7)?.let { waveViews.add(it) }
             
             // Initial state - ready to record
             showReadyState()
@@ -470,10 +551,13 @@ class FloatingOverlayService : Service() {
                 hideVoiceOverlay()
             }
             
-            // Replay button - restart recording
-            btnReplay?.setOnClickListener {
-                showReadyState()
-                currentTranscription = ""
+            // Add More button - record additional voice to append to existing transcription
+            btnAddMore?.setOnClickListener {
+                if (!isRecording) {
+                    startAddMoreRecording()
+                } else {
+                    stopAddMoreRecording()
+                }
             }
             
             // Send button - process with Gemini
@@ -499,32 +583,52 @@ class FloatingOverlayService : Service() {
     }
     
     private fun showReadyState() {
-        statusText?.text = "Tap to Start Recording"
+        statusText?.text = "Tap to start speaking"
+        hintText?.text = "Speak clearly for best results"
+        hintText?.visibility = View.VISIBLE
         micIcon?.setImageResource(android.R.drawable.ic_btn_speak_now)
         micButton?.findViewById<com.google.android.material.card.MaterialCardView>(R.id.micButton)
             ?.setCardBackgroundColor(getColor(R.color.primary))
         micButton?.visibility = View.VISIBLE
+        waveformContainer?.visibility = View.GONE
+        pulseRing?.visibility = View.GONE
+        stopWaveAnimation()
         transcriptionScroll?.visibility = View.GONE
         actionButtons?.visibility = View.GONE
+        btnAddMore?.visibility = View.GONE
         btnClose?.visibility = View.VISIBLE
         isRecording = false
     }
     
     private fun showRecordingState() {
-        statusText?.text = "Listening... (Tap to Stop)"
+        statusText?.text = "Listening..."
+        hintText?.text = "Tap mic to stop"
         micIcon?.setImageResource(android.R.drawable.ic_btn_speak_now)
         micButton?.findViewById<com.google.android.material.card.MaterialCardView>(R.id.micButton)
             ?.setCardBackgroundColor(getColor(R.color.error_red))
+        micContainer?.visibility = View.VISIBLE
         micButton?.visibility = View.VISIBLE
+        waveformContainer?.visibility = View.VISIBLE
+        pulseRing?.visibility = View.VISIBLE
+        startWaveAnimation()
+        startPulseAnimation()
         transcriptionScroll?.visibility = View.GONE
         actionButtons?.visibility = View.GONE
+        btnAddMore?.visibility = View.GONE
         btnClose?.visibility = View.VISIBLE
         isRecording = true
     }
     
     private fun showPreviewState(transcription: String) {
         statusText?.text = "Edit your message"
+        hintText?.visibility = View.GONE
         transcriptionText?.setText(transcription)
+        micContainer?.visibility = View.GONE
+        waveformContainer?.visibility = View.GONE
+        pulseRing?.visibility = View.GONE
+        stopWaveAnimation()
+        btnAddMore?.visibility = View.VISIBLE
+        btnAddMore?.text = "🎤 Tap to Record More"
         transcriptionScroll?.visibility = View.VISIBLE
         actionButtons?.visibility = View.VISIBLE
         micButton?.visibility = View.GONE
@@ -535,9 +639,9 @@ class FloatingOverlayService : Service() {
         transcriptionText?.postDelayed({
             transcriptionText?.requestFocus()
             transcriptionText?.setSelection(transcriptionText?.text?.length ?: 0)
-            // Force keyboard to show
+            // Request keyboard to show
             val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as? android.view.inputmethod.InputMethodManager
-            imm?.showSoftInput(transcriptionText, android.view.inputmethod.InputMethodManager.SHOW_FORCED)
+            imm?.showSoftInput(transcriptionText, android.view.inputmethod.InputMethodManager.SHOW_IMPLICIT)
         }, 100)
     }
     
@@ -578,6 +682,74 @@ class FloatingOverlayService : Service() {
         // Status will be updated by onTranscription callback
     }
     
+    /**
+     * Start recording additional voice input to append to existing transcription
+     */
+    private fun startAddMoreRecording() {
+        Log.d(TAG, "Starting Add More recording...")
+        isRecording = true
+        
+        // Update button to show "Tap to Stop"
+        btnAddMore?.text = "⏹️ Tap to Stop Recording"
+        btnAddMore?.setStrokeColorResource(R.color.error_red)
+        btnAddMore?.setTextColor(getColor(R.color.error_red))
+        
+        // Show recording indicators
+        statusText?.text = "Recording more..."
+        hintText?.visibility = View.VISIBLE
+        hintText?.text = "Speak to add to your message"
+        waveformContainer?.visibility = View.VISIBLE
+        startWaveAnimation()
+        
+        // Start voice input
+        voiceHandler = VoiceInputHandler(this)
+        voiceHandler?.startVoiceInput(object : VoiceInputHandler.VoiceCallback {
+            override fun onListening() {
+                Log.d(TAG, "Add More: Recording started")
+            }
+            
+            override fun onTranscription(text: String) {
+                Log.d(TAG, "Add More: Transcribed - $text")
+                serviceScope.launch(Dispatchers.Main) {
+                    // Append new transcription to existing text with a space
+                    val existingText = transcriptionText?.text?.toString() ?: ""
+                    val updatedText = if (existingText.isNotEmpty()) {
+                        "$existingText $text"
+                    } else {
+                        text
+                    }
+                    currentTranscription = updatedText
+                    showPreviewState(updatedText)
+                    Toast.makeText(this@FloatingOverlayService, "✓ Added to message", Toast.LENGTH_SHORT).show()
+                }
+            }
+            
+            override fun onError(message: String) {
+                Log.e(TAG, "Add More: Error - $message")
+                serviceScope.launch(Dispatchers.Main) {
+                    showPreviewState(transcriptionText?.text?.toString() ?: "")
+                    Toast.makeText(this@FloatingOverlayService, message, Toast.LENGTH_LONG).show()
+                }
+            }
+        })
+    }
+    
+    /**
+     * Stop the Add More recording
+     */
+    private fun stopAddMoreRecording() {
+        Log.d(TAG, "Stopping Add More recording...")
+        isRecording = false
+        statusText?.text = "Converting speech..."
+        btnAddMore?.text = "\ud83c\udfa4 Tap to Record More"
+        btnAddMore?.setStrokeColorResource(R.color.primary)
+        btnAddMore?.setTextColor(getColor(R.color.primary))
+        waveformContainer?.visibility = View.GONE
+        stopWaveAnimation()
+        voiceHandler?.stopVoiceInput()
+        // Status will be updated by onTranscription callback
+    }
+    
     private fun sendToGemini(transcription: String) {
         Log.d(TAG, "=== sendToGemini called ===")
         Log.d(TAG, "Transcription: ${transcription.take(100)}")
@@ -613,28 +785,98 @@ class FloatingOverlayService : Service() {
         try {
             // Hide keyboard before removing view
             val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as? android.view.inputmethod.InputMethodManager
-            transcriptionText?.let { editText ->
-                imm?.hideSoftInputFromWindow(editText.windowToken, 0)
+            transcriptionText?.windowToken?.let { token ->
+                imm?.hideSoftInputFromWindow(token, 0)
             }
             
-            voiceView?.let {
-                windowManager?.removeView(it)
-                voiceView = null
+            // Remove view from window manager
+            voiceView?.let { view ->
+                try {
+                    windowManager?.removeView(view)
+                } catch (e: Exception) {
+                    Log.e(TAG, "Error removing voice view from window", e)
+                }
             }
+            
+            // Clean up resources
+            voiceView = null
             isRecording = false
+            stopWaveAnimation()
             voiceHandler?.cleanup()
             voiceHandler = null
         } catch (e: Exception) {
             Log.e(TAG, "Error hiding voice overlay", e)
         }
     }
+    
+    // Waveform animation functions
+    private fun startWaveAnimation() {
+        waveViews.forEachIndexed { index, view ->
+            val animator = android.animation.ObjectAnimator.ofFloat(
+                view, 
+                "scaleY", 
+                0.3f, 1.0f, 0.5f, 1.2f, 0.4f, 1.0f
+            ).apply {
+                duration = 1200L
+                startDelay = (index * 150).toLong()
+                repeatCount = android.animation.ObjectAnimator.INFINITE
+                repeatMode = android.animation.ObjectAnimator.REVERSE
+                interpolator = android.view.animation.AccelerateDecelerateInterpolator()
+            }
+            animator.start()
+            view.tag = animator
+        }
+    }
+    
+    private fun stopWaveAnimation() {
+        waveViews.forEach { view ->
+            (view.tag as? android.animation.ObjectAnimator)?.cancel()
+            view.scaleY = 1.0f
+        }
+    }
+    
+    private fun startPulseAnimation() {
+        pulseRing?.let { ring ->
+            val scaleAnimator = android.animation.AnimatorSet().apply {
+                playTogether(
+                    android.animation.ObjectAnimator.ofFloat(ring, "scaleX", 1.0f, 1.15f).apply {
+                        duration = 1000L
+                        repeatCount = android.animation.ObjectAnimator.INFINITE
+                        repeatMode = android.animation.ObjectAnimator.REVERSE
+                    },
+                    android.animation.ObjectAnimator.ofFloat(ring, "scaleY", 1.0f, 1.15f).apply {
+                        duration = 1000L
+                        repeatCount = android.animation.ObjectAnimator.INFINITE
+                        repeatMode = android.animation.ObjectAnimator.REVERSE
+                    },
+                    android.animation.ObjectAnimator.ofFloat(ring, "alpha", 0f, 0.4f).apply {
+                        duration = 1000L
+                        repeatCount = android.animation.ObjectAnimator.INFINITE
+                        repeatMode = android.animation.ObjectAnimator.REVERSE
+                    }
+                )
+            }
+            scaleAnimator.start()
+            ring.tag = scaleAnimator
+        }
+    }
 
     override fun onDestroy() {
         super.onDestroy()
         Log.d(TAG, "=== FloatingOverlayService onDestroy ===")
+        
+        // Clean up coroutine jobs
         serviceJob.cancel()
+        
+        // Clean up views and overlays
         hideFloatingButton()
         hideVoiceOverlay()
+        
+        // Clean up voice handler
+        voiceHandler?.cleanup()
+        voiceHandler = null
+        
+        // Stop foreground service
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             stopForeground(STOP_FOREGROUND_REMOVE)
         } else {

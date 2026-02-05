@@ -2,14 +2,40 @@ package com.geminianywhere.app.utils
 
 import android.content.Context
 import android.content.SharedPreferences
+import android.util.Log
+import androidx.security.crypto.EncryptedSharedPreferences
+import androidx.security.crypto.MasterKey
 
-class PreferenceManager(context: Context) {
+class PreferenceManager(private val context: Context) {
     
     private val sharedPreferences: SharedPreferences = 
         context.getSharedPreferences("gemini_prefs", Context.MODE_PRIVATE)
     
+    // Encrypted SharedPreferences for sensitive data (API keys)
+    private val encryptedPreferences: SharedPreferences by lazy {
+        try {
+            val masterKey = MasterKey.Builder(context)
+                .setKeyScheme(MasterKey.KeyScheme.AES256_GCM)
+                .build()
+            
+            EncryptedSharedPreferences.create(
+                context,
+                "gemini_secure_prefs",
+                masterKey,
+                EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
+                EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
+            )
+        } catch (e: Exception) {
+            Log.e(TAG, "Error creating encrypted preferences, falling back to regular", e)
+            // Fallback to regular SharedPreferences if encryption fails
+            context.getSharedPreferences("gemini_secure_prefs_fallback", Context.MODE_PRIVATE)
+        }
+    }
+    
     companion object {
+        private const val TAG = "PreferenceManager"
         private const val KEY_API_KEY = "api_key"
+        private const val KEY_API_KEY_MIGRATED = "api_key_migrated"
         private const val KEY_CURRENT_CONTEXT = "current_context"
         private const val KEY_FIRST_LAUNCH = "first_launch"
         private const val KEY_SELECTED_MODEL = "selected_model"
@@ -29,6 +55,10 @@ class PreferenceManager(context: Context) {
         // Custom commands
         private const val KEY_COMMANDS = "custom_commands"
         
+        // Language settings
+        private const val KEY_PREFERRED_LANGUAGE = "preferred_language"
+        private const val KEY_AUTO_TRANSLATE = "auto_translate_enabled"
+        
         const val DEFAULT_MODEL = "gemini-2.5-flash"
         const val DEFAULT_MAX_RETRIES = 3
         const val DEFAULT_TRIGGER = "@gemini"
@@ -47,11 +77,65 @@ class PreferenceManager(context: Context) {
     }
     
     fun setApiKey(apiKey: String) {
-        sharedPreferences.edit().putString(KEY_API_KEY, apiKey).apply()
+        try {
+            // Store in encrypted preferences
+            encryptedPreferences.edit().putString(KEY_API_KEY, apiKey).apply()
+            Log.d(TAG, "API key stored securely (encrypted)")
+        } catch (e: Exception) {
+            Log.e(TAG, "Error storing API key securely", e)
+            // Fallback to regular storage if encryption fails
+            sharedPreferences.edit().putString(KEY_API_KEY, apiKey).apply()
+        }
     }
     
     fun getApiKey(): String {
-        return sharedPreferences.getString(KEY_API_KEY, "") ?: ""
+        try {
+            // Check if we need to migrate from old unencrypted storage
+            val hasMigrated = sharedPreferences.getBoolean(KEY_API_KEY_MIGRATED, false)
+            if (!hasMigrated) {
+                migrateApiKeyToEncrypted()
+            }
+            
+            // Get from encrypted preferences
+            val encryptedKey = encryptedPreferences.getString(KEY_API_KEY, "")
+            if (!encryptedKey.isNullOrEmpty()) {
+                return encryptedKey
+            }
+            
+            // Fallback: check regular preferences (shouldn't happen after migration)
+            return sharedPreferences.getString(KEY_API_KEY, "") ?: ""
+        } catch (e: Exception) {
+            Log.e(TAG, "Error retrieving API key", e)
+            // Fallback to regular storage
+            return sharedPreferences.getString(KEY_API_KEY, "") ?: ""
+        }
+    }
+    
+    /**
+     * Migrate API key from plain-text SharedPreferences to EncryptedSharedPreferences
+     * This ensures backward compatibility for existing users
+     */
+    private fun migrateApiKeyToEncrypted() {
+        try {
+            val oldApiKey = sharedPreferences.getString(KEY_API_KEY, "")
+            if (!oldApiKey.isNullOrEmpty()) {
+                Log.d(TAG, "Migrating API key to encrypted storage")
+                
+                // Store in encrypted preferences
+                encryptedPreferences.edit().putString(KEY_API_KEY, oldApiKey).apply()
+                
+                // Remove from plain-text storage
+                sharedPreferences.edit().remove(KEY_API_KEY).apply()
+                
+                Log.d(TAG, "API key successfully migrated and removed from plain-text storage")
+            }
+            
+            // Mark migration as complete
+            sharedPreferences.edit().putBoolean(KEY_API_KEY_MIGRATED, true).apply()
+        } catch (e: Exception) {
+            Log.e(TAG, "Error during API key migration", e)
+            // Don't mark as migrated if it failed, will retry next time
+        }
     }
     
     fun setCurrentContext(context: String) {
@@ -174,5 +258,22 @@ class PreferenceManager(context: Context) {
     
     fun getCommandPrompt(command: String): String? {
         return getCommands()[command]
+    }
+    
+    // Language Settings
+    fun setPreferredLanguage(language: String) {
+        sharedPreferences.edit().putString(KEY_PREFERRED_LANGUAGE, language).apply()
+    }
+    
+    fun getPreferredLanguage(): String {
+        return sharedPreferences.getString(KEY_PREFERRED_LANGUAGE, "English") ?: "English"
+    }
+    
+    fun setAutoTranslateEnabled(enabled: Boolean) {
+        sharedPreferences.edit().putBoolean(KEY_AUTO_TRANSLATE, enabled).apply()
+    }
+    
+    fun isAutoTranslateEnabled(): Boolean {
+        return sharedPreferences.getBoolean(KEY_AUTO_TRANSLATE, false)
     }
 }

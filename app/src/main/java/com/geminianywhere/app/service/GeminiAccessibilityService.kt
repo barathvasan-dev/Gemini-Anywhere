@@ -20,6 +20,16 @@ class GeminiAccessibilityService : AccessibilityService() {
         const val MARKER_EMPTY_CONTENT = "EMPTY_CONTENT"
     }
 
+    /**
+     * Extracts and processes the current prompt from the active text field.
+     * 
+     * Handles three scenarios:
+     * 1. Voice command - returns MARKER_VOICE_INPUT to trigger voice input
+     * 2. Known command - extracts user text and merges with command template
+     * 3. Regular prompt - combines text before and after trigger
+     * 
+     * @return Processed prompt string, or special markers for voice/empty content
+     */
     fun getCurrentPrompt(): String {
         return try {
             val text = currentEditText?.text?.toString() ?: ""
@@ -28,51 +38,67 @@ class GeminiAccessibilityService : AccessibilityService() {
             
             if (text.contains(triggerPattern, ignoreCase = false)) {
                 val triggerIndex = text.indexOf(triggerPattern)
+                
+                // Extract text - remove trigger from anywhere
+                val beforeTrigger = text.substring(0, triggerIndex).trim()
                 val afterTrigger = text.substring(triggerIndex + triggerPattern.length).trim()
                 
-                // Check if it's a command (starts with /)
-                if (afterTrigger.startsWith("/")) {
-                    val commandEnd = afterTrigger.indexOf(" ")
-                    val command = if (commandEnd > 0) {
-                        afterTrigger.substring(0, commandEnd)
-                    } else {
-                        afterTrigger
-                    }
+                // Check if it's a command (detect known command names)
+                val commandEnd = afterTrigger.indexOf(" ")
+                val potentialCommand = if (commandEnd > 0) {
+                    afterTrigger.substring(0, commandEnd)
+                } else {
+                    afterTrigger
+                }
+                
+                // Add slash for storage lookup (backward compatibility)
+                val command = if (!potentialCommand.startsWith("/")) "/$potentialCommand" else potentialCommand
+                
+                // Check if this is a known command
+                val commandPrompt = prefManager.getCommandPrompt(command)
+                if (commandPrompt != null) {
+                    Log.d(TAG, "Command detected: '$potentialCommand' (stored as '$command')")
                     
-                    Log.d(TAG, "Command detected: '$command'")
-                    
-                    // Special handling for /voice command
+                    // Special handling for voice command
                     if (command == "/voice") {
                         Log.d(TAG, "Voice command detected - triggering voice input")
                         return MARKER_VOICE_INPUT
                     }
-                    
-                    // Get command prompt template
-                    val commandPrompt = prefManager.getCommandPrompt(command)
-                    if (commandPrompt != null) {
-                        // Get text after command
-                        val userText = if (commandEnd > 0) {
-                            afterTrigger.substring(commandEnd).trim()
-                        } else {
-                            ""
-                        }
-                        
-                        if (userText.isEmpty()) {
-                            Log.w(TAG, "No text provided after command $command")
-                            return MARKER_EMPTY_CONTENT
-                        }
-                        
-                        Log.d(TAG, "Using text after command: '${userText.take(50)}...'")
-                        
-                        // Replace {text} with user text
-                        val finalPrompt = commandPrompt.replace("{text}", userText)
-                        Log.d(TAG, "Final prompt: '${finalPrompt.take(100)}...'")
-                        return finalPrompt
+                    // Get text after command OR before trigger
+                    val userText = if (commandEnd > 0) {
+                        afterTrigger.substring(commandEnd).trim()
+                    } else if (beforeTrigger.isNotEmpty()) {
+                        beforeTrigger
+                    } else {
+                        ""
                     }
+                    
+                    if (userText.isEmpty()) {
+                        Log.w(TAG, "No text provided after command $command")
+                        return MARKER_EMPTY_CONTENT
+                    }
+                    
+                    Log.d(TAG, "Using text: '${userText.take(50)}...'")
+                    
+                    // Replace {text} with user text
+                    val finalPrompt = commandPrompt.replace("{text}", userText)
+                    Log.d(TAG, "Final prompt: '${finalPrompt.take(100)}...'")
+                    return finalPrompt
                 }
                 
-                // Regular prompt (no command)
-                val prompt = afterTrigger
+                // Regular prompt - combine before and after trigger
+                val prompt = buildString {
+                    if (afterTrigger.isNotEmpty() && beforeTrigger.isNotEmpty()) {
+                        append(afterTrigger)
+                        append(' ')
+                        append(beforeTrigger)
+                    } else if (afterTrigger.isNotEmpty()) {
+                        append(afterTrigger)
+                    } else {
+                        append(beforeTrigger)
+                    }
+                }.trim()
+                
                 Log.d(TAG, "getCurrentPrompt() - Extracted prompt: '$prompt'")
                 prompt
             } else {
@@ -109,10 +135,13 @@ class GeminiAccessibilityService : AccessibilityService() {
         if (event.eventType == AccessibilityEvent.TYPE_VIEW_FOCUSED) {
             val source = event.source
             if (source != null && source.isEditable) {
-                // New field focused - reset and hide button
-                lastText = ""
-                hideFloatingButton()
-                source.recycle()
+                try {
+                    // New field focused - reset and hide button
+                    lastText = ""
+                    hideFloatingButton()
+                } finally {
+                    source.recycle()
+                }
             }
             return
         }
@@ -123,19 +152,55 @@ class GeminiAccessibilityService : AccessibilityService() {
         try {
             // Only process editable text fields
             if (!source.isEditable) {
-                source.recycle()
                 return
             }
             
             checkNodeForTrigger(source)
-            source.recycle()
             
         } catch (e: Exception) {
             Log.e(TAG, "Error handling accessibility event", e)
+        } finally {
             source.recycle()
         }
     }
 
+    /**
+     * Checks if the trigger pattern exists as a complete word in the text.
+     * Ensures trigger matches only when followed by whitespace,
+     * preventing false matches like "@g" matching "@govind" and requiring
+     * explicit whitespace after trigger before activation.
+     * 
+     * @param text The text to search in
+     * @param trigger The trigger pattern to find
+     * @return true if trigger is found followed by whitespace
+     */
+    private fun containsTriggerWord(text: String, trigger: String): Boolean {
+        val index = text.indexOf(trigger)
+        if (index == -1) return false
+        
+        // Check if character after trigger is whitespace or end of text
+        val afterIndex = index + trigger.length
+        if (afterIndex < text.length) {
+            val charAfter = text[afterIndex]
+            // Must be whitespace
+            return charAfter.isWhitespace()
+        }
+        
+        // Trigger is at end of text - this is valid
+        return true
+    }
+
+    /**
+     * Checks if the text in the given node contains the trigger pattern.
+     * 
+     * Monitors text changes and:
+     * 1. Shows floating button when trigger is first detected
+     * 2. Hides button when trigger is removed
+     * 3. Launches voice input immediately if '/voice' command is detected
+     * 4. Maintains state to avoid redundant UI updates
+     * 
+     * @param node The accessibility node to check for trigger
+     */
     private fun checkNodeForTrigger(node: AccessibilityNodeInfo) {
         try {
             // Check if trigger is enabled in settings
@@ -146,6 +211,13 @@ class GeminiAccessibilityService : AccessibilityService() {
             
             currentEditText = node
             currentPackageName = node.packageName?.toString() ?: ""
+            
+            // Don't show trigger in our own settings app
+            if (currentPackageName.contains("geminianywhere", ignoreCase = true)) {
+                hideFloatingButton()
+                return
+            }
+            
             val currentText = node.text?.toString() ?: ""
             
             val triggerPattern = prefManager.getCustomTrigger()
@@ -159,22 +231,22 @@ class GeminiAccessibilityService : AccessibilityService() {
             
             Log.d(TAG, "Checking text: '${currentText.take(50)}...' for trigger: '$triggerPattern'")
             
-            // Check if text contains the custom trigger
-            val hasTrigger = currentText.contains(triggerPattern, ignoreCase = false)
-            val hadTrigger = lastText.contains(triggerPattern, ignoreCase = false)
+            // Check if text contains the custom trigger as a complete word
+            val hasTrigger = containsTriggerWord(currentText, triggerPattern)
+            val hadTrigger = containsTriggerWord(lastText, triggerPattern)
             
             if (hasTrigger && !hadTrigger) {
                 Log.d(TAG, "✓ TRIGGER DETECTED!")
-                showFloatingBubble(node, currentText)
+                showFloatingBubble(currentText)
             } else if (!hasTrigger && hadTrigger) {
                 Log.d(TAG, "Trigger removed - hiding button")
                 hideFloatingButton()
             } else if (hasTrigger && hadTrigger) {
-                // Trigger still present - check if /voice command was just typed
+                // Trigger still present - check if voice command was just typed
                 val triggerIndex = currentText.indexOf(triggerPattern)
                 val afterTrigger = currentText.substring(triggerIndex + triggerPattern.length).trim()
                 
-                if (afterTrigger.startsWith("/voice")) {
+                if (afterTrigger.startsWith("voice")) {
                     Log.d(TAG, "Voice command detected during typing!")
                     val intent = Intent(this, FloatingOverlayService::class.java).apply {
                         action = FloatingOverlayService.ACTION_VOICE_INPUT
@@ -201,7 +273,7 @@ class GeminiAccessibilityService : AccessibilityService() {
         }
     }
 
-    private fun showFloatingBubble(node: AccessibilityNodeInfo, text: String) {
+    private fun showFloatingBubble(text: String) {
         Log.d(TAG, "=== Showing Floating Bubble ===")
         
         try {
@@ -220,18 +292,23 @@ class GeminiAccessibilityService : AccessibilityService() {
             
             val afterTrigger = text.substring(triggerIndex + triggerPattern.length).trim()
             
-            // Check if it's a command
-            val isCommand = afterTrigger.startsWith("/")
-            val command = if (isCommand) {
-                val spaceIdx = afterTrigger.indexOf(" ")
-                if (spaceIdx > 0) afterTrigger.substring(0, spaceIdx) else afterTrigger
+            // Check if it's a command by extracting first word
+            val spaceIdx = afterTrigger.indexOf(" ")
+            val potentialCommand = if (spaceIdx > 0) {
+                afterTrigger.substring(0, spaceIdx)
             } else {
-                ""
+                afterTrigger
             }
             
-            Log.d(TAG, "After trigger: '$afterTrigger', Is command: $isCommand, Command: '$command'")
+            // Add slash for storage lookup (backward compatibility)
+            val command = if (!potentialCommand.startsWith("/")) "/$potentialCommand" else potentialCommand
             
-            // Special handling for /voice command
+            // Check if this is a known command
+            val isCommand = prefManager.getCommandPrompt(command) != null
+            
+            Log.d(TAG, "After trigger: '$afterTrigger', Is command: $isCommand, Command: '$potentialCommand'")
+            
+            // Special handling for voice command
             if (command == "/voice") {
                 Log.d(TAG, "Voice command detected - launching voice input")
                 val intent = Intent(this, FloatingOverlayService::class.java).apply {
@@ -305,7 +382,14 @@ class GeminiAccessibilityService : AccessibilityService() {
     }
     
     /**
-     * Replace only the @gemini /voice trigger with AI output, preserving other text
+     * Replaces the trigger pattern and voice command with AI-generated output.
+     * 
+     * Preserves any text typed before the trigger, removes the trigger and voice command,
+     * and appends the AI output. This ensures clean text replacement for voice input.
+     * 
+     * Example: "Hello @gemini voice" -> "Hello [AI Output]"
+     * 
+     * @param aiOutput The AI-generated text to insert
      */
     fun replaceVoiceTrigger(aiOutput: String) {
         try {
@@ -327,20 +411,6 @@ class GeminiAccessibilityService : AccessibilityService() {
             
             if (currentText.contains(triggerPattern)) {
                 val triggerIndex = currentText.indexOf(triggerPattern)
-                
-                // Find where trigger ends
-                val triggerEnd = triggerIndex + triggerPattern.length
-                
-                // Look for /voice starting from after the trigger
-                val remainingText = currentText.substring(triggerEnd)
-                val voiceIndex = remainingText.indexOf("/voice")
-                
-                val commandEnd = if (voiceIndex >= 0) {
-                    // Found /voice, skip past it and any trailing whitespace
-                    triggerEnd + voiceIndex + "/voice".length
-                } else {
-                    triggerEnd
-                }
                 
                 // Build final text: everything before trigger + AI output only
                 val beforeTrigger = currentText.substring(0, triggerIndex)
@@ -395,6 +465,20 @@ class GeminiAccessibilityService : AccessibilityService() {
         }
     }
 
+    /**
+     * Gmail-specific text replacement logic.
+     * 
+     * Intelligently parses AI output to extract subject and body,
+     * then fills the appropriate fields in Gmail's compose interface.
+     * 
+     * Detection strategy:
+     * 1. Identifies subject field by hint text, content description, or ID
+     * 2. Identifies body field by size, class name, or current focus
+     * 3. Parses content looking for "Subject:" pattern
+     * 4. Falls back to simple replacement if field detection fails
+     * 
+     * @param generatedText The AI-generated text to insert
+     */
     private fun replaceTextInGmail(generatedText: String) {
         try {
             Log.d(TAG, "=== Gmail compose detected ===")
@@ -512,11 +596,19 @@ class GeminiAccessibilityService : AccessibilityService() {
             
         } catch (e: Exception) {
             Log.e(TAG, "❌ Error in replaceTextInGmail", e)
-            e.printStackTrace()
             currentEditText?.let { setTextInNode(it, generatedText) }
         }
     }
     
+    /**
+     * Fills a text field with the given content.
+     * 
+     * Attempts direct text setting first, then falls back to
+     * focus-then-set approach if the initial attempt fails.
+     * 
+     * @param field The accessibility node representing the text field
+     * @param text The text content to insert
+     */
     private fun fillTextField(field: AccessibilityNodeInfo, text: String) {
         try {
             // Method 1: Try direct text setting
@@ -530,14 +622,24 @@ class GeminiAccessibilityService : AccessibilityService() {
                 // Method 2: Try focus + paste approach
                 Log.d(TAG, "Trying alternative method: focus + set text")
                 field.performAction(AccessibilityNodeInfo.ACTION_FOCUS)
-                Thread.sleep(100)
-                field.performAction(AccessibilityNodeInfo.ACTION_SET_TEXT, args)
+                android.os.Handler(android.os.Looper.getMainLooper()).postDelayed({
+                    field.performAction(AccessibilityNodeInfo.ACTION_SET_TEXT, args)
+                }, 100)
             }
         } catch (e: Exception) {
             Log.e(TAG, "Error filling text field", e)
         }
     }
     
+    /**
+     * Recursively finds all editable text fields in the node hierarchy.
+     * 
+     * Traverses the accessibility tree starting from the given node,
+     * collecting all EditText fields for analysis and potential text insertion.
+     * 
+     * @param node The root node to start traversal from
+     * @param result Mutable list to collect editable nodes
+     */
     private fun findAllEditableNodes(node: AccessibilityNodeInfo?, result: MutableList<AccessibilityNodeInfo>) {
         if (node == null) return
         
@@ -557,6 +659,18 @@ class GeminiAccessibilityService : AccessibilityService() {
         }
     }
 
+    /**
+     * Parses AI-generated email content to extract subject and body.
+     * 
+     * Supports multiple formats:
+     * - "Subject: xyz\nBody: abc" - explicit labels
+     * - "Subject: xyz\n\nabc" - subject with blank line separator
+     * - Multi-line text - first line as subject, rest as body
+     * - Single line - used as body with empty subject
+     * 
+     * @param text The AI-generated email content
+     * @return Pair of (subject, body) strings
+     */
     private fun parseEmailContent(text: String): Pair<String, String> {
         // Look for common patterns like "Subject: ..." or split by newlines
         val lines = text.lines()
@@ -601,13 +715,17 @@ class GeminiAccessibilityService : AccessibilityService() {
     }
 
     override fun onInterrupt() {
-        Log.d(TAG, "Service interrupted")
+        Log.d(TAG, "Service interrupted - hiding button")
+        hideFloatingButton()
+        lastText = ""
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        instance = null
+        Log.d(TAG, "=== Gemini Accessibility Service Stopped ===")
         hideFloatingButton()
-        Log.d(TAG, "Service destroyed")
+        lastText = ""
+        currentEditText = null
+        instance = null
     }
 }

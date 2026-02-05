@@ -13,3 +13,43 @@
 .externalNativeBuild
 .cxx
 local.properties
+
+# Build outputs
+app/build/
+build/
+*.apk
+*.ap_
+*.aab
+
+# Gradle files
+.gradle/
+gradle-app.setting
+!gradle-wrapper.jar
+
+# IDE
+.vscode/
+*.swp
+*.swo
+*~
+
+# Python
+*.pyc
+__pycache__/
+*.py[cod]
+test_data_script.py
+
+# Documentation (except README)
+*.md
+!README.md
+CONVERSATION_CONTEXT_EXPLAINED.md
+FEATURES.md
+FEATURES_IMPLEMENTED.md
+IMPLEMENTATION_GUIDE.md
+IMPLEMENTATION_SUMMARY.md
+PERFORMANCE.md
+PERFORMANCE_SUMMARY.md
+SECURITY.md
+SECURITY_SUMMARY.md
+TEST_REPORT.md
+VERIFICATION_CHECKLIST.md
+WORKING_FLOW.md

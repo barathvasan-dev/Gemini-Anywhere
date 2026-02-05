@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- App Info -->
+    <string name="app_name">Gemini どこでも</string>
+    <string name="app_description">どこでもアクセスできるAIアシスタント</string>
+
+    <!-- Main Activity -->
+    <string name="welcome">ようこそ</string>
+    <string name="start_service">サービスを開始</string>
+    <string name="stop_service">サービスを停止</string>
+    <string name="settings">設定</string>
+    <string name="history_title">履歴</string>
+    <string name="favorites_title">お気に入り</string>
+
+    <!-- Settings -->
+    <string name="api_key">APIキー</string>
+    <string name="save">保存</string>
+    <string name="cancel">キャンセル</string>
+    <string name="trigger_symbol">トリガーシンボル</string>
+    <string name="model_selection">モデル選択</string>
+    <string name="model_selected">選択されたモデル: %s</string>
+
+    <!-- History -->
+    <string name="search_history">履歴を検索</string>
+    <string name="clear_all">すべてクリア</string>
+    <string name="empty_history">履歴がありません</string>
+    <string name="reuse">再利用</string>
+    <string name="delete">削除</string>
+
+    <!-- Favorites -->
+    <string name="search_favorites">お気に入りを検索</string>
+    <string name="add_favorite">お気に入りを追加</string>
+    <string name="empty_favorites">お気に入りが保存されていません</string>
+    <string name="empty_favorites_hint">+をタップして最初のお気に入りを追加</string>
+    <string name="favorite">お気に入り</string>
+    <string name="use">使用</string>
+    <string name="edit">編集</string>
+
+    <!-- Dialog -->
+    <string name="title">タイトル</string>
+    <string name="prompt">プロンプト</string>
+    <string name="category">カテゴリ</string>
+    <string name="tags_hint">タグ（カンマ区切り）</string>
+    <string name="tags_helper">例: 仕事、メール、フォーマル</string>
+
+    <!-- Categories -->
+    <string name="categories">カテゴリ</string>
+    <string name="all">すべて</string>
+    <string name="general">一般</string>
+    <string name="work">仕事</string>
+    <string name="personal">個人</string>
+
+    <!-- Conversation Context -->
+    <string name="context_active">コンテキストアクティブ: %dターン</string>
+    <string name="context_inactive">コンテキスト非アクティブ</string>
+    <string name="clear_context">コンテキストをクリア</string>
+
+    <!-- Common -->
+    <string name="ok">OK</string>
+    <string name="yes">はい</string>
+    <string name="no">いいえ</string>
+    <string name="close">閉じる</string>
+</resources>

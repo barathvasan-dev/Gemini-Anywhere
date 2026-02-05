@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- App Info -->
+    <string name="app_name">Gemini Überall</string>
+    <string name="app_description">KI-Assistent überall zugänglich</string>
+
+    <!-- Main Activity -->
+    <string name="welcome">Willkommen</string>
+    <string name="start_service">Service starten</string>
+    <string name="stop_service">Service stoppen</string>
+    <string name="settings">Einstellungen</string>
+    <string name="history_title">Verlauf</string>
+    <string name="favorites_title">Favoriten</string>
+
+    <!-- Settings -->
+    <string name="api_key">API-Schlüssel</string>
+    <string name="save">Speichern</string>
+    <string name="cancel">Abbrechen</string>
+    <string name="trigger_symbol">Auslösesymbol</string>
+    <string name="model_selection">Modellauswahl</string>
+    <string name="model_selected">Ausgewähltes Modell: %s</string>
+
+    <!-- History -->
+    <string name="search_history">Verlauf durchsuchen</string>
+    <string name="clear_all">Alles löschen</string>
+    <string name="empty_history">Kein Verlauf verfügbar</string>
+    <string name="reuse">Wiederverwenden</string>
+    <string name="delete">Löschen</string>
+
+    <!-- Favorites -->
+    <string name="search_favorites">Favoriten durchsuchen</string>
+    <string name="add_favorite">Favorit hinzufügen</string>
+    <string name="empty_favorites">Keine Favoriten gespeichert</string>
+    <string name="empty_favorites_hint">Tippen Sie auf +, um Ihren ersten Favoriten hinzuzufügen</string>
+    <string name="favorite">Favorit</string>
+    <string name="use">Verwenden</string>
+    <string name="edit">Bearbeiten</string>
+
+    <!-- Dialog -->
+    <string name="title">Titel</string>
+    <string name="prompt">Eingabeaufforderung</string>
+    <string name="category">Kategorie</string>
+    <string name="tags_hint">Tags (durch Kommas getrennt)</string>
+    <string name="tags_helper">z.B.: arbeit, email, formell</string>
+
+    <!-- Categories -->
+    <string name="categories">Kategorien</string>
+    <string name="all">Alle</string>
+    <string name="general">Allgemein</string>
+    <string name="work">Arbeit</string>
+    <string name="personal">Persönlich</string>
+
+    <!-- Conversation Context -->
+    <string name="context_active">Kontext aktiv: %d Runden</string>
+    <string name="context_inactive">Kontext inaktiv</string>
+    <string name="clear_context">Kontext löschen</string>
+
+    <!-- Common -->
+    <string name="ok">OK</string>
+    <string name="yes">Ja</string>
+    <string name="no">Nein</string>
+    <string name="close">Schließen</string>
+</resources>

@@ -11,15 +11,11 @@
         </shape>
     </item>
     
-    <!-- Dropdown arrow indicator -->
+    <!-- Dropdown arrow icon -->
     <item
-        android:width="24dp"
-        android:height="24dp"
+        android:width="20dp"
+        android:height="20dp"
         android:gravity="end|center_vertical"
-        android:end="12dp">
-        <shape android:shape="rectangle">
-            <solid android:color="@color/primary" />
-            <corners android:radius="4dp" />
-        </shape>
-    </item>
+        android:end="16dp"
+        android:drawable="@drawable/ic_dropdown_arrow" />
 </layer-list>

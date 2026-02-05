@@ -75,31 +75,37 @@ class CommandsActivity : AppCompatActivity() {
         dialogBinding.tvDialogTitle.text = if (isEdit) "Edit Command" else "Add Command"
         
         if (isEdit && existingCommand != null) {
-            dialogBinding.etCommandName.setText(existingCommand)
+            // Show command without slash in UI
+            val displayCommand = existingCommand.removePrefix(COMMAND_PREFIX)
+            dialogBinding.etCommandName.setText(displayCommand)
             dialogBinding.etPromptTemplate.setText(commands[existingCommand])
         }
 
         MaterialAlertDialogBuilder(this)
             .setView(dialogBinding.root)
             .setPositiveButton(if (isEdit) "Save" else "Add") { _, _ ->
-                val command = dialogBinding.etCommandName.text.toString().trim()
+                val inputCommand = dialogBinding.etCommandName.text.toString().trim()
                 val prompt = dialogBinding.etPromptTemplate.text.toString().trim()
 
                 when {
-                    command.isEmpty() || prompt.isEmpty() -> {
-                        showSnackbar("Please fill all fields", false)
-                    }
-                    !command.startsWith(COMMAND_PREFIX) -> {
-                        showSnackbar("Command must start with $COMMAND_PREFIX", false)
+                    inputCommand.isEmpty() || prompt.isEmpty() -> {
+                        showSnackbar("Please fill all fields")
                     }
                     else -> {
-                        if (isEdit && existingCommand != command) {
+                        // Auto-prepend slash for storage (backward compatibility)
+                        val storageCommand = if (!inputCommand.startsWith(COMMAND_PREFIX)) {
+                            "$COMMAND_PREFIX$inputCommand"
+                        } else {
+                            inputCommand
+                        }
+                        
+                        if (isEdit && existingCommand != storageCommand) {
                             commands.remove(existingCommand)
                         }
-                        commands[command] = prompt
+                        commands[storageCommand] = prompt
                         prefManager.saveCommands(commands)
                         adapter.updateCommands(commands)
-                        val message = if (isEdit) "✓ Command updated" else "✓ Command added: $command"
+                        val message = if (isEdit) "✓ Command updated" else "✓ Command added: $inputCommand"
                         showSnackbar(message)
                     }
                 }
@@ -122,7 +128,7 @@ class CommandsActivity : AppCompatActivity() {
             .show()
     }
 
-    private fun showSnackbar(message: String, isSuccess: Boolean = true) {
+    private fun showSnackbar(message: String) {
         Snackbar.make(binding.root, message, Snackbar.LENGTH_SHORT).show()
     }
 }
@@ -158,7 +164,9 @@ class CommandAdapter(
         RecyclerView.ViewHolder(binding.root) {
 
         fun bind(command: String, prompt: String) {
-            binding.tvCommand.text = command
+            // Display command without slash
+            val displayCommand = command.removePrefix("/")
+            binding.tvCommand.text = displayCommand
             binding.tvPrompt.text = prompt
             binding.btnEdit.setOnClickListener { onEdit(command) }
             binding.btnDelete.setOnClickListener { onDelete(command) }

@@ -118,12 +118,18 @@ class GeminiApiClient {
                     ?.parts
                     ?.firstOrNull()
                     ?.text
-                    ?: "No response generated"
+                
+                if (result.isNullOrBlank()) {
+                    Log.e(TAG, "Empty response from API. Full response: $response")
+                    throw Exception("API returned empty response")
+                }
                     
+                Log.d(TAG, "Response length: ${result.length} characters")
                 return sanitizeMarkdown(result)
             } catch (e: Exception) {
                 lastException = e
                 Log.e(TAG, "❌ API Error (attempt ${attempt + 1}/$maxRetries): ${e.message}")
+                Log.e(TAG, "Full error: ", e)
                 val errorMessage = e.message?.lowercase() ?: ""
                 
                 // Check if error is related to model being busy or rate limit
