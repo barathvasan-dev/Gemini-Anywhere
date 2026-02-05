@@ -21,6 +21,13 @@ build/
 *.ap_
 *.aab
 
+# Keystore and signing files
+*.jks
+*.keystore
+keystore.properties
+signing.properties
+key.properties
+
 # Gradle files
 .gradle/
 gradle-app.setting

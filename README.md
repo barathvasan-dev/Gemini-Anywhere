@@ -2,452 +2,248 @@
 
 <div align="center">
 
-**AI-Powered Inline Assistant for Android**
+[![Version](https://img.shields.io/badge/version-1.0.0-blue.svg)](https://github.com/barathvasan-dev/Gemini-Anywhere/releases)
+[![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
+[![Android](https://img.shields.io/badge/platform-Android%2024%2B-brightgreen.svg)](https://developer.android.com)
+[![Gemini 3 API](https://img.shields.io/badge/Gemini-3%20Pro%20API-orange.svg)](https://ai.google.dev)
 
-*Write, Edit, and Transform Text Anywhere with Voice & AI*
+**Transform any text field into an AI-powered assistant with just @gemini**
 
-[![Android](https://img.shields.io/badge/Platform-Android-green.svg)](https://android.com)
-[![API](https://img.shields.io/badge/API-24%2B-brightgreen.svg)](https://android-arsenal.com/api?level=24)
-[![Kotlin](https://img.shields.io/badge/Kotlin-100%25-blue.svg)](https://kotlinlang.org)
-[![License](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[Download APK](https://github.com/barathvasan-dev/Gemini-Anywhere/releases) • [Report Bug](https://github.com/barathvasan-dev/Gemini-Anywhere/issues) • [Request Feature](https://github.com/barathvasan-dev/Gemini-Anywhere/issues)
 
 </div>
 
 ---
 
-## 📱 Overview
+## 💡 The Problem
 
-**Gemini Anywhere** is a powerful Android accessibility service that brings Google's Gemini AI directly into any text field across all your apps. No more switching between apps or copying text—just type `@gemini` and let AI handle the rest.
+Ever wished you could access powerful AI assistance **anywhere** on your Android device? 
 
-### ✨ Key Features
+- 📧 Writing emails? Get AI help instantly
+- 💬 Chatting with friends? Generate creative responses
+- 📝 Taking notes? Expand your ideas with AI
+- 🌐 Browsing? Summarize content on-the-fly
 
-- 🎯 **Universal AI Access** - Works in every app: WhatsApp, Gmail, Twitter, Slack, and more
-- 🎤 **Voice Input** - Speak your commands with `@gemini /voice` for hands-free AI assistance
-- ⚡ **Context-Aware Responses** - Automatically formats output for emails, social posts, or messages
-- 🚀 **Response Caching** - Instant responses for repeated prompts (99% faster)
-- 🔋 **Battery Optimized** - Smart event debouncing reduces battery drain by 79%
-- 🧠 **Conversation Memory** - Multi-turn conversations with automatic context tracking (5-turn sliding window)
-- 📜 **Command History** - Track and reuse your last 50 commands with smart search
-- ⭐ **Favorite Prompts** - Save frequently used prompts with categories and tags
-- 🌐 **Multi-Language Support** - Available in English, Spanish, French, German, and Japanese
-- 🎨 **Professional UI** - Modern Material Design 3 interface with smooth animations
-- 🔒 **Privacy First** - On-device speech recognition, no audio uploads
-- 🔐 **Secure Storage** - API keys encrypted with AES-256-GCM via Android Keystore
-- ⚙️ **Customizable** - Create custom slash commands for frequent tasks
-- 🌐 **Model Selection** - Choose between Gemini Flash, Pro, and experimental models
-- 📝 **Markdown-Free Output** - Clean text output ready to send
+**The friction?** Switching between apps, copying text, and breaking your flow just to get AI assistance.
 
----
+## ✨ The Solution
 
-## 🎥 Demo
+**Gemini Anywhere** brings Google's latest **Gemini 3 API** directly into **every text field** on your Android device. No app switching. No copying and pasting. Just pure productivity.
 
-> *Add screenshots or GIF demonstrations here*
+Simply type `@gemini` followed by your command in ANY app, and watch the magic happen.
 
----
+## 🎯 Key Features
+
+### 🎤 **Voice-First Experience**
+- **Material Design 3** voice input with stunning waveform animations
+- Real-time transcription with 7-bar audio visualization
+- "Record More" feature to build complex, multi-part prompts
+- Professional UI with smooth transitions and pulse effects
+
+### ⚡ **Universal Integration**
+- Works in **every app**: WhatsApp, Gmail, Notes, Chrome, Twitter, and more
+- Floating overlay button for quick access
+- Accessibility service integration for seamless operation
+- Non-intrusive design that respects your workflow
+
+### 🎨 **Powerful Customization**
+- **Custom Commands**: Create reusable prompt templates
+- **Trigger Words**: Personalize your activation keyword (default: @gemini)
+- **Favorites**: Save frequently used prompts for one-tap access
+- **History**: Track and reuse your command history
+- **Multi-language Support**: English, Spanish, French, German, Japanese
+
+### 🤖 **Gemini 3 API Integration**
+- **Latest Gemini 3 Pro models** for superior responses
+- Support for multiple model variants:
+  - Gemini 3 Pro Preview
+  - Gemini 3 Flash Preview
+  - Gemini 2.5 Pro & Flash
+  - And 8+ text-optimized models
+- Real-time streaming responses
+- Context-aware conversations
+
+### 🛡️ **Privacy & Security**
+- **Local-first**: All data stored securely on your device
+- Encrypted API key storage with Android Security Crypto
+- No data collection or telemetry
+- Transparent permissions model
+- Open-source and auditable
+
+## 📱 Screenshots
+
+<div align="center">
+
+### Main Interface & Permissions
+<img src="screenshots/01-main-page-permissions.jpg" width="250" alt="Main Page with Permissions">  <img src="screenshots/02-main-page.jpg" width="250" alt="Main Interface">
+
+### Voice Input Experience
+<img src="screenshots/04-voice-input-start.jpg" width="250" alt="Voice Input Start">  <img src="screenshots/05-voice-input-recording.jpg" width="250" alt="Voice Recording">  <img src="screenshots/06-voice-input-edit.jpg" width="250" alt="Voice Edit">
+
+### Advanced Features
+<img src="screenshots/03-custom-commands.jpg" width="250" alt="Custom Commands">  <img src="screenshots/07-settings.jpg" width="250" alt="Settings">  <img src="screenshots/09-history.jpg" width="250" alt="History">
+
+</div>
 
 ## 🚀 Getting Started
 
 ### Prerequisites
 
 - Android 7.0 (API 24) or higher
-- Google Gemini API Key ([Get one here](https://makersuite.google.com/app/apikey))
-- Accessibility service permissions
+- Google Gemini API key ([Get one here](https://makersuite.google.com/app/apikey))
 
 ### Installation
 
-1. **Clone the repository**
-   ```bash
-   git clone https://github.com/barathvasan-dev/Gemini-Anywhere.git
-   cd Gemini-Anywhere
-   ```
+1. **Download the APK** from [Releases](https://github.com/barathvasan-dev/Gemini-Anywhere/releases/latest)
+2. **Install** the APK on your Android device
+3. **Grant permissions**:
+   - Accessibility Service: Monitor text fields
+   - Display Over Apps: Show floating overlay
+   - Microphone: Voice input (optional)
 
-2. **Open in Android Studio**
-   - Use Android Studio Hedgehog or newer
-   - Sync Gradle files
+### Setup
 
-3. **Build and Install**
-   ```bash
-   ./gradlew assembleDebug
-   adb install app/build/outputs/apk/debug/app-debug.apk
-   ```
+1. **Launch** Gemini Anywhere
+2. **Enter your Gemini API key** in the main screen
+3. **Enable Accessibility Service** (Settings → Accessibility → Gemini Anywhere)
+4. **Allow Display Over Apps** permission
+5. **You're ready!** Type `@gemini` in any text field
 
-4. **Configure the App**
-   - Launch Gemini Anywhere
-   - Enter your Gemini API key
-   - Enable the Accessibility Service in Android Settings
-   - Grant overlay and microphone permissions
+## 🎮 Usage Examples
 
----
-
-## 💡 Usage
-
-### Basic Text Generation
-
-1. Open any app with a text field (WhatsApp, Gmail, Notes, etc.)
-2. Type `@gemini` followed by your prompt
-3. Tap the floating AI button
-4. Watch as AI generates and inserts the response
-
-**Example:**
+### Basic Usage
 ```
-@gemini write a professional email declining a meeting
+@gemini summarize this article
+@gemini translate to Spanish
+@gemini make this more professional
 ```
 
-### Voice Input
-
-1. Type `@gemini voice` in any text field (no `/` needed!)
-2. Tap the microphone button when it appears
-3. Speak your command
-4. Edit the transcription if needed
-5. Use "Record More" button to append additional voice input
-6. Tap "Send" to process with AI
-
-**Voice Features:**
-- 🎯 Professional Material Design 3 interface
-- 🌊 Live waveform visualization during recording
-- 💫 Animated pulse ring around microphone
-- ✏️ Edit transcription before sending
-- 🎤 Record More - append additional recordings
-- 🔇 Noise reduction for better accuracy
-- ⚡ Fast response (1000ms timeout)
-
-### Conversation Memory
-
-Have multi-turn conversations with context:
-
+### Voice Commands
 ```
-You: @gemini What is Paris?
-AI: Paris is the capital of France...
-
-You: @gemini What's the population?  ← Uses previous context!
-AI: Paris has about 2.2 million people...
-
-You: @gemini Tell me about the Eiffel Tower
-AI: The Eiffel Tower in Paris is...
+@gemini voice [Speak your command]
 ```
-
-- Automatically tracks last 5 conversation turns
-- 5-minute timeout (resets context naturally)
-- No manual context management needed
-
-### Command History
-
-Access your previous commands:
-
-1. Open the app → History
-2. Search through past commands
-3. Reuse or add to favorites
-4. View usage statistics
-
-**Features:**
-- Last 50 commands saved
-- Smart deduplication (1-hour window)
-- Search by text or context
-- Delete individual or clear all
-
-### Favorite Prompts
-
-Save frequently used prompts:
-
-1. Open the app → Favorites
-2. Tap + to create new favorite
-3. Add title, prompt, category, and tags
-4. Quick-use from any text field
-
-**Example Favorites:**
-- "Professional Thank You" → `write a professional thank you email`
-- "Meeting Summary" → `summarize this meeting in bullet points`
-- "Social Post" → `write engaging LinkedIn post about [topic]`
 
 ### Custom Commands
+Create templates like:
+- `/translate {text}` → "Translate the following to Spanish: {text}"
+- `/code {text}` → "Write clean, documented code for: {text}"
+- `/email {text}` → "Write a professional email about: {text}"
 
-Create shortcuts for frequent tasks (no `/` prefix needed!):
+## 🔧 Architecture
 
-- `email` - Format as professional email
-- `reply` - Generate contextual reply
-- `summary` - Summarize long text
-- `translate` - Translate to another language
-- `voice` - Launch voice input mode
+### Tech Stack
+- **Language**: Kotlin
+- **UI**: Material Design 3, View Binding
+- **Async**: Kotlin Coroutines & Flow
+- **Network**: Retrofit 2, OkHttp
+- **Security**: AndroidX Security Crypto
+- **Architecture**: Service-based with MVVM patterns
 
-**Usage Example:**
-```
-@gemini email thank the client for their patience
-@gemini summary [paste long text]
-@gemini voice [speak your command]
-```
+### Core Components
+1. **GeminiAccessibilityService**: Monitors text fields and detects trigger words
+2. **FloatingOverlayService**: Manages floating button and voice UI overlay
+3. **VoiceInputHandler**: Handles speech recognition and transcription
+4. **GeminiApiClient**: Communicates with Gemini 3 API
 
-**Configure commands in:** Settings → Custom Commands
+### API Integration
+This app uses **Google's Gemini 3 API** 
+Key benefits:
+- **Superior reasoning** and contextual understanding
+- **Faster responses** with streaming support
+- **Better multilingual** capabilities
+- **Advanced code generation** and technical tasks
 
----
+## 🛠️ Development
 
-## 🏗️ Architecture
+### Build from Source
 
-### Technology Stack
+```bash
+# Clone the repository
+git clone https://github.com/barathvasan-dev/Gemini-Anywhere.git
+cd Gemini-Anywhere
 
-- **Language:** Kotlin 100%
-- **UI Framework:** Material Design 3
-- **Architecture:** Service-based with Coroutines
-- **Networking:** Retrofit + OkHttp
-- **Speech:** Android SpeechRecognizer API
-- **Permissions:** Accessibility Service + Overlay
+# Build debug APK
+./gradlew assembleDebug
 
-### Key Components
-
-```
-app/
-├── api/
-│   └── GeminiApiClient.kt         # API integration with timeouts & retries
-├── service/
-│   ├── GeminiAccessibilityService.kt  # Text field monitoring
-│   ├── FloatingOverlayService.kt      # UI overlay management
-│   └── VoiceInputHandler.kt           # Voice recognition
-├── ui/
-│   ├── MainActivity.kt                # API key setup
-│   ├── SettingsActivity.kt            # App configuration
-│   └── CommandsActivity.kt            # Custom commands
-└── utils/
-    └── PreferenceManager.kt           # Settings storage
+# Build release APK (requires keystore)
+./gradlew assembleRelease
 ```
 
-### Core Features Implementation
-
-#### 🎯 Context-Aware Formatting
-Automatically detects app context and formats output appropriately:
-- **WhatsApp:** Short, casual (2-3 sentences)
-- **Email:** Subject line + formal body
-- **LinkedIn:** Hook + Body + CTA structure
-
-#### ⚡ Performance Optimizations
-- 8s connection timeout
-- 15s read timeout
-- 2 retry attempts with 500ms delay
-- 300 token limit for faster responses
-- Gemini 2.0 Flash model (latest & fastest)
-
-#### 🔒 Privacy & Security
-- On-device speech-to-text (no audio upload)
-- Local prompt building
-- Markdown sanitization (prevents injection)
-- **AES-256-GCM encryption** for API key storage via Android Keystore
-- Hardware-backed security on supported devices
-- Automatic migration from plain-text storage
-- No data collection or analytics
-- HTTPS-only communication
-
-**See [SECURITY.md](SECURITY.md) for detailed security implementation**
-
----
-
-## ⚙️ Configuration
-
-### API Settings
-
-Navigate to **Settings** in the app:
-
-| Setting | Options | Description |
-|---------|---------|-------------|
-| **API Key** | Your key | Get from [Google AI Studio](https://makersuite.google.com/app/apikey) |
-| **Model** | Flash / Pro / Experimental | Select AI model (Flash recommended) |
-| **Max Retries** | 1-5 | Number of retry attempts on failure |
-
-### Permissions Required
-
-- ✅ **Accessibility Service** - Monitor text fields
-- ✅ **Draw Over Other Apps** - Show floating button
-- ✅ **Record Audio** - Voice input feature
-- ✅ **Internet** - API communication
-
----
-
-## 🎨 Features in Detail
-
-### 1. Conversation Context Memory 🧠
-- **Sliding Window:** Tracks last 5 conversation turns automatically
-- **Smart Expiry:** 5-minute timeout prevents stale context
-- **Memory Efficient:** Max 2000 characters, no token overload
-- **Seamless:** No manual context management needed
-- **Perfect for:** Multi-turn conversations, follow-up questions, iterative refinement
-
-### 2. Command History 📜
-- **Capacity:** Last 50 commands with timestamps
-- **Smart Search:** Find commands by text or app context
-- **Deduplication:** Prevents duplicate entries (1-hour window)
-- **Statistics:** Track total commands and daily usage
-- **Quick Actions:** Reuse prompts or add to favorites instantly
-
-### 3. Favorite Prompts ⭐
-- **Unlimited Storage:** Save as many favorites as you need
-- **Organization:** Categories, tags, and usage tracking
-- **Quick Access:** Use favorites directly from any text field
-- **Import/Export:** Share favorites as JSON
-- **Usage Analytics:** See which prompts you use most
-
-### 4. Multi-Language Support 🌐
-- **Available Languages:**
-  - 🇬🇧 English (Default)
-  - 🇪🇸 Spanish (Español)
-  - 🇫🇷 French (Français)
-  - 🇩🇪 German (Deutsch)
-  - 🇯🇵 Japanese (日本語)
-- **Auto-Detection:** Automatically uses your device language
-- **Complete Translation:** All UI elements, settings, and messages
-
-### 5. Floating Button UI
-- Draggable circular button
-- Auto-hides when not needed
-- Material ripple effects
-- Smooth fade animations
-
-### 6. Voice Recording Interface
-- **Modern UI** - Material Design 3 with animations
-- **Live Waveform** - 7-bar animated visualization during recording
-- **Pulse Effect** - Animated ring around microphone
-- **Tap to Record** - Start/stop recording with single tap
-- **Live Transcription** - See text as you speak
-- **Record More** - Append additional voice recordings
-- **Edit Mode** - Modify transcription before sending
-- **Action Buttons** - Cancel or Send with clean button design
-- **Close Anytime** - X button for quick exit
-- **Noise Reduction** - Optimized for accuracy
-
-### 7. Markdown Sanitization
-Removes all formatting for clean output:
-- Bold (`**text**`)
-- Italic (`*text*`)
-- Code (`` `code` ``)
-- Headings (`# Title`)
-- Lists (`- item`)
-- Blockquotes (`> quote`)
-
----
+### Project Structure
+```
+app/src/main/
+├── java/com/geminianywhere/app/
+│   ├── api/          # Gemini API client
+│   ├── service/      # Background services
+│   ├── ui/           # Activities & UI
+│   └── utils/        # Utilities & helpers
+└── res/
+    ├── layout/       # XML layouts
+    ├── drawable/     # Icons & graphics
+    └── values/       # Strings & themes
+```
 
 ## 🤝 Contributing
 
-Contributions are welcome! Please follow these steps:
+We welcome contributions! Here's how you can help:
 
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your changes (`git commit -m 'Add AmazingFeature'`)
-4. Push to the branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
+1. **Fork** the repository
+2. **Create** a feature branch (`git checkout -b feature/AmazingFeature`)
+3. **Commit** your changes (`git commit -m 'Add some AmazingFeature'`)
+4. **Push** to the branch (`git push origin feature/AmazingFeature`)
+5. **Open** a Pull Request
 
-### Development Guidelines
+### Areas to Contribute
+- 🌍 **Translations**: Add support for more languages
+- 🎨 **UI/UX**: Improve design and user experience
+- 🐛 **Bug Fixes**: Report and fix issues
+- 📚 **Documentation**: Improve guides and examples
+- ✨ **Features**: Propose and implement new capabilities
 
-- Follow Kotlin coding conventions
-- Write meaningful commit messages
-- Test on multiple Android versions
-- Update documentation for new features
+## 📋 Roadmap
 
----
+- [ ] Tablet optimization & landscape mode
+- [ ] Widget support for quick access
+- [ ] Preset command library
+- [ ] Cloud sync for commands (optional, privacy-focused)
+- [ ] Plugin system for custom integrations
+- [ ] Wear OS companion app
 
-## 🐛 Troubleshooting
+## 🔒 Security
 
-### Common Issues
+We take security seriously:
 
-**Q: AI button not appearing**
-- Ensure Accessibility Service is enabled
-- Grant "Draw over other apps" permission
-- Restart the app
+- ✅ **Encrypted storage** for API keys
+- ✅ **No data collection** or analytics
+- ✅ **Transparent permissions** with clear explanations
+- ✅ **Open source** for community auditing
+- ✅ **Regular security updates**
 
-**Q: Voice input not working**
-- Check microphone permission
-- Ensure device has internet for Gemini API
-- Test microphone in other apps
-
-**Q: Slow response times**
-- Check internet connection
-- Try switching to Gemini Flash model
-- Reduce prompt complexity
-
-**Q: API errors**
-- Verify API key is correct
-- Check API quota at [Google AI Studio](https://makersuite.google.com)
-- Ensure Gemini API is enabled
-
----
-
-## 📜 Changelog
-
-### Version 1.4.0 (2026-02-05)
-- ✨ **NEW:** Command syntax simplified - removed "/" prefix (just type `command` instead of `/command`)
-- 🎨 **UI:** Professional voice input interface with animated waveforms and pulse effects
-- 🎤 **VOICE:** "Record More" feature - append additional voice input to existing recordings
-- ⚡ **PERFORMANCE:** Noise reduction in voice recognition with 1000ms faster timeout
-- 🔧 **FIX:** Custom trigger debounce (500ms delay) prevents auto-trigger while typing
-- 🔧 **FIX:** Settings exclusion - trigger disabled in app's own settings
-- 🎨 **UI:** Reduced spacing in voice input dialog for cleaner appearance
-- 🧹 **CLEANUP:** Removed build artifacts and unnecessary files
-- 📚 **DOCS:** Updated README with latest features and improvements
-
-### Version 1.3.0 (2026-01-30)
-- ✨ **NEW:** Conversation context memory with 5-turn sliding window
-- ✨ **NEW:** Command history tracking (last 50 commands)
-- ✨ **NEW:** Favorite prompts with categories and tags
-- ✨ **NEW:** Multi-language support (Spanish, French, German, Japanese)
-- 🎨 **UI:** New History and Favorites activities with Material Design 3
-- 📱 **UX:** Smart search and filtering across history and favorites
-- 🔧 **IMPROVEMENT:** Better memory management for context storage
-- 📚 **DOCS:** Added FEATURES.md with comprehensive usage guide
-
-### Version 1.2.0 (2026-01-25)
-- ⚡ **PERFORMANCE:** Response caching with 99% speed improvement
-- ⚡ **PERFORMANCE:** Event debouncing reduces battery usage by 79%
-- ⚡ **PERFORMANCE:** 97% reduction in accessibility event processing
-- 🔋 **OPTIMIZATION:** Battery-aware throttling based on device state
-- 📚 **DOCS:** Added PERFORMANCE.md with benchmarks and metrics
-
-### Version 1.1.0 (2026-01-23)
-- 🔐 **SECURITY:** AES-256-GCM encryption for API keys
-- 🔐 **SECURITY:** Android Keystore integration
-- 🔐 **SECURITY:** Automatic migration from plain-text storage
-- 🔐 **SECURITY:** Hardware-backed security on supported devices
-- 📚 **DOCS:** Added SECURITY.md with detailed implementation guide
-
-### Version 1.0.0 (2026-01-22)
-- ✨ Initial release
-- 🎤 Voice input with professional UI
-- 🎯 Context-aware formatting (WhatsApp/Email/LinkedIn)
-- ⚡ Performance optimizations (8s/15s timeouts)
-- 🧹 Markdown sanitization
-- 🎨 Material Design 3 UI
-- 🔧 Custom slash commands
-- 🚀 Gemini 2.0 Flash integration
-
----
+Found a security issue? Please email security@gemini-anywhere.dev (Do not open public issues)
 
 ## 📄 License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
----
-
-## 👨‍💻 Author
-
-**Barathvasan**
-- GitHub: [@barathvasan-dev](https://github.com/barathvasan-dev)
-- Project: [Gemini Anywhere](https://github.com/barathvasan-dev/Gemini-Anywhere)
-
----
-
 ## 🙏 Acknowledgments
 
-- Google Gemini API for powering the AI features
-- Material Design team for the beautiful components
-- Android Accessibility team for the robust framework
-- Retrofit & OkHttp for reliable networking
+- Google Gemini Team for the incredible API
+- Android Developer community
+- All contributors and testers
+- Material Design team for design guidelines
 
----
+## 📧 Contact & Support
 
-## ⭐ Show Your Support
-
-If you find this project helpful, please give it a ⭐ on GitHub!
+- **Issues**: [GitHub Issues](https://github.com/barathvasan-dev/Gemini-Anywhere/issues)
+- **Discussions**: [GitHub Discussions](https://github.com/barathvasan-dev/Gemini-Anywhere/discussions)
+- **Twitter**: [@barathvasan-dev](https://twitter.com/barathvasan-dev)
 
 ---
 
 <div align="center">
 
-**Made with ❤️ using Kotlin & Gemini AI**
+**Made with ❤️ by developers, for developers**
 
-[Report Bug](https://github.com/barathvasan-dev/Gemini-Anywhere/issues) · [Request Feature](https://github.com/barathvasan-dev/Gemini-Anywhere/issues) · [Documentation](https://github.com/barathvasan-dev/Gemini-Anywhere/wiki)
+[⭐ Star this repo](https://github.com/barathvasan-dev/Gemini-Anywhere) if you find it useful!
 
 </div>
