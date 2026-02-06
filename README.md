@@ -74,20 +74,25 @@ Simply type `@gemini` followed by your command in ANY app, and watch the magic h
 
 <div align="center">
 
-| Main Interface | Settings & Customization |
-|:---:|:---:|
-| ![Main Page](screenshots/main%20page%20quick%20action%2C%20api%20and%20ai%20model%20selection.jpeg) | ![Settings](screenshots/setting%20with%20language%20option%20auto%20translation.jpeg) |
-| Quick actions, API key input, and AI model selection | Language options and auto-translation settings |
+### Main Interface
+<img src="screenshots/main%20page%20quick%20action%2C%20api%20and%20ai%20model%20selection.jpeg" width="300" alt="Main Page">
 
-| Permissions | Custom Trigger Word |
-|:---:|:---:|
-| ![Permissions](screenshots/main%20page%20permission%20accessibility%2C%20display%20over%20app%20and%20microphone%20access.jpeg) | ![Custom Trigger](screenshots/custom%20trigger%20word.jpeg) |
-| Required permissions setup | Personalize your activation keyword |
+*Quick actions, API key input, and AI model selection*
 
-| Trigger Settings |
-|:---:|
-| ![Trigger Settings](screenshots/settings%20tigger%20settings%2Ccustom%20trigger%20word.jpeg) |
-| Configure trigger word and command preferences |
+### Permissions Setup
+<img src="screenshots/main%20page%20permission%20accessibility%2C%20display%20over%20app%20and%20microphone%20access.jpeg" width="300" alt="Permissions">
+
+*Required permissions: Accessibility, Display Over Apps, and Microphone*
+
+### Settings & Customization
+<img src="screenshots/setting%20with%20language%20option%20auto%20translation.jpeg" width="300" alt="Settings"> <img src="screenshots/custom%20trigger%20word.jpeg" width="300" alt="Custom Trigger">
+
+*Language options with auto-translation | Custom trigger word configuration*
+
+### Trigger Settings
+<img src="screenshots/settings%20tigger%20settings%2Ccustom%20trigger%20word.jpeg" width="300" alt="Trigger Settings">
+
+*Configure trigger word and command preferences*
 
 </div>
 
