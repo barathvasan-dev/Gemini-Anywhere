@@ -74,13 +74,11 @@ Simply type `@gemini` followed by your command in ANY app, and watch the magic h
 
 <div align="center">
 
-| Main Interface | Permissions | Settings |
-|----------------|-------------|----------|
-| ![Main](screenshots/main%20page%20quick%20action%2C%20api%20and%20ai%20model%20selection.jpeg) | ![Permissions](screenshots/main%20page%20permission%20accessibility%2C%20display%20over%20app%20and%20microphone%20access.jpeg) | ![Settings](screenshots/setting%20with%20language%20option%20auto%20translation.jpeg) |
+<img src="screenshots/main%20page%20quick%20action%2C%20api%20and%20ai%20model%20selection.jpeg" width="250" alt="Main Interface"> <img src="screenshots/main%20page%20permission%20accessibility%2C%20display%20over%20app%20and%20microphone%20access.jpeg" width="250" alt="Permissions"> <img src="screenshots/setting%20with%20language%20option%20auto%20translation.jpeg" width="250" alt="Settings">
 
-| Custom Trigger | Advanced Settings |
-|----------------|-------------------|
-| ![Custom Trigger](screenshots/custom%20trigger%20word.jpeg) | ![Trigger Settings](screenshots/settings%20tigger%20settings%2Ccustom%20trigger%20word.jpeg) |
+<img src="screenshots/custom%20trigger%20word.jpeg" width="250" alt="Custom Trigger"> <img src="screenshots/settings%20tigger%20settings%2Ccustom%20trigger%20word.jpeg" width="250" alt="Advanced Settings">
+
+*Main Interface • Permissions • Settings • Custom Trigger • Advanced Settings*
 
 </div>
 
