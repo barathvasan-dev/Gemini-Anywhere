@@ -74,14 +74,20 @@ Simply type `@gemini` followed by your command in ANY app, and watch the magic h
 
 <div align="center">
 
-### Main Interface & Permissions
-<img src="screenshots/01-main-page-permissions.jpg" width="250" alt="Main Page with Permissions">  <img src="screenshots/02-main-page.jpg" width="250" alt="Main Interface">
+| Main Interface | Settings & Customization |
+|:---:|:---:|
+| ![Main Page](screenshots/main%20page%20quick%20action%2C%20api%20and%20ai%20model%20selection.jpeg) | ![Settings](screenshots/setting%20with%20language%20option%20auto%20translation.jpeg) |
+| Quick actions, API key input, and AI model selection | Language options and auto-translation settings |
 
-### Voice Input Experience
-<img src="screenshots/04-voice-input-start.jpg" width="250" alt="Voice Input Start">  <img src="screenshots/05-voice-input-recording.jpg" width="250" alt="Voice Recording">  <img src="screenshots/06-voice-input-edit.jpg" width="250" alt="Voice Edit">
+| Permissions | Custom Trigger Word |
+|:---:|:---:|
+| ![Permissions](screenshots/main%20page%20permission%20accessibility%2C%20display%20over%20app%20and%20microphone%20access.jpeg) | ![Custom Trigger](screenshots/custom%20trigger%20word.jpeg) |
+| Required permissions setup | Personalize your activation keyword |
 
-### Advanced Features
-<img src="screenshots/03-custom-commands.jpg" width="250" alt="Custom Commands">  <img src="screenshots/07-settings.jpg" width="250" alt="Settings">  <img src="screenshots/09-history.jpg" width="250" alt="History">
+| Trigger Settings |
+|:---:|
+| ![Trigger Settings](screenshots/settings%20tigger%20settings%2Ccustom%20trigger%20word.jpeg) |
+| Configure trigger word and command preferences |
 
 </div>
 
@@ -111,23 +117,42 @@ Simply type `@gemini` followed by your command in ANY app, and watch the magic h
 
 ## 🎮 Usage Examples
 
-### Basic Usage
+### Basic Commands
+Simply type `@gemini` followed by your command in any text field:
+
 ```
 @gemini summarize this article
 @gemini translate to Spanish
 @gemini make this more professional
+@gemini reply to this message
+@gemini rewrite in a formal tone
+@gemini fix grammar and spelling
 ```
 
+### Built-in Quick Commands
+Use these convenient shortcuts anywhere:
+
+- `@gemini reply` - Generate a smart reply to messages
+- `@gemini rewrite` - Rewrite text in a better way
+- `@gemini summarize` - Create concise summaries
+- `@gemini fix` - Fix grammar, spelling, and clarity
+- `@gemini professional` - Make text more professional
+- `@gemini casual` - Make text more casual and friendly
+- `@gemini translate` - Translate to any language
+- `@gemini explain` - Get detailed explanations
+
 ### Voice Commands
+Tap the microphone icon or use:
 ```
 @gemini voice [Speak your command]
 ```
 
 ### Custom Commands
-Create templates like:
-- `/translate {text}` → "Translate the following to Spanish: {text}"
-- `/code {text}` → "Write clean, documented code for: {text}"
-- `/email {text}` → "Write a professional email about: {text}"
+Create your own reusable command templates:
+- `@gemini email` - "Write a professional email about: {text}"
+- `@gemini code` - "Write clean, documented code for: {text}"
+- `@gemini tweet` - "Create an engaging tweet about: {text}"
+- `@gemini bullet` - "Convert this to bullet points: {text}"
 
 ## 🔧 Architecture
 
