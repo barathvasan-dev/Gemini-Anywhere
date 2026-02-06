@@ -17,7 +17,11 @@ local.properties
 # Build outputs
 app/build/
 build/
-*.apk
+# Allow release APKs in outputs folder
+!app/build/outputs/
+!app/build/outputs/apk/
+!app/build/outputs/apk/release/
+app/build/outputs/apk/debug/
 *.ap_
 *.aab
 
