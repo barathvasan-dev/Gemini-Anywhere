@@ -237,7 +237,7 @@ We take security seriously:
 - ✅ **Open source** for community auditing
 - ✅ **Regular security updates**
 
-Found a security issue? Please email security@gemini-anywhere.dev (Do not open public issues)
+
 
 ## 📄 License
 
