@@ -19,10 +19,10 @@
 
 Ever wished you could access powerful AI assistance **anywhere** on your Android device? 
 
-- 📧 Writing emails? Get AI help instantly
-- 💬 Chatting with friends? Generate creative responses
+- ✍️ Writing text? Get AI help instantly
+- 💬 Creating content? Generate creative responses
 - 📝 Taking notes? Expand your ideas with AI
-- 🌐 Browsing? Summarize content on-the-fly
+- 🌐 Reading articles? Summarize content on-the-fly
 
 **The friction?** Switching between apps, copying text, and breaking your flow just to get AI assistance.
 
@@ -41,7 +41,7 @@ Simply type `@gemini` followed by your command in ANY app, and watch the magic h
 - Professional UI with smooth transitions and pulse effects
 
 ### ⚡ **Universal Integration**
-- Works in **every app**: WhatsApp, Gmail, Notes, Chrome, Twitter, and more
+- Works in **every app** with text input across your device
 - Floating overlay button for quick access
 - Accessibility service integration for seamless operation
 - Non-intrusive design that respects your workflow
@@ -74,11 +74,13 @@ Simply type `@gemini` followed by your command in ANY app, and watch the magic h
 
 <div align="center">
 
-<img src="screenshots/main%20page%20quick%20action%2C%20api%20and%20ai%20model%20selection.jpeg" width="250" alt="Main Interface"> <img src="screenshots/main%20page%20permission%20accessibility%2C%20display%20over%20app%20and%20microphone%20access.jpeg" width="250" alt="Permissions Setup"> <img src="screenshots/setting%20with%20language%20option%20auto%20translation.jpeg" width="250" alt="Settings">
+| Main Interface | Permissions | Settings |
+|----------------|-------------|----------|
+| ![Main](screenshots/main%20page%20quick%20action%2C%20api%20and%20ai%20model%20selection.jpeg) | ![Permissions](screenshots/main%20page%20permission%20accessibility%2C%20display%20over%20app%20and%20microphone%20access.jpeg) | ![Settings](screenshots/setting%20with%20language%20option%20auto%20translation.jpeg) |
 
-<img src="screenshots/custom%20trigger%20word.jpeg" width="250" alt="Custom Trigger"> <img src="screenshots/settings%20tigger%20settings%2Ccustom%20trigger%20word.jpeg" width="250" alt="Trigger Settings">
-
-*Main Interface • Permissions • Settings • Custom Trigger • Advanced Settings*
+| Custom Trigger | Advanced Settings |
+|----------------|-------------------|
+| ![Custom Trigger](screenshots/custom%20trigger%20word.jpeg) | ![Trigger Settings](screenshots/settings%20tigger%20settings%2Ccustom%20trigger%20word.jpeg) |
 
 </div>
 
@@ -142,7 +144,7 @@ Tap the microphone icon or use:
 Create your own reusable command templates:
 - `@gemini email` - "Write a professional email about: {text}"
 - `@gemini code` - "Write clean, documented code for: {text}"
-- `@gemini tweet` - "Create an engaging tweet about: {text}"
+- `@gemini post` - "Create engaging content about: {text}"
 - `@gemini bullet` - "Convert this to bullet points: {text}"
 
 ## 🔧 Architecture
@@ -252,7 +254,6 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 - **Issues**: [GitHub Issues](https://github.com/barathvasan-dev/Gemini-Anywhere/issues)
 - **Discussions**: [GitHub Discussions](https://github.com/barathvasan-dev/Gemini-Anywhere/discussions)
-- **Twitter**: [@barathvasan-dev](https://twitter.com/barathvasan-dev)
 
 ---
 
