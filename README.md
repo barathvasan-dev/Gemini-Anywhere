@@ -257,7 +257,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 <div align="center">
 
-**Made with ❤️ by developers, for developers**
+**Made by developers, for developers**
 
 [⭐ Star this repo](https://github.com/barathvasan-dev/Gemini-Anywhere) if you find it useful!
 
